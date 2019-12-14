@@ -110,7 +110,26 @@ void scoreOneLeft(){
   translateX(24.0, 127);
 }
 
+void autonloopTest(){
+  while(1){
+    /*
+    static int translateStep;
 
+    updatePosition(); <-- modifies a positionInfo structure
+    if(translateStep = 1){
+    translate(*positionInfo, positionX, position Y); //static bool positionReached? also pass in a reference to a structure would b epic
+    translateStep + positionReached;
+  }
+    else if(translateStep = 2){
+    intakeIn(time); <-- note have a way to only start this once (don't want to start on loop) if on time control maybe subtract from a target time that we input
+    translate(positionX, position Y);
+    translateStep + positionReached;
+  }
+
+        */
+  }
+
+}
 void autonSkills(){
 
     double firstMove;

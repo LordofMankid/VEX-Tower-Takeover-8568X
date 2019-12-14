@@ -192,7 +192,7 @@ void translateX(double unitsX, int maxSpeed)  //might have to add units X, units
     setDrive(0,0,0);
     pros::delay(20);
 }
-
+//TODO: REWRITE DRIVE FUNCTION TO RUN ONCE AND TAKE INTO ACCOUNT MODIFYING STATIC POSITIONREACH
 void translate(double unitsY, double unitsX, int maxSpeed){
   double directionY;
   double directionX;

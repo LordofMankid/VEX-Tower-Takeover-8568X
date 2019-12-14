@@ -42,6 +42,8 @@ double getAngle(){
 }
 
 //This PID loop returns just a number value - the value that the voltage needs to be. This is so that you can use this PIDloop function in a number of different usages.
+
+//TODO: CHANGE PID TO TAKE A STRUCTURE WITH SAME RETURN TYPE AS OKAPI PID TUNER AS A PARAMETER. WRITE FUNCTION USING THE OKAPI PID TUNER
 int PIDloop(float Kp, float Ki, float Kd, double units, double EncoderValue){
   int voltage;
 
@@ -71,6 +73,7 @@ int PIDloop(float Kp, float Ki, float Kd, double units, double EncoderValue){
 
 
 //Checks if last position
+//TODO: MAKE A POSITIONREACHCHECK FOR A STATIC INTEGER
 double positionReachCheck(double currentPositionY, double currentPositionX, double lastPositionY, double lastPositionX,  double driveStopParameter, double targetY, double targetX){
 
     placeHolder = fabs(targetX - lastPositionX);

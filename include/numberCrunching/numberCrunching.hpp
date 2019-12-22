@@ -3,9 +3,9 @@
 //variables
 extern double angle;
 //HELPER FUNCTIONS
-double getAngle();
+
 //CALCULATION FUNCTIONS
-int PIDloop(float Kp, float Ki, float Kd, double units, double EncoderValue);
+
 
 double positionReachCheck(double currentPositionY, double currentPositionX, double lastPositionY, double lastPositionX,  double driveStopParameter, double targetY, double targetX);
 /*

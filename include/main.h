@@ -76,9 +76,12 @@ void opcontrol(void);
 #include "subsystemHeaders/globals.hpp"
 #include "subsystemHeaders/slope.hpp"
 #include "subsystemHeaders/intakeAndArm.hpp"
-#include "subsystemHeaders/numberCrunching.hpp"
 #include "subsystemHeaders/autonomousCode.hpp"
 #include "subsystemHeaders/alternateAuton.hpp"
+#include "numberCrunching/numberCrunching.hpp"
+#include "numberCrunching/odometry.hpp"
+#include "numberCrunching/PID.hpp"
+
 /**
  * You can add C++-only headers here
  */

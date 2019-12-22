@@ -94,7 +94,7 @@ void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, dou
   while(targetReach == false) //MAKE SURE TO CHANGE CONDITION LATER
   {
     pros::lcd::print(7, "movement entered");
-    angleTrack();
+    //angleTrack();
     positionY = (trackingLeft.get_value() + trackingRight.get_value())/2;
     positionX = trackingX.get_value();
     positionA = angle;
@@ -192,7 +192,7 @@ void translateX(double unitsX, int maxSpeed)  //might have to add units X, units
     setDrive(0,0,0);
     pros::delay(20);
 }
-//TODO: REWRITE DRIVE FUNCTION TO RUN ONCE AND TAKE INTO ACCOUNT MODIFYING STATIC POSITIONREACH
+
 void translate(double unitsY, double unitsX, int maxSpeed){
   double directionY;
   double directionX;
@@ -213,7 +213,7 @@ void translate(double unitsY, double unitsX, int maxSpeed){
   while(autonRunning == true && targetReach == false) //MAKE SURE TO CHANGE CONDITION LATER
 
   {
-    angleTrack();
+    //angleTrack();
     positionY = (trackingLeft.get_value() + trackingRight.get_value())/2;
     positionX = trackingX.get_value();
     positionA = angle;
@@ -260,7 +260,7 @@ void rotatePID(double targetAngle, int maxSpeed, double KdAdjust){
   while(autonRunning == true && targetReach == false) //MAKE SURE TO CHANGE CONDITION LATER
   {
     count++;
-    angleTrack();
+    //angleTrack();
     positionY = (trackingLeft.get_value()+trackingRight.get_value()/2);
     positionX = trackingX.get_value();
     positionA = angle;

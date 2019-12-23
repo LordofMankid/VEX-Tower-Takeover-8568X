@@ -74,7 +74,7 @@ void getPosition(){
 
   //step 6 - find the change in angle since the last cycle
   deltaAngle = angle - lastAngle;
-
+  
 
   lastAngle = angle;
 

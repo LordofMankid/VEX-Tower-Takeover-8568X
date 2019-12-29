@@ -10,3 +10,5 @@ double angle;
 
 void getPosition(); //change this to return position structure later
 double getAngle();
+
+double modulo (double a, double b);

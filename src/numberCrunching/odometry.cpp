@@ -14,6 +14,10 @@ double positionL; //left wheel
 double positionR; //right wheel
 double positionH; //horizontal wheel
 
+////change of position, in coordinates
+double deltaPositionX; //change of position along X axis
+double deltaPositionY; //change of position along Y axis
+
 ////initial tracking wheel values when resetting, normally should be 0
 double initL = 0.0;
 double initR = 0.0;
@@ -25,9 +29,9 @@ double lastPositionR;
 double lastpositionH;
 
 ////change in position of the tracking wheels since the last cycle
-double deltaL;
-double deltaR;
-double deltaX;
+double deltaL; //change in position of the left tracking wheel since the last cycle
+double deltaR; //change in position of the right tracking wheel since the last cycle
+double deltaX; //change in position of the horizontal tracking wheel since the last cycle
 
 ////total change in position of the tracking wheel since the last reset of tracking wheels
 double deltaLr = 0.0;
@@ -39,10 +43,15 @@ double lastAngle; //angle at last reset
 double deltaAngle; //change in angle since last cycle
 double angleM; //angle of the adjusted XY coordinate plane for translations
 
+////polar coordinate stuff
+double theta = 0;
+double radius = 0;
+
 ////double
 double initAngle = 0.0;
 
-
+double finalPositionX; //temp, will become positionX when motion algorithms are rewritten
+double finalPositionY; //temp, will become positionY when motion algorithms are rewritten
 
 double dAngle;
 /////////////////////////
@@ -74,15 +83,55 @@ void getPosition(){
 
   //step 6 - find the change in angle since the last cycle
   deltaAngle = angle - lastAngle;
-<<<<<<< HEAD
-  
-=======
+  deltaX = deltaX - XWHEELDISTANCE*deltaAngle; //accounts for the tracking wheel's turning distance using the arclength formulra
 
->>>>>>> f64a770a2a40be10b46f966368037f4178539194
+  //step 7 - Record the XY coordinate changes of the robot - if change in angle = 0, then it's just the straight up XY distance
+  if(deltaAngle == 0){
+    deltaPositionX = deltaX;
+    deltaPositionY = deltaR;
+  }
+  //step 8 - Record the XY coordinate changes of the robot accounting for a change in orientation, then it "turns" the XY coordinates
+  else{
+    deltaPositionX = (2*sin(deltaAngle/2))*(deltaX/deltaAngle + XWHEELDISTANCE);
+    deltaPositionY = (2*sin(deltaAngle/2))*(deltaR/deltaAngle + RIGHTWHEELDISTANCE);
+  }
 
+  //step 9 - Calculate
+  angleM = angle + deltaAngle/2;;
+
+
+
+  //step 10 - Adjust XY coordinates to regular coordinate by changing to polar coordinates, adding angleM, and changing back
+    //Converts to polar coodinates
+  theta = atan2f(deltaPositionY, deltaPositionX); //finds the angle
+  radius = sqrt(deltaPositionX*deltaPositionX + deltaPositionY*deltaPositionY); //finds the radius
+    //Changes the angle to the regular coordinate system (this adjusts the X/Y coordinate tilting thing)
+  theta = theta - angleM;
+    //Converts back from polar coordinates
+  deltaPositionX = radius*cos(theta);
+  deltaPositionY = radius*sin(theta);
+
+    //Converts angle to between 0 and 2pi (it's in radians right now)
+  angle += PI;
+  while(angle < 0) {
+    angle +=2*PI;
+  }
+  angle = modulo(angle, 2*PI);
+  angle -= PI;
+
+  //step 11 - Update final positions
   lastAngle = angle;
-
   angle = angle*180.0/PI;
+
+  finalPositionX = finalPositionX - deltaPositionX;
+  finalPositionY = finalPositionY - deltaPositionY;
   printToBrain();
-  ;
+
+}
+
+double modulo(float a, float b) {
+  while (a>b) {
+    a-=b;
+  }
+  return a;
 }

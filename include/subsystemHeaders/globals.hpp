@@ -43,6 +43,10 @@ extern const double RIGHTWHEELDISTANCE;
 Defines the measure between the left tracking wheel and the tracking center of the robot.
 */
 extern const double LEFTWHEELDISTANCE;
+/*
+Defines the measure between the horizontal tracking wheel and the tracking center of the robot.
+*/
+extern const double XWHEELDISTANCE;
 
 
 

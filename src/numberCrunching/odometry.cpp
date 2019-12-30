@@ -50,13 +50,15 @@ double radius = 0;
 ////double
 double initAngle = 0.0;
 
-double finalPositionX; //temp, will become positionX when motion algorithms are rewritten
-double finalPositionY; //temp, will become positionY when motion algorithms are rewritten
+
 
 double dAngle;
 /////////////////////////
 
-void getPosition(){
+position position;
+
+
+void updatePosition(){
 //steps will correspond with Pilons thing
 
   //step 1 - update tracking wheels, convert to inches
@@ -121,10 +123,13 @@ void getPosition(){
 
   //step 11 - Update final positions
   lastAngle = angle;
-  angle = angle*180.0/PI;
 
-  finalPositionX = finalPositionX - deltaPositionX;
-  finalPositionY = finalPositionY - deltaPositionY;
+//  angle = angle*180.0/PI; //converts to degrees
+
+  position.xPosition = position.xPosition - deltaPositionX;
+  position.yPosition = position.yPosition - deltaPositionY;
+  position.angle = angle; //orientation in radians
+
   printToBrain();
 
 }
@@ -134,4 +139,20 @@ double modulo(float a, float b) {
     a-=b;
   }
   return a;
+}
+
+double getXposition(){
+  return position.xPosition;
+}
+
+double getYposition(){
+  return position.yPosition;
+}
+
+double getAngleRad(){
+  return position.angle;
+}
+
+double getAngleDeg(){
+  return position.angle*180/PI;
 }

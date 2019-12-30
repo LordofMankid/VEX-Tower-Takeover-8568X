@@ -18,35 +18,35 @@ extern pros::ADIEncoder trackingLeft;
 extern pros::ADIEncoder trackingRight;
 
 //odom constants
-//Used as conversion factor, for degrees in a circle
-#define DEG_CIRCLE 360.0
+  //Used as conversion factor, for degrees in a circle
+  #define DEG_CIRCLE 360.0
 
-//Conversion Factor, with 360 ticks per revolution for a tracking wheel.
-#define TICKS_TRACKING_REV 360.0
+  //Conversion Factor, with 360 ticks per revolution for a tracking wheel.
+  #define TICKS_TRACKING_REV 360.0
 
-//Conversion factor, 900 ticks per revolution for a regular V5 motor encoder.
-#define TICKS_REGULAR_REV 900.0
+  //Conversion factor, 900 ticks per revolution for a regular V5 motor encoder.
+  #define TICKS_REGULAR_REV 900.0
 
-//Conversion factor, 1800 ticks per revolution for a regular V5 torque encoder.
-#define TICKS_TORQUE_REV 1800.0
+  //Conversion factor, 1800 ticks per revolution for a regular V5 torque encoder.
+  #define TICKS_TORQUE_REV 1800.0
 
-//Sets PI
-#define PI 3.1415926535
+  //Sets PI
+  #define PI 3.1415926535
 
-extern const double RADIUS;
+  extern const double RADIUS;
 
-/*
-Defines the measurement between the right tracking wheel and the tracking center of the robot.
-*/
-extern const double RIGHTWHEELDISTANCE;
-/*
-Defines the measure between the left tracking wheel and the tracking center of the robot.
-*/
-extern const double LEFTWHEELDISTANCE;
-/*
-Defines the measure between the horizontal tracking wheel and the tracking center of the robot.
-*/
-extern const double XWHEELDISTANCE;
+  /*
+  Defines the measurement between the right tracking wheel and the tracking center of the robot.
+  */
+  extern const double RIGHTWHEELDISTANCE;
+  /*
+  Defines the measure between the left tracking wheel and the tracking center of the robot.
+  */
+  extern const double LEFTWHEELDISTANCE;
+  /*
+  Defines the measure between the horizontal tracking wheel and the tracking center of the robot.
+  */
+  extern const double XWHEELDISTANCE;
 
 
 

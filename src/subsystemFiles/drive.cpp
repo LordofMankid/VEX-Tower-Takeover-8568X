@@ -14,6 +14,18 @@ double KpDrive;
 double KdDrive;
 double KiDrive;
 
+//
+int turnDirection;
+int voltageY;
+int voltageR;
+int voltageX;
+
+double newDistance;
+double newAngle;
+double angleToTarget;
+
+
+//
 //HELPER FUNCTIONS
 void setDrive(int yPower, int xPower, int rPower){
   FrontLeft = yPower + xPower + rPower;
@@ -107,7 +119,7 @@ void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, dou
 
     driveStopTime = positionReachCheck(positionY, positionX, lastPositionY, lastPositionX, driveStopTime, unitsY, 0.0);
 
-    lastPositionX = positionX; //"saves" the last recorded position to compare with the next one
+    lastPositionX = positionX; //"saves" the last recorded position to compare with the next one0
     lastPositionY = positionY;
     lastPositionA = positionA;
     if(driveStopTime >= 25){
@@ -193,8 +205,30 @@ void translateX(double unitsX, int maxSpeed)  //might have to add units X, units
     pros::delay(20);
 }
 
-void translate(double unitsY, double unitsX, int maxSpeed){
-  double directionY;
+void translate(double targetDistance, double targetTheta, double targetOrientation, int maxSpeed){
+
+  if(targetOrientation < 0)
+    turnDirection = -1;
+  else
+    turnDirection = 1;
+
+  // newAngle = targetOrientation + position.angle;  //use if you figure out a way to run this only once
+
+  angleToTarget = targetOrientation - getAngleDeg();
+
+  voltageY = PIDloop(0.75, 0.0, 0.5, cos(turnDirection*(fabs(targetTheta+angleToTarget)-90))*targetDistance, position.yPosition);
+  voltageX = PIDloop(0.75, 0.0, 0.5, sin(turnDirection*(fabs(targetTheta+angleToTarget)-90))*targetDistance, position.xPosition);
+  voltageR = PIDloop(0.75, 0.0, 0.5, targetOrientation, getAngleDeg());
+
+  if(abs(voltageY) > maxSpeed)
+    voltageY = maxSpeed;
+  if(abs(voltageX) > maxSpeed)
+    voltageX = maxSpeed;
+  if(abs(voltageR) > maxSpeed)
+    voltageR = maxSpeed;
+
+  setDrive(voltageY, voltageX, voltageR);
+  /*double directionY;
   double directionX;
   int voltageY = 0;
   int voltageX = 0;
@@ -237,10 +271,10 @@ void translate(double unitsY, double unitsX, int maxSpeed){
     lastPositionY = positionY;
     lastPositionA = positionA;
     pros::delay(10);
-  }
+  }*/
   //reset drive
-  setDrive(0,0,0);
-  pros::delay(20);
+  //setDrive(0,0,0);
+  //pros::delay(20);
 }
 
 void rotatePID(double targetAngle, int maxSpeed, double KdAdjust){

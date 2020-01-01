@@ -1,7 +1,10 @@
 #include "main.h"
 
+//GLOBALS
 
-
+struct position position;
+polarCoord polarCoords;
+rectCoord rectCoords;
 
 ///////////////////////////////////////////////////////////////////////////
               //                                            //
@@ -55,7 +58,20 @@ double initAngle = 0.0;
 double dAngle;
 /////////////////////////
 
-position position;
+
+/////HELPER FUNCTIONS///
+
+void rectToPolar(double x, double y){
+    polarCoords.radius = sqrt(x*x+y*y);
+    polarCoords.angle = atan2(y, x);
+}
+
+void polarToRect(double r, double theta){
+    rectCoords.x = r*cos(theta);
+    rectCoords.y = r*sin(theta);
+}
+
+/////THE JUICE/////
 
 
 void updatePosition(){
@@ -88,7 +104,7 @@ void updatePosition(){
   deltaX = deltaX - XWHEELDISTANCE*deltaAngle; //accounts for the tracking wheel's turning distance using the arclength formulra
 
   //step 7 - Record the XY coordinate changes of the robot - if change in angle = 0, then it's just the straight up XY distance
-  if(deltaAngle == 0){
+  if(deltaAngle == 0){ //also makes it so you don't divide by 0 lol
     deltaPositionX = deltaX;
     deltaPositionY = deltaR;
   }

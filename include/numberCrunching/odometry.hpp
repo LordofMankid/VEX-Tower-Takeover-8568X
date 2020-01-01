@@ -6,12 +6,30 @@ double xPosition;
 double yPosition;
 double angle;
 };
+extern position position;
 
+typedef struct polar{
+  double radius;
+  double angle;
+
+} polarCoord;
+
+typedef struct rect{
+  double x;
+  double y;
+} rectCoord;
 //HELPER FUNCTIONS -- Functions used in other functions listed here
 
-double modulo (double a, double b);
+void rectToPolar(double x, double y);
 
-void updatePosition();
+void polarToRect(double r, double theta);
+
+
+//////
+
+void updatePosition(); //main position tracking algorithm
+
+double modulo (double a, double b);
 
 double getXposition(); //gets X position in inches
 

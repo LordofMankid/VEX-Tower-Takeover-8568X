@@ -28,10 +28,10 @@ double angleToTarget;
 //
 //HELPER FUNCTIONS
 void setDrive(int yPower, int xPower, int rPower){
-  FrontLeft = yPower + xPower + rPower;
-  FrontRight = -yPower + xPower + rPower;
-  BackLeft = yPower - xPower + rPower;
-  BackRight = -yPower - xPower + rPower;
+  FrontLeft = yPower - xPower + rPower;
+  FrontRight = yPower + xPower - rPower;
+  BackLeft = yPower + xPower + rPower;
+  BackRight = yPower - xPower - rPower;
 }
 
 void setDriveAuton(double yDistance, double xDistance, double rDistance, int power){

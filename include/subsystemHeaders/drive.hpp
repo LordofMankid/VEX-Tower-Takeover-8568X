@@ -1,5 +1,9 @@
 #include "main.h"
 
+extern int drive_yPower;
+extern int drive_xPower;
+extern int drive_rPower;
+
 extern int driveFactor;
 extern double KpDrive;
 extern double KdDrive;

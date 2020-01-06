@@ -1,8 +1,8 @@
 #include "main.h"
 
-int leftJoystickY;
-int leftJoystickX;
-int rightJoystickX;
+int drive_yPower;
+int drive_xPower;
+int drive_rPower;
 
 double positionY;
 double positionX;
@@ -64,20 +64,20 @@ void resetTrackingWheels(){
 
 //DRIVE FUNCTIONS
 void setDriveMotors(){
-    leftJoystickY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-    leftJoystickX = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
-    rightJoystickX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+    drive_yPower = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+    drive_xPower = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
+    drive_rPower = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
     //"deadzone" - the absolute value thing
-    if(abs(leftJoystickY) < 30 && abs(leftJoystickX) > 50)
-      leftJoystickY = 0;
-    if(abs(leftJoystickX) < 30 && abs(leftJoystickY) < 50 )
-      leftJoystickX = 0;
+    if(abs(drive_yPower) < 30 && abs(drive_xPower) > 50)
+      drive_yPower = 0;
+    if(abs(drive_xPower) < 30 && abs(drive_yPower) < 50 )
+      drive_xPower = 0;
     if(slopeAngle > slopeThreshold)
       driveFactor = 1;
     else
       driveFactor = 1;
-      setDrive(leftJoystickY*driveFactor, leftJoystickX*driveFactor, rightJoystickX*driveFactor);
+      setDrive(drive_yPower*driveFactor, drive_xPower*driveFactor, drive_rPower*driveFactor);
 }
 
 //AUTONOMOUS FUNCTIONS

@@ -91,8 +91,10 @@ void opcontrol() {
 
 
 	while (true) {
-		pros::lcd::print(0, "slopeAngle %f", slopeLift.get_position());
 		setDriveMotors();
+
+		pros::lcd::print(0, "Joysticks: LY: %i, LX: %i, RX: %i", pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_LEFT_X, pros::E_CONTROLLER_ANALOG_RIGHT_X);
+		pros::lcd::print(0, "Motors: LY: %i, LX: %i, RX: %i", drive_yPower, drive_xPower, drive_rPower);
 
 	//	angleTrack();
 
@@ -111,7 +113,7 @@ void opcontrol() {
 			resetTrackingWheels();
 			slopeLift.tare_position();
 		}
-
+	
 		printToBrain();
 		pros::lcd::print(0, "armAngle %f", armLift.get_position());
 		pros::delay(20);

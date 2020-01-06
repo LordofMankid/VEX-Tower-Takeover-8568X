@@ -81,7 +81,7 @@ void armDown(){
 }
 
 void armStop(){
-  armPower = 127;
+  armPower = 0;
   setArmLift(armPower);
 }
 

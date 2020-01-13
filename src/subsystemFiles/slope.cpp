@@ -24,19 +24,20 @@ void setSlopeMotors(){
   if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
     slopeLift.tare_position();
   slopeAngle = slopeLift.get_position();
-  voltageSlope = PIDloop(0.05, 0.0, 0.0, slopeMaxAngle, slopeAngle);
+  voltageSlope = PIDloop(0.05, 0.0, 0.0, 6800, slopeAngle);
   percentageSlope = slopeAngle/slopeMaxAngle;
+  if(slopeAngle < 0)
+    slopeAngle = 0;
+
   if(slopeAngle > 2250 && voltageSlope > 0)
     {
-      pros::lcd::print(2, "limit wee");
-      if(voltageSlope > 100)
-        voltageSlope = 80;
-      if(slopeAngle > 3750)
-        voltageSlope = 55;
+        //voltageSlope = 100;
+      if(slopeAngle > 3500)
+        voltageSlope = 60;
     }
     else
     {
-      voltageSlope = PIDloop(0.05, 0.0, 0.0, slopeMaxAngle, slopeAngle);
+      voltageSlope = PIDloop(0.05, 0.0, 0.0, 6800, slopeAngle);
     }
   if(slopeAngle < 100)
     slopeDownPower = 0;
@@ -57,16 +58,16 @@ void setSlopeMotors(){
 void slopeUp(int targetAngle, int maxSpeed){
   int lastSlopeAngle;
   bool targetReach = false;
+
   while(autonRunning == true && targetReach == false){
     slopeAngle = slopeLift.get_position();
     voltageSlope = PIDloop(0.05, 0.0, 0.0, targetAngle, slopeAngle);
     slopePower = voltageSlope;
-
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       autonRunning = false;
     if(slopeAngle > 3250 && slopePower > 127)
       slopePower = maxSpeed;
-    if(fabs(slopeAngle) > 5200){
+    if(fabs(slopeAngle) > 6800){
       targetReach = true;
       break;
     }

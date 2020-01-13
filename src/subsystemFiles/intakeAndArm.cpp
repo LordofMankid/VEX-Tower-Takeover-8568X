@@ -35,7 +35,7 @@ void setMegaLift(int power){
 }
 //DRIVER CODE
 void setIntakeMotors(){
-  intakePower = intakeMotorSpeed*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1));
+  intakePower = intakeMotorSpeed*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1));
   setIntake(intakePower);
 }
 

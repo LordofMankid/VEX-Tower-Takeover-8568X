@@ -24,18 +24,23 @@ void setSlopeMotors(){
   if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
     slopeLift.tare_position();
   slopeAngle = slopeLift.get_position();
-  voltageSlope = PIDloop(0.05, 0.0, 0.0, 9500, slopeAngle);
-  percentageSlope = slopeAngle/slopeMaxAngle;
+  voltageSlope = PIDloop(0.05, 0.0, 0.0, 4900, slopeAngle);
 
-  if(slopeAngle > 5000 && voltageSlope > 0)
+  if(slopeAngle > 5000/2 && slopeAngle < 4900)
     {
         //voltageSlope = 100;
-      if(slopeAngle > 4200)
-        voltageSlope = 70;
+      if(slopeAngle > 2400 && slopeAngle < 3600)
+        voltageSlope = 60;
+      if(slopeAngle > 3600)
+        voltageSlope = 50;
+      else if(slopeAngle > 4000)
+        voltageSlope = 10;
+
+      pros::lcd::print(5, "slope power= %i", voltageSlope);
     }
     else
     {
-      voltageSlope = PIDloop(0.05, 0.0, 0.0, 9500, slopeAngle);
+      voltageSlope = PIDloop(0.05, 0.0, 0.0, 4900, slopeAngle);
     }
   if(slopeAngle < 100)
     slopeDownPower = 0;
@@ -45,7 +50,7 @@ void setSlopeMotors(){
   slopePower = voltageSlope*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2);
 
   macroPower = 127*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN);
-  pros::lcd::print(7, "slope power= %i", slopePower);
+
 
   slopeLift = slopePower + macroPower;
 

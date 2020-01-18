@@ -50,6 +50,7 @@ double angleM; //angle of the adjusted XY coordinate plane for translations
 double theta = 0;
 double radius = 0;
 
+double deltaXtest;
 ////double
 double initAngle = 0.0;
 
@@ -101,7 +102,7 @@ void updatePosition(){
 
   //step 6 - find the change in angle since the last cycle
   deltaAngle = angle - lastAngle;
-  deltaX = deltaX - XWHEELDISTANCE*deltaAngle; //accounts for the tracking wheel's turning distance using the arclength formulra
+  deltaXtest = deltaX - XWHEELDISTANCE*deltaAngle; //accounts for the tracking wheel's turning distance using the arclength formulra
 
   //step 7 - Record the XY coordinate changes of the robot - if change in angle = 0, then it's just the straight up XY distance
   if(deltaAngle == 0){ //also makes it so you don't divide by 0 lol
@@ -126,27 +127,36 @@ void updatePosition(){
     //Changes the angle to the regular coordinate system (this adjusts the X/Y coordinate tilting thing)
   theta = theta - angleM;
     //Converts back from polar coordinates
+
   deltaPositionX = radius*cos(theta);
   deltaPositionY = radius*sin(theta);
 
     //Converts angle to between 0 and 2pi (it's in radians right now)
-  angle += PI;
+  /*angle += PI;
   while(angle < 0) {
     angle +=2*PI;
   }
   angle = modulo(angle, 2*PI);
-  angle -= PI;
+  angle -= PI;*/
 
   //step 11 - Update final positions
   lastAngle = angle;
 
 //  angle = angle*180.0/PI; //converts to degrees
+  if(fabs(deltaPositionX) > 10)
+    deltaPositionX = 0;
+  if(fabs(deltaPositionY) > 10)
+    deltaPositionY = 0;
 
-  position.xPosition = position.xPosition - deltaPositionX;
+  position.xPosition = position.xPosition + deltaPositionX;
   position.yPosition = position.yPosition + deltaPositionY;
   position.angle = angle; //orientation in radians
+  printf("deltaXtest %f\ndeltaAngle %f\ndeltaX %f\n", deltaXtest, XWHEELDISTANCE*deltaAngle, deltaX);
+  pros::lcd::print(4, "X: %f", position.xPosition);
+  pros::lcd::print(5, "R: %f", position.yPosition);
+  pros::lcd::print(6, "A: %f", position.angle*180/PI);
 
-  pros::lcd::print(4, "X: %lf, Y: %lf, A: %lf", deltaPositionX, deltaPositionY, position.angle*180/PI);
+
 
 }
 

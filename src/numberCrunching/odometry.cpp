@@ -146,7 +146,7 @@ void updatePosition(){
   position.yPosition = position.yPosition + deltaPositionY;
   position.angle = angle; //orientation in radians
 
-  pros::lcd::print(4, "X: %lf, Y: %lf, A: %lf", position.xPosition, position.yPosition, position.angle);
+  pros::lcd::print(4, "X: %lf, Y: %lf, A: %lf", deltaPositionX, deltaPositionY, position.angle*180/PI);
 
 }
 

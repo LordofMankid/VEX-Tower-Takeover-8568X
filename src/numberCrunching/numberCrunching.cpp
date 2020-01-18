@@ -65,7 +65,6 @@ void armHeightTrack(){
 void printToBrain(){
   //Use this function to look at random things
 
-  pros::lcd::print(4, "dR %f", trackingX.get_value()*TR_TICK_INCH);
   pros::lcd::print(3, "angle %f", angle);
 
 }

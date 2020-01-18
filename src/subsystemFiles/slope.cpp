@@ -26,7 +26,7 @@ void setSlopeMotors(){
   slopeAngle = slopeLift.get_position();
   voltageSlope = PIDloop(0.05, 0.0, 0.0, 4900, slopeAngle);
 
-  if(slopeAngle > 5000/2 && slopeAngle < 4900)
+  if(slopeAngle > 2500 && slopeAngle < 4900)
     {
         //voltageSlope = 100;
       if(slopeAngle > 2400 && slopeAngle < 3600)

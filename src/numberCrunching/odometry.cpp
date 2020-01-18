@@ -146,7 +146,7 @@ void updatePosition(){
   position.yPosition = position.yPosition + deltaPositionY;
   position.angle = angle; //orientation in radians
 
-  printToBrain();
+    pros::lcd::print(4, "X: %f, Y: %f, A: %f", positionH, positionL, positionR);
 
 }
 

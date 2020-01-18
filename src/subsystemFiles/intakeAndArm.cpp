@@ -50,7 +50,7 @@ void setMacroMotors(){
   armPower = armMotorSpeed*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y));
 
   armLift = macroPowerArm+armPower;
-  pros::lcd::print(7, "macropower %i", macroPowerArm);
+//  pros::lcd::print(7, "macropower %i", macroPowerArm);
 }
 
 //AUTONOMOUS CODE
@@ -92,7 +92,7 @@ void armTo(double position, int velocity){
     slopeAngle = slopeLift.get_position();
     slopeLift.move_relative(armTarget*3, velocity);
     armLift.move_relative(armTarget, velocity*88/127);
-    pros::lcd::print(1, "armTarget %f", armTarget);
+  //pros::lcd::print(1, "armTarget %f", armTarget);
     pros::delay(10);
   }
 }

@@ -143,7 +143,7 @@ void updatePosition(){
 //  angle = angle*180.0/PI; //converts to degrees
 
   position.xPosition = position.xPosition - deltaPositionX;
-  position.yPosition = position.yPosition - deltaPositionY;
+  position.yPosition = position.yPosition + deltaPositionY;
   position.angle = angle; //orientation in radians
 
   printToBrain();

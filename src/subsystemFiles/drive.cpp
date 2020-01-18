@@ -216,8 +216,8 @@ void translate(double targetDistance, double targetTheta, double targetOrientati
 
   angleToTarget = targetOrientation - getAngleDeg();
 
-  voltageY = PIDloop(0.75, 0.0, 0.5, cos(turnDirection*(fabs(targetTheta+angleToTarget)-90))*targetDistance, position.yPosition);
-  voltageX = PIDloop(0.75, 0.0, 0.5, sin(turnDirection*(fabs(targetTheta+angleToTarget)-90))*targetDistance, position.xPosition);
+  voltageY = PIDloop(0.75, 0.0, 0.5, cos(-(targetTheta + getAngleDeg()))*targetDistance, position.yPosition);
+  voltageX = PIDloop(0.75, 0.0, 0.5, sin(-(targetTheta + getAngleDeg()))*targetDistance, position.xPosition);
   voltageR = PIDloop(0.75, 0.0, 0.5, targetOrientation, getAngleDeg());
 
   if(abs(voltageY) > maxSpeed)

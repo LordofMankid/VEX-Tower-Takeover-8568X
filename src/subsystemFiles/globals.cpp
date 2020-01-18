@@ -22,9 +22,9 @@ pros::ADIEncoder trackingRight('G','H');
 //SETUP VARIABLE
 
 const double RADIUS = 10;
-const double RIGHTWHEELDISTANCE = 4.875;
-const double LEFTWHEELDISTANCE = 4.875;
-const double XWHEELDISTANCE = 4.875;
+const double RIGHTWHEELDISTANCE = 4.5;
+const double LEFTWHEELDISTANCE = 4.5;
+const double XWHEELDISTANCE = 3.5;
 const double TR_TICK_INCH = (2.75*PI)/TICKS_TRACKING_REV;
 const double TR_INCH_TICK = 360/(2.75*PI);
 const double TICK_DEG_REG = DEG_CIRCLE/TICKS_REGULAR_REV;

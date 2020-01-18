@@ -114,7 +114,7 @@ void opcontrol() {
 			slopeLift.tare_position();
 		}
 
-		printToBrain();
+		
 		pros::lcd::print(0, "armAngle %f", armLift.get_position());
 		pros::delay(20);
 	}

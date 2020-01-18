@@ -146,11 +146,11 @@ void updatePosition(){
   position.yPosition = position.yPosition + deltaPositionY;
   position.angle = angle; //orientation in radians
 
-    pros::lcd::print(4, "X: %f, Y: %f, A: %f", positionH, positionL, positionR);
+  pros::lcd::print(4, "X: %lf, Y: %lf, A: %lf", position.xPosition, position.yPosition, position.angle);
 
 }
 
-double modulo(float a, float b) {
+double modulo(double a, double b) {
   while (a>b) {
     a-=b;
   }

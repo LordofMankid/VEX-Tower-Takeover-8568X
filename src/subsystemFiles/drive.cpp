@@ -77,7 +77,7 @@ void setDriveMotors(){
       driveFactor = 1;
     else
       driveFactor = 1;
-      setDrive(drive_yPower*driveFactor, drive_xPower*driveFactor, drive_rPower*driveFactor);
+      setDrive(drive_yPower*driveFactor, 0*drive_xPower*driveFactor, drive_rPower*driveFactor);
 }
 
 //AUTONOMOUS FUNCTIONS

@@ -33,9 +33,9 @@ void translateY_reg(double unitsY, int voltage)
     pros::delay(10);
   }
   //brief brake depending on direction
-  setDrive(0, -10 * directionY, 0);
+  setDrive(0, 0);
   pros::delay(50);
   //reset drive
-  setDrive(0,0,0);
+  setDrive(0,0);
   pros::delay(20);
 }

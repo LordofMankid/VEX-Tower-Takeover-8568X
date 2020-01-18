@@ -17,7 +17,7 @@ setDrive takes three integer parameters, effective from -127 - 127)
 3. Power for rotation(positive being clockwise)\
 Yes, they can be combined. No worries about them having to add up to 127
 */
-void setDrive(int yPower, int xPower, int rPower);
+void setDrive(int yPower, int rPower);
 
 void setDriveAuton(double yDistance, double xDistance, double rDistance, int power);
 

@@ -27,11 +27,11 @@ double angleToTarget;
 
 //
 //HELPER FUNCTIONS
-void setDrive(int yPower, int xPower, int rPower){
-  FrontLeft = yPower + xPower + rPower;
-  FrontRight = yPower - xPower - rPower;
-  BackLeft = yPower - xPower + rPower;
-  BackRight = yPower + xPower - rPower;
+void setDrive(int yPower, int rPower){
+  FrontLeft = yPower + rPower;
+  FrontRight = yPower - rPower;
+  BackLeft = yPower + rPower;
+  BackRight = yPower - rPower;
 }
 
 void setDriveAuton(double yDistance, double xDistance, double rDistance, int power){
@@ -65,7 +65,6 @@ void resetTrackingWheels(){
 //DRIVE FUNCTIONS
 void setDriveMotors(){
     drive_yPower = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-    drive_xPower = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
     drive_rPower = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
     //"deadzone" - the absolute value thing
@@ -77,7 +76,7 @@ void setDriveMotors(){
       driveFactor = 1;
     else
       driveFactor = 1;
-      setDrive(drive_yPower*driveFactor, 0*drive_xPower*driveFactor, drive_rPower*driveFactor);
+      setDrive(drive_yPower*driveFactor, drive_rPower*driveFactor);
 }
 
 //AUTONOMOUS FUNCTIONS
@@ -108,10 +107,8 @@ void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, dou
     pros::lcd::print(7, "movement entered");
     //angleTrack();
     positionY = (trackingLeft.get_value() + trackingRight.get_value())/2;
-    positionX = trackingX.get_value();
     positionA = angle;
     voltageY = PIDloop(0.65, 0.0075, 0.415 + KdAdjust, unitsY, positionY);
-    voltageX = PIDloop(KpAdjustX, 0.000, 0.02, unitsX, positionX);
     voltageR = PIDloop(1.5, 0.0, 0.0, 0.1, positionA);
 
     if(abs(voltageY) > maxSpeed)
@@ -136,88 +133,25 @@ void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, dou
     pros::lcd::print(3, "driveStopTime %f", driveStopTime);
 
 
-    setDrive(voltageY, voltageX, voltageR); //TODO: convert voltage units into mV
+    setDrive(voltageY, voltageR); //TODO: convert voltage units into mV
     pros::delay(10);
   }
   //reset drive
-  setDrive(0,0,0);
   pros::delay(20);
 
 }
 
-void translateX(double unitsX, int maxSpeed)  //might have to add units X, units Y
-{
-
-    //define direction based on units provided
-    int directionX = fabs(unitsX) / unitsX;
-    int voltageY = 0;
-    int voltageX = 0;
-    int voltageR = 0;
-    int maxErrorX = 0;
-    angle = 0;
-    double lastPositionX = 0;
-    double lastPositionY = 0;
-    double lastPositionA = 0;
-
-    double driveStopTime = 0.0;
-    targetReach = false;
-    unitsX = unitsX*TR_INCH_TICK;
-    setDriveCoast();
-    resetTrackingWheels();
-    //PID loop - drive forward until units reached
-    while(autonRunning == true && targetReach ==false) //MAKE SURE TO CHANGE CONDITION LATER
-    {
-      angleTrack();
-      positionY = (trackingLeft.get_value() + trackingRight.get_value())/2;
-      positionX = trackingX.get_value();
-      positionA = angle;
-      voltageY = PIDloop(0.50, 0.0, 0.27, 0.0, positionY);
-      voltageX = PIDloop(0.65, 0.0, 0.45, unitsX, positionX);
-      voltageR = PIDloop(1.5, 0.0, 0.0045, 0.00, positionA);
-
-      if(abs(voltageY) > maxSpeed)
-        voltageY = maxSpeed;
-
-      if(fabs(positionX) >= fabs(lastPositionX))
-        maxErrorX = voltageX;
-
-      driveStopTime = positionReachCheck(positionY, positionX, positionY,lastPositionX, driveStopTime, 0.0, unitsX);
-      if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1){
-          printf("yeet %f", unitsX-voltageX);
-          autonRunning = false;
-      }
-      if(driveStopTime > 25){
-      pros::lcd::print(2, "thing reached, %f", positionX-unitsX);
-      targetReach = true;
-      }
-
-      //prints PID values and max error value?
-
-
-      setDrive(voltageY, voltageX, voltageR); //TODO: convert voltage units into mV
-      lastPositionX = positionX; //"saves" the last recorded position to compare with the next one
-      lastPositionY = positionY;
-      lastPositionA = positionA;
-      pros::delay(10);
-    }
-    //reset drive
-    setDrive(0,0,0);
-    pros::delay(20);
-}
 
 void translate(double targetDistance, double targetTheta, double targetOrientation, int maxSpeed){
 
-  if(targetOrientation < 0)
-    turnDirection = -1;
-  else
-    turnDirection = 1;
+
 
   // newAngle = targetOrientation + position.angle;  //use if you figure out a way to run this only once
 
   angleToTarget = targetOrientation - getAngleDeg();
 
   voltageY = PIDloop(0.75, 0.0, 0.5, cos(-(targetTheta + getAngleDeg()))*targetDistance, position.yPosition);
-  voltageX = PIDloop(0.75, 0.0, 0.5, sin(-(targetTheta + getAngleDeg()))*targetDistance, position.xPosition);
+//  voltageX = PIDloop(0.75, 0.0, 0.5, sin(-(targetTheta + getAngleDeg()))*targetDistance, position.xPosition);
   voltageR = PIDloop(0.75, 0.0, 0.5, targetOrientation, getAngleDeg());
 
   if(abs(voltageY) > maxSpeed)
@@ -227,7 +161,7 @@ void translate(double targetDistance, double targetTheta, double targetOrientati
   if(abs(voltageR) > maxSpeed)
     voltageR = maxSpeed;
 
-  setDrive(voltageY, voltageX, voltageR);
+  setDrive(voltageY, voltageR);
   /*double directionY;
   double directionX;
   int voltageY = 0;
@@ -316,7 +250,7 @@ void rotatePID(double targetAngle, int maxSpeed, double KdAdjust){
     //prints PID values and max error value?
     pros::lcd::print(3, "angle %f", positionA);
     pros::lcd::print(4, "distanceLeft %f", targetAngle-positionA);
-    setDrive(voltageY, voltageX, voltageR );
+    setDrive(voltageY,  voltageR );
 
     lastPositionX = positionX; //"saves" the last recorded position to compare with the next one
     lastPositionY = positionY;
@@ -324,7 +258,7 @@ void rotatePID(double targetAngle, int maxSpeed, double KdAdjust){
     pros::delay(10);
   }
   //reset drive
-  setDrive(0,0,0);
+  setDrive(0,0);
   pros::delay(20);
 
 }

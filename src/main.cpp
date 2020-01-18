@@ -95,7 +95,7 @@ void opcontrol() {
 
 		setDriveMotors();
 
-		pros::lcd::print(2, "SlopeAngle %f", slopeAngle);
+		//pros::lcd::print(2, "SlopeAngle %f", slopeAngle);
 	//	angleTrack();
 
 		setSlopeMotors();
@@ -114,8 +114,8 @@ void opcontrol() {
 			slopeLift.tare_position();
 		}
 
-		
-		pros::lcd::print(0, "armAngle %f", armLift.get_position());
+
+		//pros::lcd::print(0, "armAngle %f", armLift.get_position());
 		pros::delay(20);
 	}
 }

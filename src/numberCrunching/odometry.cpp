@@ -2,7 +2,7 @@
 
 //GLOBALS
 
-struct position position;
+position currPosition;
 polarCoord polarCoords;
 rectCoord rectCoords;
 
@@ -154,9 +154,9 @@ void updatePosition(){
   if(fabs(deltaPositionY) > 10)
     deltaPositionY = 0;
 
-  position.xPosition = position.xPosition + deltaPositionX;
-  position.yPosition = position.yPosition + deltaPositionY;
-  position.angle = angle; //orientation in radians
+  currPosition.xPosition = currPosition.xPosition + deltaPositionX;
+  currPosition.yPosition = currPosition.yPosition + deltaPositionY;
+  currPosition.angle = angle; //orientation in radians
   printf("deltaXtest %f\ndeltaAngle %f\ndeltaX %f\n", deltaXtest, XWHEELDISTANCE*deltaAngle, deltaX);
 //  pros::lcd::print(4, "X: %f", position.xPosition);
 //  pros::lcd::print(5, "R: %f", position.yPosition);
@@ -174,17 +174,24 @@ double modulo(double a, double b) {
 }
 
 double getXposition(){
-  return position.xPosition;
+  return currPosition.xPosition;
 }
 
 double getYposition(){
-  return position.yPosition;
+  return currPosition.yPosition;
 }
 
 double getAngleRad(){
-  return position.angle;
+  return currPosition.angle;
 }
 
 double getAngleDeg(){
-  return position.angle*180/PI;
+  //Converts angle to between 0 and 2pi (it's in radians right now)
+  currPosition.angle += PI;
+  while(currPosition.angle < 0) {
+    angle +=2*PI;
+  }
+  angle = modulo(currPosition.angle, 2*PI);
+  angle -= PI;
+  return currPosition.angle*180/PI;
 }

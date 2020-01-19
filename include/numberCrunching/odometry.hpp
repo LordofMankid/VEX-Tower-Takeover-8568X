@@ -1,12 +1,12 @@
 #include "main.h"
 
-struct position
-{
+typedef struct position{
 double xPosition;
 double yPosition;
 double angle;
-};
-extern position position;
+} position;
+
+extern position currPosition;
 
 typedef struct polar{
   double radius;

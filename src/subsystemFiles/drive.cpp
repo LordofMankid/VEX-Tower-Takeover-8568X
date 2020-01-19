@@ -23,9 +23,13 @@ int voltageX;
 double newDistance;
 double newAngle;
 double targetOrientation;
+
 bool firstCycle;
-bool targetReached;
+int targetReached;
 int driveStep = 1;
+position lastPosition;
+
+double lastOrientation;
 //
 //HELPER FUNCTIONS
 void setDrive(int yPower, int rPower){
@@ -84,12 +88,9 @@ void setDriveMotors(){
 void translate(double targetDistance, double targetTheta,  int maxSpeed){
 
   if(firstCycle == true){
-
+    target = polarToRect(targetDistance, targetTheta);
     firstCycle = false;
   }
-  rectCoord target;
-
-  target = polarToRect(targetDistance, targetTheta);
 
   targetOrientation = atan2(target.y-currPosition.yPosition, target.x-currPosition.xPosition);
 
@@ -103,18 +104,33 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
 
   setDrive(voltageY, voltageR);
 
-  if(targetReached == true){
+  targetReached = positionReachCheck(currPosition, lastPosition, targetReached, target);
+  lastPosition = currPosition;
+
+  if(targetReached > 50){
     setDrive(0,0);
     driveStep++;
     firstCycle = true;
+    targetReached = 0;
   }
 }
 
-void turn(double targetOrientation, int maxSpeed){
+void rotate(double targetOrientation, int maxSpeed){
 
   voltageR = PIDloop(turnPID, targetOrientation, getAngleDeg());
 
   setDrive(0, voltageR);
+
+  targetReached = positionReachCheck(getAngleDeg(), lastOrientation, targetReached, targetOrientation, 1.0);
+
+  lastOrientation = getAngleDeg();
+  if(targetReached > 50){
+    setDrive(0,0);
+    driveStep++;
+    firstCycle = true;
+    targetReached = 0;
+  }
+
 }
 void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, double KpAdjustX)  //might have to add units X, units Y
 {

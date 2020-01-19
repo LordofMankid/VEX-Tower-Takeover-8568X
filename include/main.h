@@ -78,8 +78,8 @@ void opcontrol(void);
 #include "subsystemHeaders/intakeAndArm.hpp"
 #include "subsystemHeaders/autonomousCode.hpp"
 #include "subsystemHeaders/alternateAuton.hpp"
-#include "numberCrunching/numberCrunching.hpp"
 #include "numberCrunching/odometry.hpp"
+#include "numberCrunching/numberCrunching.hpp"
 #include "numberCrunching/PID.hpp"
 
 /**

@@ -6,6 +6,7 @@ extern double angle;
 
 //CALCULATION FUNCTIONS
 
+int positionReachCheck(position currentPosition, position lastPosition, int driveStopParameter, rectCoord target);
 
 double positionReachCheck(double currentPositionY, double currentPositionX, double lastPositionY, double lastPositionX,  double driveStopParameter, double targetY, double targetX);
 /*

@@ -48,11 +48,12 @@ void resetDriveEncoders();
 /*
 Tells robot to travel along the y-axis, with a target distance in inches, and a integer maxSpeed, range -127 - 127;
 */
+void rotate(double targetOrientation, int maxSpeed);
+
+void translate(double targetDistance, double targetTheta,  int maxSpeed);
+
 void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, double KpAdjustX);
 
 void translateX(double distanceX, int maxSpeed);
 
 void rotatePID(double targetAngle, int maxSpeed, double KdAdjust);
-
-
-void translate(double distanceY, double distanceX, int maxSpeed);

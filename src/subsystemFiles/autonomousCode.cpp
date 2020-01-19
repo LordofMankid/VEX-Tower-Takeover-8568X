@@ -1,17 +1,17 @@
 #include "main.h"
 
 bool autonRunning;
-
+rectCoord target;
 void setAutonButton(){
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
-
+      forwardPID = createkPID(0.6, 0.0, 0.0);
       while(1){
         updatePosition();
+        if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+          break;
         if(driveStep == 1)
           translate(20.0, 0.0, 127);
-        if(driveStep == 2)
-          translate(-20.0, 0.0, 127);
 
       }
       autonRunning = true;

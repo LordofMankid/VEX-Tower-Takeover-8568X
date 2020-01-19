@@ -8,16 +8,18 @@ double angle;
 
 extern position currPosition;
 
-typedef struct polar{
+typedef struct polarCoord{
   double radius;
   double angle;
 
 } polarCoord;
 
-typedef struct rect{
+typedef struct rectCoord{
   double x;
   double y;
 } rectCoord;
+
+extern rectCoord target;
 //HELPER FUNCTIONS -- Functions used in other functions listed here
 
 polarCoord rectToPolar(double x, double y);

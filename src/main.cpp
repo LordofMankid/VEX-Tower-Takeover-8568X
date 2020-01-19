@@ -117,13 +117,10 @@ okapi::Timer timer;
 		KpDrive = adjustKp(KpDrive, 0.05);
 		if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1){
 			resetTrackingWheels();
-			setDriveCoast();
+
 			slopeLift.tare_position();
-			forwardPID = tunePID(forwardPID);
 		}
-		pros::lcd::print(4, "kP: %f", forwardPID.kP);
-		pros::lcd::print(5, "kI: %f", forwardPID.kI);
-		pros::lcd::print(6, "kD: %f", forwardPID.kD);
+
 
 		//pros::lcd::print(0, "armAngle %f", armLift.get_position());
 		pros::delay(30);

@@ -28,22 +28,23 @@ okapi::PIDTuner drivePID = okapi::PIDTuner(test, testGroup, TimeUtilFactory::cre
 
 //okapi::PIDTuner turnPID = okapi::PIDTuner(position.angle, testGroup, TimeUtilFactory::create(), 3000.0_ms, 20.0*TR_TICK_INCH, 0.001, 2.0, 0.0005, 0.1, 0.0001, 1.0);
 
-kPID createkPID(double kP, double kI, double kD){
-  kPID kPID;
-  kPID.kP = kP;
-  kPID.kI = kI;
-  kPID.kD = kD;
+  kPID createkPID(double kP, double kI, double kD){
+    kPID kPID;
+    kPID.kP = kP;
+    kPID.kI = kI;
+    kPID.kD = kD;
 
-  return kPID;
-}
+    return kPID;
+  }
 
-kPID adjustkPID(kPID kPID, double kP, double kI, double kD){
-  kPID.kP += kP;
-  kPID.kI += kI;
-  kPID.kD += kD;
+  kPID adjustkPID(kPID kPID, double kP, double kI, double kD){
+    kPID.kP += kP;
+    kPID.kI += kI;
+    kPID.kD += kD;
 
-  return kPID;
-}
+    return kPID;
+  }
+
 kPID tunePID(kPID kPID){
   okapi::PIDTuner::Output bestPID;
 
@@ -85,31 +86,31 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
 }
 
 //pass in 2 structure "positions" with an X and Y
-int PIDdrive(kPID kPID, rectCoord targetPosition,  position currPosition){
-  int voltage;
+  int PIDdrive(kPID kPID, rectCoord targetPosition,  position currPosition){
+    int voltage;
 
-  //sets error
-  error = sqrt(pow(targetPosition.y-currPosition.yPosition,2) + pow(targetPosition.x-currPosition.yPosition,2));
+    //sets error
+    error = sqrt(pow(targetPosition.y-currPosition.yPosition,2) + pow(targetPosition.x-currPosition.yPosition,2));
 
-  //increases error based on time taken to reach target - if resistance is encountered then integral will increase
-  integral = integral + error;
-  //resets integral if place is reached
-  if(error == 0)
-    integral = 0;
-  //reset integral if it becomes super big
-  if(fabs(error) >= integralMax)
-    integral = 0;
-  derivative = prevError - error; //finds derivative of errors
-  prevError = error; //updates prevError
-  //set voltage to equal the error
-  voltage = (error*kPID.kI) + (integral*kPID.kI) + (derivative*kPID.kD);
-  if(voltage > 127)
-    voltage = 127;
-  if(voltage < -127)
-    voltage = -127;
+    //increases error based on time taken to reach target - if resistance is encountered then integral will increase
+    integral = integral + error;
+    //resets integral if place is reached
+    if(error == 0)
+      integral = 0;
+    //reset integral if it becomes super big
+    if(fabs(error) >= integralMax)
+      integral = 0;
+    derivative = prevError - error; //finds derivative of errors
+    prevError = error; //updates prevError
+    //set voltage to equal the error
+    voltage = (error*kPID.kI) + (integral*kPID.kI) + (derivative*kPID.kD);
+    if(voltage > 127)
+      voltage = 127;
+    if(voltage < -127)
+      voltage = -127;
 
-  return voltage;
-}
+    return voltage;
+  }
 
 int PIDloop(float Kp, float Ki, float Kd, double units, double EncoderValue){
   int voltage;

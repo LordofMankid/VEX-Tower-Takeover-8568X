@@ -117,6 +117,7 @@ okapi::Timer timer;
 		KpDrive = adjustKp(KpDrive, 0.05);
 		if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1){
 			resetTrackingWheels();
+			setDriveCoast();
 			slopeLift.tare_position();
 			forwardPID = tunePID(forwardPID);
 		}

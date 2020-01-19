@@ -23,7 +23,7 @@ auto test = std::make_shared<okapi::ADIEncoder>(oTrackingRight);
 auto testGroup = std::make_shared<okapi::MotorGroup>(drive);
 
 
-okapi::PIDTuner drivePID = okapi::PIDTuner(test, testGroup, TimeUtilFactory::create(), 5000.0_ms, 20.0*TR_TICK_INCH, 0.001, 2.0, 0.0005, 0.1, 0.0001, 1.0);
+okapi::PIDTuner drivePID = okapi::PIDTuner(test, testGroup, TimeUtilFactory::create(), 2500.0_ms, 40.0*TR_INCH_TICK, 0.000, 0.005, 0.0000, 0.000, 0.000, 0.00);
 
 //okapi::PIDTuner turnPID = okapi::PIDTuner(position.angle, testGroup, TimeUtilFactory::create(), 3000.0_ms, 20.0*TR_TICK_INCH, 0.001, 2.0, 0.0005, 0.1, 0.0001, 1.0);
 

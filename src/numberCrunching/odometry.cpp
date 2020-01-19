@@ -62,14 +62,20 @@ double dAngle;
 
 /////HELPER FUNCTIONS///
 
-void rectToPolar(double x, double y){
-    polarCoords.radius = sqrt(x*x+y*y);
-    polarCoords.angle = atan2(y, x);
+polarCoord rectToPolar(double x, double y){
+    polarCoord polarCoord;
+    polarCoord.radius = sqrt(x*x+y*y);
+    polarCoord.angle = atan2(y, x);
+
+    return polarCoord;
 }
 
-void polarToRect(double r, double theta){
-    rectCoords.x = r*cos(theta);
-    rectCoords.y = r*sin(theta);
+rectCoord polarToRect(double r, double theta){
+    rectCoord rectCoord;
+    rectCoord.x = r*cos(theta);
+    rectCoord.y = r*sin(theta);
+
+    return rectCoord;
 }
 
 /////THE JUICE/////

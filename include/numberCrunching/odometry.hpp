@@ -20,9 +20,9 @@ typedef struct rect{
 } rectCoord;
 //HELPER FUNCTIONS -- Functions used in other functions listed here
 
-void rectToPolar(double x, double y);
+polarCoord rectToPolar(double x, double y);
 
-void polarToRect(double r, double theta);
+rectCoord polarToRect(double r, double theta);
 
 
 //////

@@ -22,9 +22,10 @@ int voltageX;
 
 double newDistance;
 double newAngle;
-double angleToTarget;
-
-
+double targetOrientation;
+bool firstCycle;
+bool targetReached;
+int driveStep = 1;
 //
 //HELPER FUNCTIONS
 void setDrive(int yPower, int rPower){
@@ -80,6 +81,41 @@ void setDriveMotors(){
 }
 
 //AUTONOMOUS FUNCTIONS
+void translate(double targetDistance, double targetTheta,  int maxSpeed){
+
+  if(firstCycle == true){
+
+    firstCycle = false;
+  }
+  rectCoord target;
+
+  target = polarToRect(targetDistance, targetTheta);
+
+  targetOrientation = atan2(target.y-currPosition.yPosition, target.x-currPosition.xPosition);
+
+  voltageY = PIDdrive(forwardPID, target, currPosition);
+  voltageR = PIDloop(turnPID, targetOrientation, getAngleDeg());
+
+  if(abs(voltageY) > maxSpeed)
+    voltageY = maxSpeed;
+  if(abs(voltageR) > maxSpeed)
+    voltageR = maxSpeed;
+
+  setDrive(voltageY, voltageR);
+
+  if(targetReached == true){
+    setDrive(0,0);
+    driveStep++;
+    firstCycle = true;
+  }
+}
+
+void turn(double targetOrientation, int maxSpeed){
+
+  voltageR = PIDloop(turnPID, targetOrientation, getAngleDeg());
+
+  setDrive(0, voltageR);
+}
 void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, double KpAdjustX)  //might have to add units X, units Y
 {
   //define direction based on units provided
@@ -141,27 +177,6 @@ void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, dou
 
 }
 
-
-void translate(double targetDistance, double targetTheta, double targetOrientation, int maxSpeed){
-
-
-
-  // newAngle = targetOrientation + position.angle;  //use if you figure out a way to run this only once
-
-  angleToTarget = targetOrientation - getAngleDeg();
-
-  voltageY = PIDloop(0.75, 0.0, 0.5, cos(-(targetTheta + getAngleDeg()))*targetDistance, position.yPosition);
-//  voltageX = PIDloop(0.75, 0.0, 0.5, sin(-(targetTheta + getAngleDeg()))*targetDistance, position.xPosition);
-  voltageR = PIDloop(0.75, 0.0, 0.5, targetOrientation, getAngleDeg());
-
-  if(abs(voltageY) > maxSpeed)
-    voltageY = maxSpeed;
-  if(abs(voltageX) > maxSpeed)
-    voltageX = maxSpeed;
-  if(abs(voltageR) > maxSpeed)
-    voltageR = maxSpeed;
-
-  setDrive(voltageY, voltageR);
   /*double directionY;
   double directionX;
   int voltageY = 0;
@@ -209,7 +224,7 @@ void translate(double targetDistance, double targetTheta, double targetOrientati
   //reset drive
   //setDrive(0,0,0);
   //pros::delay(20);
-}
+
 
 void rotatePID(double targetAngle, int maxSpeed, double KdAdjust){
   //define direction based on units provided

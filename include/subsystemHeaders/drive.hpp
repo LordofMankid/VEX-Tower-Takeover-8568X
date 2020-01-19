@@ -8,6 +8,10 @@ extern int driveFactor;
 extern double KpDrive;
 extern double KdDrive;
 extern double KiDrive;
+
+//auton variables
+
+extern int driveStep;
 //helper functions
 
 /*

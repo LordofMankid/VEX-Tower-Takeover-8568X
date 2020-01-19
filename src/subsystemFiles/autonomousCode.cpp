@@ -5,6 +5,15 @@ bool autonRunning;
 void setAutonButton(){
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
+
+      while(1){
+        updatePosition();
+        if(driveStep == 1)
+          translate(20.0, 0.0, 127);
+        if(driveStep == 2)
+          translate(-20.0, 0.0, 127);
+
+      }
       autonRunning = true;
       autonStackFiveRed();//run auton
       //autonStackFiveBlue();

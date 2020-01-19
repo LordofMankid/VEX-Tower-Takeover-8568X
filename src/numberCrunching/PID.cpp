@@ -7,6 +7,7 @@ float prevError = 0;
 const int integralMax = 25;
 
 kPID forwardPID;
+kPID turnPID;
 ////////
 
 //PIDTuner stuff
@@ -27,7 +28,22 @@ okapi::PIDTuner drivePID = okapi::PIDTuner(test, testGroup, TimeUtilFactory::cre
 
 //okapi::PIDTuner turnPID = okapi::PIDTuner(position.angle, testGroup, TimeUtilFactory::create(), 3000.0_ms, 20.0*TR_TICK_INCH, 0.001, 2.0, 0.0005, 0.1, 0.0001, 1.0);
 
+kPID createkPID(double kP, double kI, double kD){
+  kPID kPID;
+  kPID.kP = kP;
+  kPID.kI = kI;
+  kPID.kD = kD;
 
+  return kPID;
+}
+
+kPID adjustkPID(kPID kPID, double kP, double kI, double kD){
+  kPID.kP += kP;
+  kPID.kI += kI;
+  kPID.kD += kD;
+
+  return kPID;
+}
 kPID tunePID(kPID kPID){
   okapi::PIDTuner::Output bestPID;
 
@@ -69,12 +85,12 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
 }
 
 //pass in 2 structure "positions" with an X and Y
-int PIDdrive(kPID kPID, double unitsX, double unitsY, double EncoderValue){
+int PIDdrive(kPID kPID, rectCoord targetPosition,  position currPosition){
   int voltage;
 
   //sets error
-  error = unitsX - EncoderValue;
-  pros::lcd::print(0, "error: %f, %f, %f", error, unitsX, EncoderValue);
+  error = sqrt(pow(targetPosition.y-currPosition.yPosition,2) + pow(targetPosition.x-currPosition.yPosition,2));
+
   //increases error based on time taken to reach target - if resistance is encountered then integral will increase
   integral = integral + error;
   //resets integral if place is reached

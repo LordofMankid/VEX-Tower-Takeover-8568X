@@ -6,6 +6,7 @@ typedef struct kPID{
   double kD;
 } kPID;
 
+extern kPID forwardPID;
     //HELPER FUNCTIONS
 
 /*
@@ -17,7 +18,12 @@ Structure of type kPID to write to.
 Target kP, kI, kD for this structure.
 
 */
-kPID createkPID(kPID kPID, double kP, double kI, double kD);
+
+//PIDTuner stuff
+extern okapi::PIDTunerFactory PIDTuner;
+extern okapi::MotorGroup drive;
+
+kPID tunePID(kPID kPID);
 
 int PIDloop(kPID kPID, double units, double EncoderValue);
 

@@ -158,9 +158,9 @@ void updatePosition(){
   position.yPosition = position.yPosition + deltaPositionY;
   position.angle = angle; //orientation in radians
   printf("deltaXtest %f\ndeltaAngle %f\ndeltaX %f\n", deltaXtest, XWHEELDISTANCE*deltaAngle, deltaX);
-  pros::lcd::print(4, "X: %f", position.xPosition);
-  pros::lcd::print(5, "R: %f", position.yPosition);
-  pros::lcd::print(6, "A: %f", position.angle*180/PI);
+//  pros::lcd::print(4, "X: %f", position.xPosition);
+//  pros::lcd::print(5, "R: %f", position.yPosition);
+//  pros::lcd::print(6, "A: %f", position.angle*180/PI);
 
 
 

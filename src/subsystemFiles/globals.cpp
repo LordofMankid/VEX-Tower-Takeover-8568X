@@ -14,6 +14,8 @@ pros::Motor armLift(8, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_CO
 //CONTROLLER
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
+
+
 //SENSORS
 pros::ADIEncoder trackingX('A','B');
 pros::ADIEncoder trackingLeft('C','D');

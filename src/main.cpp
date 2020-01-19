@@ -29,6 +29,8 @@ void initialize() {
 	setUp();
 	pros::lcd::register_btn1_cb(on_center_button);
 	printf("initialize exit");
+
+
 }
 
 /**
@@ -91,9 +93,10 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-
+okapi::Timer timer;
 
 	while (true) {
+
 		updatePosition();
 
 		setDriveMotors();
@@ -115,8 +118,11 @@ void opcontrol() {
 		if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1){
 			resetTrackingWheels();
 			slopeLift.tare_position();
+			forwardPID = tunePID(forwardPID);
 		}
-
+		pros::lcd::print(4, "kP: %f", forwardPID.kP);
+		pros::lcd::print(5, "kI: %f", forwardPID.kI);
+		pros::lcd::print(6, "kD: %f", forwardPID.kD);
 
 		//pros::lcd::print(0, "armAngle %f", armLift.get_position());
 		pros::delay(30);

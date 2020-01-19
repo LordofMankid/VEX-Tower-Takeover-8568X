@@ -31,7 +31,7 @@ extern pros::ADIEncoder trackingRight;
   #define TICKS_TORQUE_REV 1800.0
 
   //Sets PI
-  #define PI 3.1415926535
+  //#define PI 3.1415926535
 
   extern const double RADIUS;
 

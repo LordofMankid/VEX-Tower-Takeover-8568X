@@ -6,16 +6,37 @@ float derivative;
 float prevError = 0;
 const int integralMax = 25;
 
-kPID testPID;
+kPID forwardPID;
 ////////
 
+//PIDTuner stuff
+using namespace okapi;
+//setup okapi stuff for PIDTuner
+okapi::Motor myMotor(1);
+okapi::MotorGroup drive({1,3,-2,-12});
+okapi::ADIEncoder oTrackingX('A','B');
+okapi::ADIEncoder oTrackingRight('G','H');
 
-kPID createkPID(kPID kPID, double kP, double kI, double kD){
-  //struct kPID Kpid; <-- for optimization might wanna create a local variable to create kPID
+auto oTrackingLeft = okapi::ADIEncoder('C', 'D');
+auto test = std::make_shared<okapi::ADIEncoder>(oTrackingRight);
+//auto turn = std::make_shared<struct position>(position.angle);
+auto testGroup = std::make_shared<okapi::MotorGroup>(drive);
 
-  kPID.kP = kP;
-  kPID.kI = kI;
-  kPID.kD = kD;
+
+okapi::PIDTuner drivePID = okapi::PIDTuner(test, testGroup, TimeUtilFactory::create(), 5000.0_ms, 20.0*TR_TICK_INCH, 0.001, 2.0, 0.0005, 0.1, 0.0001, 1.0);
+
+//okapi::PIDTuner turnPID = okapi::PIDTuner(position.angle, testGroup, TimeUtilFactory::create(), 3000.0_ms, 20.0*TR_TICK_INCH, 0.001, 2.0, 0.0005, 0.1, 0.0001, 1.0);
+
+
+kPID tunePID(kPID kPID){
+  okapi::PIDTuner::Output bestPID;
+
+  bestPID = drivePID.autotune();
+
+  kPID.kP = bestPID.kP;
+  kPID.kI = bestPID.kI;
+  kPID.kD = bestPID.kD;
+  //okapi::QTime
 
   return kPID;
 }

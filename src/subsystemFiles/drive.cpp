@@ -33,6 +33,7 @@ position initialPosition;
 double distanceFromInitial;
 double initTargetDistance;
 double lastOrientation;
+double correctionThreshold;
 //
 //HELPER FUNCTIONS
 void setDrive(int yPower, int rPower){
@@ -93,6 +94,7 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
     target = polarToRect(targetDistance, targetTheta);
     initTargetDistance = findDistance(target, initialPosition);
     firstCycle = false;
+    correctionThreshold = 4;
   }
 
   //Finds the distance from the initial point
@@ -104,10 +106,18 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
     targetOrientation -= 2*PI;
   else if(targetOrientation <= -PI)
     targetOrientation += 2*PI;
-//Sets the PID loop
-  voltageY = PIDdrive(forwardPID, target, currPosition);
-  
-  voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
+
+
+    //Sets the PID loop
+        voltageY = PIDdrive(forwardPID, target, currPosition);
+      if(findDistance(target, currPosition) < correctionThreshold){
+        double correctedOrientation;
+        correctedOrientation = findDistance(target, currPosition)/correctionThreshold*targetOrientation + (1-(findDistance(target, currPosition)/correctionThreshold)*targetTheta);
+        voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
+      }
+      else
+        voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
+
 
   printf("target angle %f \nvoltageR %i\ndistFromSts %f\nvoltageY %i\n", targetOrientation*180/PI, voltageR, distanceFromInitial, voltageY);
 

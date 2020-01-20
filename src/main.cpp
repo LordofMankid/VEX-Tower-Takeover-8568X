@@ -101,7 +101,7 @@ okapi::Timer timer;
 
 		setDriveMotors();
 
-		//pros::lcd::print(2, "SlopeAngle %f", slopeAngle);
+		pros::lcd::print(2, "SlopeAngle %f", slopeAngle);
 	//	angleTrack();
 
 		setSlopeMotors();

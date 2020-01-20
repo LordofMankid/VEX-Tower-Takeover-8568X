@@ -72,8 +72,8 @@ polarCoord rectToPolar(double x, double y){
 
 rectCoord polarToRect(double r, double theta){
     rectCoord rectCoord;
-    rectCoord.x = r*cos(theta);
-    rectCoord.y = r*sin(theta);
+    rectCoord.x = r*sin(theta);
+    rectCoord.y = r*cos(theta);
 
     return rectCoord;
 }
@@ -157,10 +157,10 @@ void updatePosition(){
   currPosition.xPosition = currPosition.xPosition + deltaPositionX;
   currPosition.yPosition = currPosition.yPosition + deltaPositionY;
   currPosition.angle = angle; //orientation in radians
-  printf("deltaXtest %f\ndeltaAngle %f\ndeltaX %f\n", deltaXtest, XWHEELDISTANCE*deltaAngle, deltaX);
-//  pros::lcd::print(4, "X: %f", position.xPosition);
-//  pros::lcd::print(5, "R: %f", position.yPosition);
-//  pros::lcd::print(6, "A: %f", position.angle*180/PI);
+
+  pros::lcd::print(4, "X: %f", currPosition.xPosition);
+  pros::lcd::print(5, "R: %f", currPosition.yPosition);
+  pros::lcd::print(6, "A: %f", currPosition.angle*180/PI);
 
 
 

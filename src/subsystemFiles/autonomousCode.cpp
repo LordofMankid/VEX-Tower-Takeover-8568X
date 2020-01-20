@@ -5,17 +5,20 @@ rectCoord target;
 void setAutonButton(){
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
-      forwardPID = createkPID(0.6, 0.0, 0.0);
+      forwardPID = createkPID(25, 0.0, 0.0);
+      turnPID = createkPID(0.0, 0.0, 0.0);
+      setDriveCoast();
       while(1){
         updatePosition();
         if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
           break;
-        if(driveStep == 1)
+        if(driveStep == 1){
           translate(20.0, 0.0, 127);
-
+        }
+                  pros::delay(10);
       }
-      autonRunning = true;
-      autonStackFiveRed();//run auton
+      //autonRunning = true;
+      //autonStackFiveRed();//run auton
       //autonStackFiveBlue();
       //autonCorrect();
       //autonTest();

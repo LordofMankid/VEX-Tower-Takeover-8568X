@@ -11,6 +11,7 @@ extern double KiDrive;
 
 //auton variables
 
+extern bool firstCycle;
 extern int driveStep;
 //helper functions
 

@@ -24,7 +24,7 @@ double newDistance;
 double newAngle;
 double targetOrientation;
 
-bool firstCycle;
+bool firstCycle = true;
 int targetReached;
 int driveStep = 1;
 position lastPosition;
@@ -88,14 +88,21 @@ void setDriveMotors(){
 void translate(double targetDistance, double targetTheta,  int maxSpeed){
 
   if(firstCycle == true){
+    printf("kP %f", forwardPID.kP);
     target = polarToRect(targetDistance, targetTheta);
     firstCycle = false;
   }
 
-  targetOrientation = atan2(target.y-currPosition.yPosition, target.x-currPosition.xPosition);
+  targetOrientation = PI/2 - atan2(target.y-currPosition.yPosition, target.x-currPosition.xPosition);
+  if(targetOrientation >= PI)
+    targetOrientation -= 2*PI;
+  else if(targetOrientation <= -PI)
+    targetOrientation += 2*PI;
+    
+  printf("target angle %f \nvoltageY %i\nvoltageR %i\n", targetOrientation, voltageY, voltageR);
 
   voltageY = PIDdrive(forwardPID, target, currPosition);
-  voltageR = PIDloop(turnPID, targetOrientation, getAngleDeg());
+  voltageR = PIDloop(turnPID, targetOrientation*180/PI, getAngleDeg());
 
   if(abs(voltageY) > maxSpeed)
     voltageY = maxSpeed;

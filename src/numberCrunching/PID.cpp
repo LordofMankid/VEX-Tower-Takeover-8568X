@@ -90,7 +90,7 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
     int voltage;
 
     //sets error
-    error = sqrt(pow(targetPosition.y-currPosition.yPosition,2) + pow(targetPosition.x-currPosition.yPosition,2));
+    error = sqrt(pow(targetPosition.y-currPosition.yPosition,2) + pow(targetPosition.x-currPosition.xPosition,2));
 
     //increases error based on time taken to reach target - if resistance is encountered then integral will increase
     integral = integral + error;
@@ -103,7 +103,7 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
     derivative = prevError - error; //finds derivative of errors
     prevError = error; //updates prevError
     //set voltage to equal the error
-    voltage = (error*kPID.kI) + (integral*kPID.kI) + (derivative*kPID.kD);
+    voltage = (error*kPID.kP) + (integral*kPID.kI) + (derivative*kPID.kD);
     if(voltage > 127)
       voltage = 127;
     if(voltage < -127)

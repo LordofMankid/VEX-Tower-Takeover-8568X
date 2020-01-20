@@ -5,6 +5,9 @@ extern double angle;
 //HELPER FUNCTIONS
 
 //CALCULATION FUNCTIONS
+double findDistance(rectCoord targetCoord, position position);
+
+double findDistance(position position1, position position2);
 
 int positionReachCheck(position currentPosition, position lastPosition, int driveStopParameter, rectCoord target);
 

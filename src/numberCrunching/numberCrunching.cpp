@@ -12,6 +12,13 @@ int placeHolder;
 
 
 //Helper Functions
+double findDistance(rectCoord targetCoord, position position){
+  return sqrt(pow(targetCoord.y-position.yPosition,2) + pow(targetCoord.x-position.xPosition,2));
+}
+
+double findDistance(position position1, position position2){
+  return sqrt(pow(position1.yPosition-position2.yPosition,2) + pow(position1.xPosition-position2.xPosition,2));
+}
 
 double getAngle(){
   return angle;

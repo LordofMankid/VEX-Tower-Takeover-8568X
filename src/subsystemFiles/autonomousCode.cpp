@@ -5,16 +5,17 @@ rectCoord target;
 void setAutonButton(){
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
-      forwardPID = createkPID(9, 0.0, 0.195);
+      forwardPID = createkPID(9.5, 0.0, 0.25);
       turnPID = createkPID(1.75, 0.0, 0.0);
-      adjustPID = createkPID(0.75, 0.0, 0.05);
+      adjustPID = createkPID(2.0, 0.0, 0.045);
       setDriveCoast();
       while(1){
         updatePosition();
         if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
           break;
         if(driveStep == 1){
-          translate(20.0, 0, 127);
+          adjustkPID(adjustPID, 1.0, 0.0, 0.1);
+          translate(20.0, 0, 50);
         }
                   pros::delay(10);
       }

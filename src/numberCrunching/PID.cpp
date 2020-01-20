@@ -7,6 +7,7 @@ float prevError = 0;
 const int integralMax = 25;
 
 kPID forwardPID;
+kPID adjustPID;
 kPID turnPID;
 ////////
 
@@ -76,7 +77,7 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
   derivative = prevError - error; //finds derivative of errors
   prevError = error; //updates prevError
   //set voltage to equal the error
-  voltage = (error*kPID.kI) + (integral*kPID.kI) + (derivative*kPID.kD);
+  voltage = (error*kPID.kP) + (integral*kPID.kI) + (derivative*kPID.kD);
   if(voltage > 127)
     voltage = 127;
   if(voltage < -127)

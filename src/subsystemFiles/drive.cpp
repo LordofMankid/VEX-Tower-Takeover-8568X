@@ -80,7 +80,7 @@ void setDriveMotors(){
       drive_yPower = 0;
     if(abs(drive_xPower) < 30 && abs(drive_yPower) < 50 )
       drive_xPower = 0;
-    
+
       setDrive(drive_yPower*driveFactor, drive_rPower*driveFactor);
 }
 
@@ -104,23 +104,24 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
     targetOrientation -= 2*PI;
   else if(targetOrientation <= -PI)
     targetOrientation += 2*PI;
-
-  printf("target angle %f \nvoltageY %i\nvoltageR %i\n", targetOrientation, voltageY, voltageR);
-  //Sets the PID loop
+//Sets the PID loop
   voltageY = PIDdrive(forwardPID, target, currPosition);
-  voltageR = PIDloop(turnPID, targetOrientation*180/PI, getAngleDeg());
+  
+  voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
+
+  printf("target angle %f \nvoltageR %i\ndistFromSts %f\nvoltageY %i\n", targetOrientation*180/PI, voltageR, distanceFromInitial, voltageY);
 
   //Sets limit to speed as necessary
   if(abs(voltageY) > maxSpeed)
-    voltageY = maxSpeed;
+    voltageY = voltageY/abs(voltageY)*maxSpeed;
   if(abs(voltageR) > maxSpeed)
-    voltageR = maxSpeed;
+    voltageR = voltageR/abs(voltageR)*maxSpeed;
 
   //Sets the drive
   setDrive(voltageY, voltageR);
 
   //Checks if target is reached
-  targetReached = positionReachCheck(currPosition, lastPosition, targetReached, target);
+  //targetReached = positionReachCheck(currPosition, lastPosition, targetReached, target);
 
   //Updates last position to compare for next cycle
   lastPosition = currPosition;
@@ -136,7 +137,11 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
 
 void rotate(double targetOrientation, int maxSpeed){
 
+  printf("currentAngle %f\nkP %f\ntargetAngle %f\n", getAngleDeg(), turnPID.kP, targetOrientation);
   voltageR = PIDloop(turnPID, targetOrientation, getAngleDeg());
+  if(abs(voltageR) > maxSpeed)
+    voltageR = voltageR/abs(voltageR)*maxSpeed;
+  printf("voltageR %i\n", voltageR);
 
   setDrive(0, voltageR);
 

@@ -7,6 +7,7 @@ typedef struct kPID{
 } kPID;
 
 extern kPID forwardPID;
+extern kPID adjustPID;
 extern kPID turnPID;
     //HELPER FUNCTIONS
 

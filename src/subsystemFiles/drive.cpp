@@ -29,6 +29,9 @@ int targetReached;
 int driveStep = 1;
 position lastPosition;
 
+position initialPosition;
+double distanceFromInitial;
+double initTargetDistance;
 double lastOrientation;
 //
 //HELPER FUNCTIONS
@@ -77,10 +80,7 @@ void setDriveMotors(){
       drive_yPower = 0;
     if(abs(drive_xPower) < 30 && abs(drive_yPower) < 50 )
       drive_xPower = 0;
-    if(slopeAngle > slopeThreshold)
-      driveFactor = 1;
-    else
-      driveFactor = 1;
+    
       setDrive(drive_yPower*driveFactor, drive_rPower*driveFactor);
 }
 
@@ -89,31 +89,43 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
 
   if(firstCycle == true){
     printf("kP %f", forwardPID.kP);
+    initialPosition = currPosition;
     target = polarToRect(targetDistance, targetTheta);
+    initTargetDistance = findDistance(target, initialPosition);
     firstCycle = false;
   }
 
+  //Finds the distance from the initial point
+  distanceFromInitial = findDistance(initialPosition, currPosition);
+
+  //Finds the target orientation and converts the sign as necessary, 0 degrees being forward
   targetOrientation = PI/2 - atan2(target.y-currPosition.yPosition, target.x-currPosition.xPosition);
   if(targetOrientation >= PI)
     targetOrientation -= 2*PI;
   else if(targetOrientation <= -PI)
     targetOrientation += 2*PI;
-    
-  printf("target angle %f \nvoltageY %i\nvoltageR %i\n", targetOrientation, voltageY, voltageR);
 
+  printf("target angle %f \nvoltageY %i\nvoltageR %i\n", targetOrientation, voltageY, voltageR);
+  //Sets the PID loop
   voltageY = PIDdrive(forwardPID, target, currPosition);
   voltageR = PIDloop(turnPID, targetOrientation*180/PI, getAngleDeg());
 
+  //Sets limit to speed as necessary
   if(abs(voltageY) > maxSpeed)
     voltageY = maxSpeed;
   if(abs(voltageR) > maxSpeed)
     voltageR = maxSpeed;
 
+  //Sets the drive
   setDrive(voltageY, voltageR);
 
+  //Checks if target is reached
   targetReached = positionReachCheck(currPosition, lastPosition, targetReached, target);
+
+  //Updates last position to compare for next cycle
   lastPosition = currPosition;
 
+  //Resets for next step if target is reached
   if(targetReached > 50){
     setDrive(0,0);
     driveStep++;

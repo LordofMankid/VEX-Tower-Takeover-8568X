@@ -13,6 +13,8 @@ extern double KiDrive;
 
 extern bool firstCycle;
 extern int driveStep;
+extern double distanceFromInitial;
+extern double initTargetDistance;
 //helper functions
 
 /*

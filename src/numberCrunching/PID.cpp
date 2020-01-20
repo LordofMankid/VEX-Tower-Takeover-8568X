@@ -90,8 +90,9 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
     int voltage;
 
     //sets error
-    error = sqrt(pow(targetPosition.y-currPosition.yPosition,2) + pow(targetPosition.x-currPosition.xPosition,2));
-
+    error = findDistance(targetPosition, currPosition);
+    if(distanceFromInitial > initTargetDistance)
+      error *= -1;
     //increases error based on time taken to reach target - if resistance is encountered then integral will increase
     integral = integral + error;
     //resets integral if place is reached

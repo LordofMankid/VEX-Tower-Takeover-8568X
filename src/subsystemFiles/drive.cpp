@@ -94,7 +94,7 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
     target = polarToRect(targetDistance, targetTheta);
     initTargetDistance = findDistance(target, initialPosition);
     firstCycle = false;
-    correctionThreshold = 4;
+    correctionThreshold = 40;
   }
 
   //Finds the distance from the initial point
@@ -110,10 +110,11 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
 
     //Sets the PID loop
         voltageY = PIDdrive(forwardPID, target, currPosition);
-      if(findDistance(target, currPosition) < correctionThreshold){
+      if(findDistance(target, currPosition)*10 < correctionThreshold){
         double correctedOrientation;
-        correctedOrientation = findDistance(target, currPosition)/correctionThreshold*targetOrientation + (1-(findDistance(target, currPosition)/correctionThreshold)*targetTheta);
-        voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
+        correctedOrientation = findDistance(target, currPosition)/correctionThreshold*targetOrientation*180/PI + (1-(findDistance(target, currPosition)/correctionThreshold))*targetTheta;
+        voltageR = PIDloop(adjustPID, correctedOrientation, getAngleDeg());
+        printf("distance to target: %f \nnew targetAngle %f\nangle %f\n", findDistance(target, currPosition), correctedOrientation, getAngleDeg());
       }
       else
         voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
@@ -131,7 +132,7 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
   setDrive(voltageY, voltageR);
 
   //Checks if target is reached
-  //targetReached = positionReachCheck(currPosition, lastPosition, targetReached, target);
+  targetReached = positionReachCheck(currPosition, lastPosition, targetReached, target);
 
   //Updates last position to compare for next cycle
   lastPosition = currPosition;

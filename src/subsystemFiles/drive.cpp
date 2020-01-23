@@ -25,8 +25,8 @@ double newAngle;
 double targetOrientation;
 
 bool firstCycle = true;
-int targetReached;
-int driveStep = 1;
+int targetReached1;
+int driveStep = 0;
 position lastPosition;
 
 position initialPosition;
@@ -89,7 +89,7 @@ void setDriveMotors(){
 void translate(double targetDistance, double targetTheta,  int maxSpeed){
 
   if(firstCycle == true){
-    printf("kP %f", forwardPID.kP);
+    //printf("kP %f", forwardPID.kP);
     initialPosition = currPosition;
     target = polarToRect(targetDistance, targetTheta);
     initTargetDistance = findDistance(target, initialPosition);
@@ -114,13 +114,13 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
         double correctedOrientation;
         correctedOrientation = findDistance(target, currPosition)/correctionThreshold*targetOrientation*180/PI + (1-(findDistance(target, currPosition)/correctionThreshold))*targetTheta;
         voltageR = PIDloop(adjustPID, correctedOrientation, getAngleDeg());
-        printf("distance to target: %f \nnew targetAngle %f\nangle %f\n", findDistance(target, currPosition), correctedOrientation, getAngleDeg());
+      //  printf("distance to target: %f \nnew targetAngle %f\nangle %f\n", findDistance(target, currPosition), correctedOrientation, getAngleDeg());
       }
       else
         voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
 
 
-  printf("target angle %f \nvoltageR %i\ndistFromSts %f\nvoltageY %i\n", targetOrientation*180/PI, voltageR, distanceFromInitial, voltageY);
+  //printf("target angle %f \nvoltageR %i\ndistFromSts %f\nvoltageY %i\n", targetOrientation*180/PI, voltageR, distanceFromInitial, voltageY);
 
   //Sets limit to speed as necessary
   if(abs(voltageY) > maxSpeed)
@@ -132,17 +132,17 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
   setDrive(voltageY, voltageR);
 
   //Checks if target is reached
-  targetReached = positionReachCheck(currPosition, lastPosition, targetReached, target);
+  targetReached1 = positionReachCheck(currPosition, lastPosition, targetReached1, target);
 
   //Updates last position to compare for next cycle
   lastPosition = currPosition;
 
   //Resets for next step if target is reached
-  if(targetReached > 50){
+  if(targetReached1 > 50){
     setDrive(0,0);
     driveStep++;
     firstCycle = true;
-    targetReached = 0;
+    targetReached1 = 0;
   }
 }
 
@@ -156,14 +156,14 @@ void rotate(double targetOrientation, int maxSpeed){
 
   setDrive(0, voltageR);
 
-  targetReached = positionReachCheck(getAngleDeg(), lastOrientation, targetReached, targetOrientation, 1.0);
+  targetReached1 = positionReachCheck(getAngleDeg(), lastOrientation, targetReached1, targetOrientation, 1.0);
 
   lastOrientation = getAngleDeg();
-  if(targetReached > 50){
+  if(targetReached1 > 50){
     setDrive(0,0);
     driveStep++;
     firstCycle = true;
-    targetReached = 0;
+    targetReached1 = 0;
   }
 
 }

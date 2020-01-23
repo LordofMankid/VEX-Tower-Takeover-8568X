@@ -21,18 +21,19 @@ void setSlopeVelocity(int velocity){
 }
 //DRIVER CODE
 void setSlopeMotors(){
-  if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+
+  if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1 || slopeLimit.get_value() == 1)
     slopeLift.tare_position();
   slopeAngle = slopeLift.get_position();
-  voltageSlope = PIDloop(0.05, 0.0, 0.0, 4900, slopeAngle);
+  voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
 
-  if(slopeAngle > 2500 && slopeAngle < 4900)
+  if(slopeAngle > 2500 && slopeAngle < 5000)
     {
         //voltageSlope = 100;
       //if(slopeAngle > 2400 && slopeAngle < 3600)
         //voltageSlope = 60;
-      if(slopeAngle > 3600 && slopeAngle <= 4700)
-        voltageSlope = 50;
+      if(slopeAngle > 3800 && slopeAngle <= 4700)
+        voltageSlope = 52;
       if(slopeAngle > 4700)
         voltageSlope = 40;
 
@@ -40,7 +41,7 @@ void setSlopeMotors(){
     }
     else
     {
-      voltageSlope = PIDloop(0.05, 0.0, 0.0, 4900, slopeAngle);
+      voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
     }
   if(slopeAngle < 100)
     slopeDownPower = 0;
@@ -49,7 +50,7 @@ void setSlopeMotors(){
 
   slopePower = voltageSlope*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2);
 
-  macroPower = 100*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN);
+  macroPower = 80*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN);
 
 
   slopeLift = slopePower + macroPower;

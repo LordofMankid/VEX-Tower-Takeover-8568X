@@ -2,9 +2,12 @@
 
 //variables
 extern double angle;
+extern int stepChangeTimes;
 //HELPER FUNCTIONS
 
 //CALCULATION FUNCTIONS
+void nextStep(int stepSet, int time);
+
 double findDistance(rectCoord targetCoord, position position);
 
 double findDistance(position position1, position position2);

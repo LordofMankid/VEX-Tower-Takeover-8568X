@@ -13,11 +13,17 @@ void setAutonButton(){
         updatePosition();
         if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
           break;
+
+          intakeIn(1000, 127, 0, 1);
+        nextStep(1, 0);
         if(driveStep == 1){
-          adjustkPID(adjustPID, 1.0, 0.0, 0.1);
-          translate(20.0, 0, 50);
+          pros::delay(1000);
+          driveStep++;
+          printf("hi there");
+
         }
-                  pros::delay(10);
+        intakeIn(1000, -127, 2, 2);
+          pros::delay(10);
       }
       //autonRunning = true;
       //autonStackFiveRed();//run auton
@@ -47,7 +53,7 @@ void autonCorrect(){
   translateY(0, 0.0, 117, 0.0, 0.65);
 }
 
-void autonStackFiveRed(){
+/*void autonStackFiveRed(){
   double firstMove;
   //Flips out slope
   intakeOut();
@@ -140,10 +146,10 @@ void autonloopTest(){
     translateStep + positionReached;
   }
 
-        */
-  }
 
 }
+
+}*/
 void autonSkills(){
 
     double firstMove;

@@ -7,9 +7,9 @@ pros::Motor FrontLeft(1, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_
 pros::Motor BackLeft(3, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor FrontRight(2, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor BackRight(12, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor intakeLeft(13, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor intakeLeft(14, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor intakeRight(10, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor armLift(8, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor armLift(8, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 
 //CONTROLLER
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -18,9 +18,9 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 //SENSORS
 pros::ADIEncoder trackingX('A','B');
-pros::ADIEncoder trackingLeft('C','D');
+pros::ADIEncoder trackingLeft('E','F');
 pros::ADIEncoder trackingRight('G','H');
-
+pros::ADIButton slopeLimit('D');
 //SETUP VARIABLE
 
 const double RADIUS = 10;

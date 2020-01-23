@@ -17,6 +17,13 @@ int armPower;
 int macroPowerArm;
 int macroSpeed;
 
+bool intfirstCycle = true;
+bool intakeOn;
+bool targetReached;
+int timeReached;
+int targTime;
+int intakeStepNumber;
+
 //const double LIFT_INCHES_TICKS = 900/chord length of arm thing;
 
 //HELPER FUNCTIONS
@@ -55,12 +62,47 @@ void setMacroMotors(){
 
 //AUTONOMOUS CODE
 
-void intakeIn(){
-  intakePower = -125;
-  setIntake(intakePower);
+  int initTime;
+void intakeIn(int targetTime, int speed, int driveStepNumber, int timeReachedNumber){
+  int deltaTime;
+  if(driveStepNumber == driveStep){
+    intakeOn = true;
+
+    if(intfirstCycle == true){
+      initTime = pros::millis();
+      targTime = initTime + targetTime;
+      intfirstCycle = false;
+      printf("hi %i", initTime);
+    }
+  }
+
+  if(intakeStepNumber == timeReachedNumber)
+    intakeOn = false;
+  else
+    intakeOn = true;
+
+
+  if(intakeOn == true){
+    targTime = pros::millis() - initTime;
+    setIntake(speed);
+    if(targTime >= targetTime){
+        printf("hi");
+        targetReached = true;
+
+        intakeOn = false;
+        intfirstCycle = true;
+        intakeStepNumber++; //<--
+        timeReached++;
+      }
+  }
+  else
+    setIntake(0);
+  printf("intakeOn %d\ntargetTime %i\ndriveStep %i\n intakeStepNumber %i\n", intakeOn, targTime, driveStep, intakeStepNumber);
+
 }
 
 void intakeOut(){
+
   intakePower = 127;
   setIntake(intakePower);
 }

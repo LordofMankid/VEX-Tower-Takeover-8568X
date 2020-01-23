@@ -68,7 +68,7 @@ void competition_initialize() {
 void autonomous() {
 	autonRunning = true;
 	//autonStackFiveRed();//run auton
-	autonStackFiveBlue();
+	//autonStackFiveBlue();
 	//autonCorrect();
 	//autonTest();
 	//autonTurn();

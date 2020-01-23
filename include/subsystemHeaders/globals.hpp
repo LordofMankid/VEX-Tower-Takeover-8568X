@@ -16,7 +16,7 @@ extern pros::Controller controller;
 extern pros::ADIEncoder trackingX;
 extern pros::ADIEncoder trackingLeft;
 extern pros::ADIEncoder trackingRight;
-
+extern pros::ADIDigitalIn slopeLimit;
 //odom constants
   //Used as conversion factor, for degrees in a circle
   #define DEG_CIRCLE 360.0

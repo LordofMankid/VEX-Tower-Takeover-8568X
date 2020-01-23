@@ -7,10 +7,17 @@ bool bButtonHeld = false;
 int buttonPressed;
 int LeftPressed;
 int RightPressed;
+
 ////////////////////////////
 int placeHolder;
+int stepChangeTimes = 0;
 
-
+void nextStep(int stepSet, int time){
+  if(stepChangeTimes == time){
+    driveStep = stepSet;
+    stepChangeTimes++;
+  }
+}
 //Helper Functions
 double findDistance(rectCoord targetCoord, position position){
   return sqrt(pow(targetCoord.y-position.yPosition,2) + pow(targetCoord.x-position.xPosition,2));

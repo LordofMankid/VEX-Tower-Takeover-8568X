@@ -6,6 +6,7 @@ extern int armMotorSpeed;
 extern const double ARMLENGTH;
 extern int armAngle;
 extern double armHeight;
+extern bool intakeOn;
 //HELPER FUNCTIONS
 
 void setArmLift(int power);
@@ -33,6 +34,7 @@ Ties the lift of the slope to Left and Right buttons.
 void setMacroMotors();
 //AUTONOMOUS CODE
 
+void intakeIn(int targetTime, int speed, int driveStepNumber, int timeReachedNumber);
 void intakeIn();
 
 void intakeOut();

@@ -66,7 +66,11 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	autonRunning = true;
+	forwardPID = createkPID(9.5, 0.0, 0.25);
+	turnPID = createkPID(1.75, 0.0, 0.0);
+	adjustPID = createkPID(2.0, 0.0, 0.045);
+	driveStep = 0;
+	setDriveCoast();
 	//autonStackFiveRed();//run auton
 	//autonStackFiveBlue();
 	//autonCorrect();

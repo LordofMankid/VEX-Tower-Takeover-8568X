@@ -11,7 +11,16 @@ void setAutonButton();
 /////////////////
 void autonTest();
 
-void autonTurn();
+void slopeTest();
+
+void intakeTest();
+
+void multipleSubsystemTest();
+
+void redStackFive();
+
+void blueStackFive();
+/*void autonTurn();
 
 void autonOne();
 
@@ -27,6 +36,6 @@ void autonStackNine();
 
 void scoreOneLeft();
 
-void scoreOneRight();
+void scoreOneRight();*/
 
 void autonSkills();

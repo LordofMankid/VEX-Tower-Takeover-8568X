@@ -17,12 +17,10 @@ int armPower;
 int macroPowerArm;
 int macroSpeed;
 
-bool intfirstCycle = true;
+bool intFirstCycle = true;
 bool intakeOn;
-bool targetReached;
-int timeReached;
+int intakeStep;
 int targTime;
-int intakeStepNumber;
 
 //const double LIFT_INCHES_TICKS = 900/chord length of arm thing;
 
@@ -62,48 +60,84 @@ void setMacroMotors(){
 
 //AUTONOMOUS CODE
 
-  int initTime;
-void intakeIn(int targetTime, int speed, int driveStepNumber, int timeReachedNumber){
-  int deltaTime;
-  if(driveStepNumber == driveStep){
-    intakeOn = true;
 
-    if(intfirstCycle == true){
-      initTime = pros::millis();
-      targTime = initTime + targetTime;
-      intfirstCycle = false;
-      printf("hi %i", initTime);
+
+void startIntake(int targetTime, int speed, int driveStepNumber, int intakeStepNumber){
+//checks to see if the drive step is same as the one it was assigned to
+    if(intakeStep < intakeStepNumber){
+      if(driveStepNumber == driveStep){
+        intakeOn = true;
+        if(intFirstCycle == true){ //if it is the 1st cycle
+          //set the initial time to the current time in ms
+          targTime = pros::millis() + targetTime; //set the target to whatever the current time is + the target duration
+          printf("targetTime %i", targTime);
+          intFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
+        }
+      }
     }
-  }
+    else
+      intakeOn = false;
 
-  if(intakeStepNumber == timeReachedNumber)
-    intakeOn = false;
-  else
-    intakeOn = true;
+//checks to see if the target has been reached before
 
-
+//if the intake is on do the following
   if(intakeOn == true){
-    targTime = pros::millis() - initTime;
     setIntake(speed);
-    if(targTime >= targetTime){
-        printf("hi");
-        targetReached = true;
 
-        intakeOn = false;
-        intfirstCycle = true;
-        intakeStepNumber++; //<--
-        timeReached++;
+    if(pros::millis() >= targTime){
+        printf("targetReached");
+        intakeOn = false; // turns intake off
+        intFirstCycle = true; //prepares for the next cycle
+      //intakeStepNumber++; //adds one to the intake step number
+        intakeStep++;
       }
   }
-  else
+  else{
     setIntake(0);
-  printf("intakeOn %d\ntargetTime %i\ndriveStep %i\n intakeStepNumber %i\n", intakeOn, targTime, driveStep, intakeStepNumber);
+    printf("intakeStep %i\n", intakeStep);
+  }
+  printf("intakeOn %d\ntargetTime %i\n", intakeOn, targTime);
 
 }
 
+void intakeMove(int targetTime, int speed, int driveStepNumber, int intakeStepNumber){
+//checks to see if the drive step is same as the one it was assigned to
+    if(intakeStep < intakeStepNumber){
+      if(driveStepNumber == driveStep){
+        intakeOn = true;
+        if(intFirstCycle == true){ //if it is the 1st cycle
+          //set the initial time to the current time in ms
+          targTime = pros::millis() + targetTime; //set the target to whatever the current time is + the target duration
+          printf("targetTime %i", targTime);
+          intFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
+        }
+      }
+    }
+    else
+      intakeOn = false;
+
+//checks to see if the target has been reached before
+
+//if the intake is on do the following
+  if(intakeOn == true){
+    setIntake(speed);
+
+    if(pros::millis() >= targTime){
+        printf("targetReached");
+        intakeOn = false; // turns intake off
+        intFirstCycle = true; //prepares for the next cycle
+        driveStep++;
+        intakeStep++;
+      }
+  }
+  else{
+    setIntake(0);
+    printf("intakeStep %i\n", intakeStep);
+  }
+}
 void intakeOut(){
 
-  intakePower = 127;
+  intakePower = 100;
   setIntake(intakePower);
 }
 

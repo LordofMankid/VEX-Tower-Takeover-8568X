@@ -34,7 +34,10 @@ Ties the lift of the slope to Left and Right buttons.
 void setMacroMotors();
 //AUTONOMOUS CODE
 
-void intakeIn(int targetTime, int speed, int driveStepNumber, int timeReachedNumber);
+void startIntake(int targetTime, int speed, int driveStepNumber, int timeReachedNumber);
+
+void intakeMove(int targetTime, int speed, int driveStepNumber, int timeReachedNumber);
+
 void intakeIn();
 
 void intakeOut();

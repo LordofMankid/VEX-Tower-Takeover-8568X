@@ -18,6 +18,10 @@ Ties the lift of the slope to buttons R1(in) and L1(out)
 */
 
 //AUTONOMOUS CODE
+void startSlopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int timeReachedNumber);
+
+void slopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int timeReachedNumber);
+
 void slopeUp(int targetAngle, int maxSpeed);
 
 void slopeDown(int targetAngle);

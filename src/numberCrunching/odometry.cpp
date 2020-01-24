@@ -57,6 +57,8 @@ double initAngle = 0.0;
 
 
 double dAngle;
+
+int integerClearParameter;
 /////////////////////////
 
 
@@ -153,6 +155,14 @@ void updatePosition(){
     deltaPositionX = 0;
   if(fabs(deltaPositionY) > 10)
     deltaPositionY = 0;
+
+  integerClearParameter++;
+  if(integerClearParameter <= 4){
+    deltaPositionX = 0;
+    deltaPositionY = 0;
+  }
+  else
+    integerClearParameter = 5;
 
   currPosition.xPosition = currPosition.xPosition + deltaPositionX;
   currPosition.yPosition = currPosition.yPosition + deltaPositionY;

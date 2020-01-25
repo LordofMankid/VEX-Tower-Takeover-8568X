@@ -6,7 +6,7 @@ void setAutonButton(){
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
     forwardPID = createkPID(9.5, 0.0, 0.25);
-    turnPID = createkPID(1.75, 0.0, 0.0);
+    turnPID = createkPID(0.75, 0.0, 0.45);
     adjustPID = createkPID(2.0, 0.0, 0.045);
     driveStep = 0;
     setDriveCoast();
@@ -14,8 +14,8 @@ void setAutonButton(){
       //intakeTest();
       //multipleSubsystemTest();
       //redStackFive();
-      //blueStackFive();
-      //autonTurn();
+      blueStackFive();
+      //autonCorrect();
       break;
   }
 
@@ -37,8 +37,8 @@ void slopeTest(){
         pros::delay(1000);
         driveStep++;
       }
-      slopeMove(2000, 127, 2, 2);
-      printf("driveStep %i", driveStep);
+      slopeMove(0, 127, 2, 2);
+      printf("driveStep %i\n", driveStep);
   }
 }
 
@@ -69,10 +69,15 @@ void multipleSubsystemTest(){
     slopeAngle = slopeLift.get_position();
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       break;
-    startIntake(1000, 127, 0, 1);
-    slopeMove(3600, 127, 0, 1);
-    startIntake(1000, -127, 1, 2);
-    slopeMove(0, 127, 1, 2);
+    slopeMove(2500, 127, 0, 1);
+    startIntake(1500, -127, 1, 1);
+    if(driveStep == 1){
+      pros::delay(500);
+      driveStep++;
+    }
+    slopeMove(0, 127, 2, 2);
+    startIntake(5000, 127, 3, 2);
+    pros::delay(10);
   }
 
 }
@@ -87,64 +92,66 @@ void redStackFive(){
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       break;
     //note for later, can you abuse the 'hold' boolean and have it start the intake, not letting any other intake commands go until you say stop
-    startIntake(2000, -127, 0, 1);
-    startSlopeMove(3600, 127, 0, 1);
-    nextStep(1, 0);
+    slopeMove(2500, 127, 0, 1);
+    startIntake(1500, -127, 1, 1);
     if(driveStep == 1){
+      pros::delay(500);
+      driveStep++;
+    }
+    slopeMove(0, 127, 2, 2);
+    if(driveStep == 2){
       translate(45.0, 0, 50);
       printf("hi there");
     }
-    startIntake(5000, 127, 1, 2);
-    startSlopeMove(0, 127, 1, 2);
-    if(driveStep == 2)
-      translate(-35, 0, 50);
-    if(driveStep == 3)
-      rotate(135, 100);
-    if(driveStep == 4)
-      translate(10, 0, 50);
-    slopeMove(5000, 127, 5, 3);
-    if(driveStep == 6)
-      translate(-10, 0, 30);
-    pros::delay(10);
+    startIntake(5000, 127, 3, 2);
+
   }
 }
 
 void blueStackFive(){
-  forwardPID = createkPID(9.5, 0.0, 0.25);
-  turnPID = createkPID(1.75, 0.0, 0.0);
-  adjustPID = createkPID(2.0, 0.0, 0.045);
-  setDriveCoast();
   while(1){
     updatePosition();
     if(slopeLimit.get_value() == 1)
         slopeLift.tare_position();
     slopeAngle = slopeLift.get_position();
+
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       break;
     //note for later, can you abuse the 'hold' boolean and have it start the intake, not letting any other intake commands go until you say stop
-    startIntake(2000, -127, 0, 1);
-    startSlopeMove(3600, 127, 0, 1);
-    nextStep(1, 0);
+    slopeMove(2500, 127, 0, 1);
+    startIntake(1500, -127, 1, 1);
     if(driveStep == 1){
-      translate(45.0, 0, 50);
+      pros::delay(500);
+      driveStep++;
+    }
+    slopeMove(0, 127, 2, 2);
+    printf("slope %f", slopeAngle);
+    if(driveStep == 3){
+      translate(45.0, 0, 45);
       printf("hi there");
     }
-    startIntake(5000, 127, 1, 2);
-    startSlopeMove(0, 127, 1, 2);
-    if(driveStep == 2)
-      translate(-35, 0, 50);
-    if(driveStep == 3)
-      rotate(135, 100);
-    if(driveStep == 4)
-      translate(10, 0, 50);
-    slopeMove(5000, 127, 5, 3);
-    if(driveStep == 6)
-      translate(-10, 0, 30);
+    startIntake(5000, 127, 3, 2);
+    if(driveStep == 4){
+      translate(-22.5, 0, 50);
+    }
+    if(driveStep == 5){
+      rotate(-135, 100);
+    }
+    if(driveStep == 6){
+      translateY(20.5, 50);
+    }
+    slopeMove(5000, 127, 7, 3);
     pros::delay(10);
   }
+    printf("autonStep %i\n", driveStep);
 }
 void autonCorrect(){
-  translateY(0, 0.0, 117, 0.0, 0.65);
+  while(1){
+    updatePosition();
+    if(driveStep == 0)
+      rotate(180.0, 100);
+    pros::delay(10);
+  }
 }
 
 /*void autonStackFiveRed(){

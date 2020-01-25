@@ -40,7 +40,7 @@ void setMegaLift(int power){
 }
 //DRIVER CODE
 void setIntakeMotors(){
-  intakePower = intakeMotorSpeed*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1));
+  intakePower = 127*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) - 80*controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
   setIntake(intakePower);
 }
 
@@ -64,41 +64,43 @@ void setMacroMotors(){
 
 void startIntake(int targetTime, int speed, int driveStepNumber, int intakeStepNumber){
 //checks to see if the drive step is same as the one it was assigned to
-    if(intakeStep < intakeStepNumber){
+
+    if(intakeStep == intakeStepNumber-1){
+    printf("hello\n");
       if(driveStepNumber == driveStep){
         intakeOn = true;
         if(intFirstCycle == true){ //if it is the 1st cycle
           //set the initial time to the current time in ms
           targTime = pros::millis() + targetTime; //set the target to whatever the current time is + the target duration
-          printf("targetTime %i", targTime);
+          printf("ayo target %i", targTime);
           intFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
         }
       }
-    }
-    else
-      intakeOn = false;
 
-//checks to see if the target has been reached before
+      if(intakeOn == true){
 
-//if the intake is on do the following
-  if(intakeOn == true){
-    setIntake(speed);
+          setIntake(speed);
 
-    if(pros::millis() >= targTime){
-        printf("targetReached");
-        intakeOn = false; // turns intake off
-        intFirstCycle = true; //prepares for the next cycle
-      //intakeStepNumber++; //adds one to the intake step number
-        intakeStep++;
+          printf("targetTime %i, currTime%i\n", targTime, pros::millis());
+          if(pros::millis() >= targTime){
+              printf("targetReached");
+              intakeStep++;
+              intakeOn = false; // turns intake off
+              intFirstCycle = true; //prepares for the next cycle
+            //intakeStepNumber++; //adds one to the intake step number
+            }
+
+          }
+          else
+            setIntake(0);
       }
-  }
-  else{
-    setIntake(0);
-    printf("intakeStep %i\n", intakeStep);
-  }
-  printf("intakeOn %d\ntargetTime %i\n", intakeOn, targTime);
-
+      else{
+        printf("exited %i\n", intakeOn);
+      }
+      if(intakeOn == false)
+        setIntake(0);
 }
+
 
 void intakeMove(int targetTime, int speed, int driveStepNumber, int intakeStepNumber){
 //checks to see if the drive step is same as the one it was assigned to

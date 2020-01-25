@@ -87,8 +87,10 @@ void setDriveMotors(){
 
 //AUTONOMOUS FUNCTIONS
 void translate(double targetDistance, double targetTheta,  int maxSpeed){
-
+int direction;
+  direction = fabs(targetDistance)/targetDistance;
   if(firstCycle == true){
+
     //printf("kP %f", forwardPID.kP);
     initialPosition = currPosition;
     target = polarToRect(targetDistance, targetTheta);
@@ -99,9 +101,9 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
 
   //Finds the distance from the initial point
   distanceFromInitial = findDistance(initialPosition, currPosition);
-
+  printf("init %f\n target %f", distanceFromInitial, initTargetDistance);
   //Finds the target orientation and converts the sign as necessary, 0 degrees being forward
-  targetOrientation = PI/2 - atan2(target.y-currPosition.yPosition, target.x-currPosition.xPosition);
+  targetOrientation = PI/2 - atan2(abs(target.y-currPosition.yPosition), target.x-currPosition.xPosition);
   if(targetOrientation >= PI)
     targetOrientation -= 2*PI;
   else if(targetOrientation <= -PI)
@@ -112,13 +114,12 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed){
         voltageY = PIDdrive(forwardPID, target, currPosition);
       if(findDistance(target, currPosition)*10 < correctionThreshold){
         double correctedOrientation;
-        correctedOrientation = findDistance(target, currPosition)/correctionThreshold*targetOrientation*180/PI + (1-(findDistance(target, currPosition)/correctionThreshold))*targetTheta;
+        correctedOrientation = direction*(findDistance(target, currPosition)/correctionThreshold*targetOrientation*180/PI + (1-(findDistance(target, currPosition)/correctionThreshold))*targetTheta);
         voltageR = PIDloop(adjustPID, correctedOrientation, getAngleDeg());
       //  printf("distance to target: %f \nnew targetAngle %f\nangle %f\n", findDistance(target, currPosition), correctedOrientation, getAngleDeg());
       }
       else
         voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
-
 
   //printf("target angle %f \nvoltageR %i\ndistFromSts %f\nvoltageY %i\n", targetOrientation*180/PI, voltageR, distanceFromInitial, voltageY);
 
@@ -155,7 +156,7 @@ void rotate(double targetOrientation, int maxSpeed){
 
   setDrive(0, voltageR);
 
-  targetReached = positionReachCheck(getAngleDeg(), lastOrientation, targetReached, targetOrientation, 1.0);
+  targetReached = positionReachCheck(getAngleDeg(), lastOrientation, targetReached, targetOrientation, 25.0);
 
   lastOrientation = getAngleDeg();
   if(targetReached > 50){
@@ -165,6 +166,26 @@ void rotate(double targetOrientation, int maxSpeed){
     targetReached = 0;
   }
 
+}
+
+void translateY(double unitsY, double maxSpeed){
+  if(firstCycle == true){
+
+    //printf("kP %f", forwardPID.kP);
+    initialPosition = currPosition;
+    resetTrackingWheels();
+    initTargetDistance = findDistance(target, initialPosition);
+    firstCycle = false;
+    correctionThreshold = 40;
+  }
+  unitsY = unitsY*TR_INCH_TICK;
+
+    positionY = (trackingLeft.get_value() + trackingRight.get_value())/2;
+    voltageY = PIDloop(0.65, 0.0075, 0.415, unitsY, positionY);
+    if(abs(unitsY - positionY) < 25){
+      firstCycle = false;
+    driveStep++;
+  }
 }
 void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, double KpAdjustX)  //might have to add units X, units Y
 {

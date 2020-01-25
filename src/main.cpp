@@ -102,7 +102,7 @@ okapi::Timer timer;
 	while (true) {
 
 		updatePosition();
-
+		pros::lcd::print(6, "A: %f", getAngleDeg());
 		setDriveMotors();
 
 		pros::lcd::print(2, "SlopeAngle %f", slopeAngle);

@@ -15,6 +15,8 @@ extern bool firstCycle;
 extern int driveStep;
 extern double distanceFromInitial;
 extern double initTargetDistance;
+
+void translateY(double unitsY, double maxSpeed);
 //helper functions
 
 /*

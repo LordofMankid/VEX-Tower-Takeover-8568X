@@ -13,6 +13,8 @@ void autonTest();
 
 void slopeTest();
 
+void autonCorrect();
+
 void intakeTest();
 
 void multipleSubsystemTest();

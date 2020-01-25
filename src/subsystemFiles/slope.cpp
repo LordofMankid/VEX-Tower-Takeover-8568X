@@ -12,8 +12,8 @@ int slopeDownPower;
 bool slopeFirstCycle;
 bool slopeOn = true;
 bool hold;
-int slopeStep;
-
+int slopeStep = 0;
+int currentTarget;
 /////////////////////////////////////////////////////////////////
 const double slopeThreshold = 35.5;
 
@@ -66,21 +66,23 @@ if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1 || slopeLimit.get_v
 //AUTONOMOUS CODE
 
 void startSlopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStepNumber){
-  if(slopeStep >= slopeStepNumber){
+  if(slopeStep < slopeStepNumber){
     if(driveStepNumber == driveStep){
       slopeOn = true;
+      currentTarget = targetAngle;
       if(slopeFirstCycle == true){ //if it is the 1st cycle b
         slopeFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
-        printf("hi %i", targetAngle);
+
       }
     }
   }
   else
     slopeOn = false;
 
+printf("slopeStep %i\n", slopeStep);
 //if the slopeis on do the following
   if(slopeOn == true){
-    voltageSlope = PIDloop(0.05, 0.0, 0.0, targetAngle, slopeAngle);
+    voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
       if(slopeAngle > 2500 && slopeAngle < 5000)
         {
           if(slopeAngle > 3800 && slopeAngle <= 4700)
@@ -91,8 +93,11 @@ void startSlopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slop
         }
         else
           voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
-        setSlopeLift(voltageSlope);
-    if(abs(slopeAngle) - abs(targetAngle) <= 50){
+        if(currentTarget - slopeAngle < 0)
+          voltageSlope = -127;
+      setSlopeLift(voltageSlope);
+      printf("hi %f\n", abs(slopeAngle - currentTarget));
+    if(abs(slopeAngle - currentTarget) <= 50){
         printf("targetReached");
         slopeOn = false; // turns slope off
         slopeFirstCycle = true; //prepares for the next cycle
@@ -104,24 +109,22 @@ void startSlopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slop
 }
 
 void slopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStepNumber){
-  if(slopeStep >= slopeStepNumber){
+  if(slopeStep < slopeStepNumber){
     if(driveStepNumber == driveStep){
       slopeOn = true;
+      currentTarget = targetAngle;
       if(slopeFirstCycle == true){ //if it is the 1st cycle b
         slopeFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
-        printf("hi %i", targetAngle);
       }
     }
   }
   else
-  slopeOn = false;
+    slopeOn = false;
 
-//checks to see if the target has been reached before
-
-
+//printf("slopeStep %i\n", slopeStep);
 //if the slopeis on do the following
   if(slopeOn == true){
-    voltageSlope = PIDloop(0.05, 0.0, 0.0, targetAngle, slopeAngle);
+    voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
       if(slopeAngle > 2500 && slopeAngle < 5000)
         {
           if(slopeAngle > 3800 && slopeAngle <= 4700)
@@ -132,14 +135,16 @@ void slopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStep
         }
         else
           voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
-        setSlopeLift(voltageSlope);
-    if(abs(slopeAngle) - abs(targetAngle) <= 50){
-        printf("targetReached");
-        hold = false;
-        slopeOn = false; // turns slope off
-        slopeFirstCycle = true; //prepares for the next cycle
+        if(currentTarget - slopeAngle < 0)
+          voltageSlope = -127;
+      setSlopeLift(voltageSlope);
+    //  printf("hi %f\n", abs(slopeAngle - currentTarget));
+    if(abs(slopeAngle - currentTarget) <= 50){
+        printf("slopeTargetReached");
         slopeStep++;
         driveStep++;
+        slopeOn = false; // turns slope off
+        slopeFirstCycle = true; //prepares for the next cycle
       }
     }
     else

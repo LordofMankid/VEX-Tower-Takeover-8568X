@@ -1,5 +1,5 @@
 #include "main.h"
-
+/*
 //CONSTANTS
 const double REG_INCH_TICK = 900/(4*PI);
 //HELPER FUNCTIONS
@@ -39,3 +39,4 @@ void translateY_reg(double unitsY, int voltage)
   setDrive(0,0);
   pros::delay(20);
 }
+*/

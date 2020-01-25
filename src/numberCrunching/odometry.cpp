@@ -170,7 +170,7 @@ void updatePosition(){
 
   pros::lcd::print(4, "X: %f", currPosition.xPosition);
   pros::lcd::print(5, "R: %f", currPosition.yPosition);
-  pros::lcd::print(6, "A: %f", currPosition.angle*180/PI);
+  //pros::lcd::print(6, "A: %f", currPosition.angle*180/PI);
 
 
 

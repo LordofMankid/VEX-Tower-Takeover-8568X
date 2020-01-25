@@ -66,6 +66,7 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
   //sets error
   error = units - EncoderValue;
   pros::lcd::print(0, "error: %f, %f, %f", error, units, EncoderValue);
+  printf("encoder value %f\n units %f\n error %f\n", EncoderValue, units, error);
   //increases error based on time taken to reach target - if resistance is encountered then integral will increase
   integral = integral + error;
   //resets integral if place is reached
@@ -92,6 +93,8 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
 
     //sets error
     error = findDistance(targetPosition, currPosition);
+    if(targetPosition.y < 0)
+      error *= -1;
     if(distanceFromInitial > initTargetDistance)
       error *= -1;
     //increases error based on time taken to reach target - if resistance is encountered then integral will increase

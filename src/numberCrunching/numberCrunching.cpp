@@ -20,7 +20,10 @@ void nextStep(int stepSet, int time){
 }
 //Helper Functions
 double findDistance(rectCoord targetCoord, position position){
-  return sqrt(pow(targetCoord.y-position.yPosition,2) + pow(targetCoord.x-position.xPosition,2));
+  if(targetCoord.y < 0)
+    return sqrt(pow(targetCoord.y+position.yPosition,2) + pow(targetCoord.x-position.xPosition,2));
+  else
+    return sqrt(pow(targetCoord.y-position.yPosition,2) + pow(targetCoord.x-position.xPosition,2));
 }
 
 double findDistance(position position1, position position2){
@@ -35,7 +38,7 @@ int positionReachCheck(position currentPosition, position lastPosition, int driv
   if(lastPosition.xPosition == currentPosition.xPosition && lastPosition.yPosition == currentPosition.yPosition && fabs(target.x - lastPosition.xPosition) < 1.0 && fabs(target.y - lastPosition.yPosition) < 1.0){
     driveStopParameter += 2;
   }
-  if(lastPosition.xPosition == currentPosition.xPosition && lastPosition.yPosition == currentPosition.yPosition && fabs(target.x - lastPosition.xPosition) < 2.0 && fabs(target.y - lastPosition.yPosition) < 2.0){
+  if(lastPosition.xPosition == currentPosition.xPosition && lastPosition.yPosition == currentPosition.yPosition ){
     driveStopParameter++;
   }
   if((fabs(lastPosition.xPosition) - fabs(currentPosition.xPosition)) > 5 || (fabs(lastPosition.yPosition) - fabs(currentPosition.yPosition)) > 5)

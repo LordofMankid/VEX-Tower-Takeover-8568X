@@ -1,6 +1,7 @@
 #include "main.h"
 
 bool autonRunning;
+bool runOnce = true;
 rectCoord target;
 void setAutonButton(){
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
@@ -16,11 +17,54 @@ void setAutonButton(){
       //redStackFive();
       blueStackFive();
       //autonCorrect();
+      //scoreTurnLeft();
+      //scoreTurnRight();
       break;
   }
 
     autonRunning = false;
     setDriveBrake();
+}
+
+void scoreTurnLeft(){
+  while(1){
+    if(driveStep == 0)
+      translate(20.0, 0, 100);
+    if(driveStep == 1)
+      translate(-20.0, 0, 100);
+
+    if(driveStep == 2)
+      rotate(-90, 100);
+    slopeMove(2500, 127, 3, 1);
+    startIntake(1500, -127, 4, 1);
+    if(driveStep == 3){
+      pros::delay(500);
+      driveStep++;
+    }
+    slopeMove(0, 127, 5, 2);
+    pros::delay(10);
+  }
+
+}
+
+void scoreTurnRight(){
+  while(1){
+    if(driveStep == 0)
+      translate(20.0, 0, 100);
+    if(driveStep == 1)
+      translate(-20.0, 0, 100);
+    if(driveStep == 2)
+      rotate(90, 100);
+    slopeMove(2500, 127, 3, 1);
+    startIntake(1500, -127, 4, 1);
+    if(driveStep == 3){
+      pros::delay(500);
+      driveStep++;
+    }
+    slopeMove(0, 127, 5, 2);
+    pros::delay(10);
+  }
+
 }
 
 void slopeTest(){
@@ -85,25 +129,48 @@ void multipleSubsystemTest(){
 void redStackFive(){
 
   while(1){
-    updatePosition();
-    if(slopeLimit.get_value() == 1)
-        slopeLift.tare_position();
-    slopeAngle = slopeLift.get_position();
-    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
-      break;
-    //note for later, can you abuse the 'hold' boolean and have it start the intake, not letting any other intake commands go until you say stop
-    slopeMove(2500, 127, 0, 1);
-    startIntake(1500, -127, 1, 1);
-    if(driveStep == 1){
-      pros::delay(500);
-      driveStep++;
+    while(1){
+      updatePosition();
+      if(slopeLimit.get_value() == 1)
+          slopeLift.tare_position();
+      slopeAngle = slopeLift.get_position();
+
+      if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+        break;
+      //note for later, can you abuse the 'hold' boolean and have it start the intake, not letting any other intake commands go until you say stop
+      slopeMove(2500, 127, 0, 1);
+      startIntake(1500, -127, 1, 1);
+      if(driveStep == 1){
+        pros::delay(500);
+        driveStep++;
+      }
+      slopeMove(0, 127, 2, 2);
+      printf("slope %f", slopeAngle);
+      if(driveStep == 3){
+        translate(45.0, 0, 45);
+        printf("hi there");
+      }
+      startIntake(5000, 127, 3, 2);
+      if(driveStep == 4){
+        translate(-22.5, 0, 50);
+      }
+      if(driveStep == 5){
+        rotate(135, 100);
+      }
+      if(driveStep == 6){
+        if(runOnce == true){
+            resetPosition();
+            runOnce = false;
+        }
+        translate(19.0, 0, 50);
+      }
+      slopeMove(5000, 127, 7, 3);
+      if(driveStep == 7){
+        translate(-19.0, 0, 50);
+      }
+      pros::delay(10);
     }
-    slopeMove(0, 127, 2, 2);
-    if(driveStep == 2){
-      translate(45.0, 0, 50);
-      printf("hi there");
-    }
-    startIntake(5000, 127, 3, 2);
+      printf("autonStep %i\n", driveStep);
 
   }
 }
@@ -138,9 +205,16 @@ void blueStackFive(){
       rotate(-135, 100);
     }
     if(driveStep == 6){
-      translateY(20.5, 50);
+      if(runOnce == true){
+          resetPosition();
+          runOnce = false;
+      }
+      translate(19.0, 0, 50);
     }
     slopeMove(5000, 127, 7, 3);
+    if(driveStep == 7){
+      translate(-19.0, 0, 50);
+    }
     pros::delay(10);
   }
     printf("autonStep %i\n", driveStep);

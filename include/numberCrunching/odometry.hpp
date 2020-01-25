@@ -28,6 +28,7 @@ rectCoord polarToRect(double r, double theta);
 
 
 //////
+void resetPosition();
 
 void updatePosition(); //main position tracking algorithm
 

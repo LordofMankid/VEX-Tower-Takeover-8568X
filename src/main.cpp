@@ -71,11 +71,14 @@ void autonomous() {
 	adjustPID = createkPID(2.0, 0.0, 0.045);
 	driveStep = 0;
 	setDriveCoast();
-	//autonStackFiveRed();//run auton
-	//autonStackFiveBlue();
+	//slopeTest();
+	//intakeTest();
+	//multipleSubsystemTest();
+	//redStackFive();
+	blueStackFive();
 	//autonCorrect();
-	//autonTest();
-	//autonTurn();
+	//scoreTurnLeft();
+	//scoreTurnRight();
 
 
 
@@ -97,7 +100,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-okapi::Timer timer;
+
 
 	while (true) {
 
@@ -120,7 +123,7 @@ okapi::Timer timer;
 
 		KpDrive = adjustKp(KpDrive, 0.05);
 		if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1){
-			resetTrackingWheels();
+			void resetPosition();
 
 			slopeLift.tare_position();
 		}

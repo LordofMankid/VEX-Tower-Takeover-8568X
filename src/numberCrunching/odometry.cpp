@@ -82,6 +82,16 @@ rectCoord polarToRect(double r, double theta){
 
 /////THE JUICE/////
 
+void resetPosition(){
+  resetTrackingWheels();
+  for(int i = 0; i < 5; i++){
+    resetTrackingWheels();
+    currPosition.xPosition = 0;
+    currPosition.yPosition = 0;
+    currPosition.angle = 0;
+  }
+
+}
 
 void updatePosition(){
 //steps will correspond with Pilons thing

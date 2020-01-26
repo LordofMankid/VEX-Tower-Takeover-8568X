@@ -31,9 +31,9 @@ void setSlopeMotors(){
 if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1 || slopeLimit.get_value() == 1)
     slopeLift.tare_position();
   slopeAngle = slopeLift.get_position();
-  voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
+  voltageSlope = PIDloop(0.05, 0.0, 0.0, 5050, slopeAngle);
 
-  if(slopeAngle > 2500 && slopeAngle < 5000)
+  if(slopeAngle > 2500 && slopeAngle < 5050)
     {
         //voltageSlope = 100;
       //if(slopeAngle > 2400 && slopeAngle < 3600)
@@ -47,7 +47,7 @@ if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1 || slopeLimit.get_v
     }
     else
     {
-      voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
+      voltageSlope = PIDloop(0.05, 0.0, 0.0, 5050, slopeAngle);
     }
   if(slopeAngle < 100)
     slopeDownPower = 0;

@@ -22,6 +22,10 @@ void multipleSubsystemTest();
 void redStackFive();
 
 void blueStackFive();
+
+void scoreTurnLeft();
+
+void scoreTurnRight();
 /*void autonTurn();
 
 void autonOne();

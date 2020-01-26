@@ -15,9 +15,9 @@ void setAutonButton(){
       //intakeTest();
       //multipleSubsystemTest();
       //redStackFive();
-      blueStackFive();
+      //blueStackFive();
       //autonCorrect();
-      //scoreTurnLeft();
+      scoreTurnLeft();
       //scoreTurnRight();
       break;
   }
@@ -28,20 +28,42 @@ void setAutonButton(){
 
 void scoreTurnLeft(){
   while(1){
-    if(driveStep == 0)
-      translate(20.0, 0, 100);
-    if(driveStep == 1)
-      translate(-20.0, 0, 100);
+    updatePosition();
+    if(slopeLimit.get_value() == 1)
+        slopeLift.tare_position();
+    slopeAngle = slopeLift.get_position();
 
-    if(driveStep == 2)
-      rotate(-90, 100);
-    slopeMove(2500, 127, 3, 1);
-    startIntake(1500, -127, 4, 1);
-    if(driveStep == 3){
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+      break;
+    //note for later, can you abuse the 'hold' boolean and have it start the intake, not letting any other intake commands go until you say stop
+    slopeMove(2500, 127, 0, 1);
+    startIntake(1500, -127, 1, 1);
+    if(driveStep == 1){
       pros::delay(500);
       driveStep++;
     }
-    slopeMove(0, 127, 5, 2);
+    slopeMove(0, 127, 2, 2);
+    printf("slope %f", slopeAngle);
+    if(driveStep == 3){
+      translate(30.0, 0, 50);
+      printf("hi there");
+    }
+    if(driveStep == 4){
+      if(runOnce == true){
+          resetPosition();
+          runOnce = false;
+          adjustkPID(forwardPID, 0.0, 0.0, 0.07);
+          translate(-20.0, 0, 20);
+    }
+    if(driveStep == 5){
+      translate(0, 0, 0);
+    }
+
+      printf(",hi there");
+    }
+    if(driveStep == 5){
+      translate(0, 0, 0);
+    }
     pros::delay(10);
   }
 
@@ -57,7 +79,7 @@ void scoreTurnRight(){
       rotate(90, 100);
     slopeMove(2500, 127, 3, 1);
     startIntake(1500, -127, 4, 1);
-    if(driveStep == 3){
+    if(driveStep == 4){
       pros::delay(500);
       driveStep++;
     }
@@ -128,7 +150,7 @@ void multipleSubsystemTest(){
 
 void redStackFive(){
 
-  while(1){
+
     while(1){
       updatePosition();
       if(slopeLimit.get_value() == 1)
@@ -146,33 +168,20 @@ void redStackFive(){
       }
       slopeMove(0, 127, 2, 2);
       printf("slope %f", slopeAngle);
+      startIntake(5000, 127, 2, 2);
       if(driveStep == 3){
-        translate(45.0, 0, 45);
+        translate(42.0, 0, 45);
         printf("hi there");
       }
-      startIntake(5000, 127, 3, 2);
+
       if(driveStep == 4){
-        translate(-22.5, 0, 50);
-      }
-      if(driveStep == 5){
-        rotate(135, 100);
-      }
-      if(driveStep == 6){
-        if(runOnce == true){
-            resetPosition();
-            runOnce = false;
-        }
-        translate(19.0, 0, 50);
-      }
-      slopeMove(5000, 127, 7, 3);
-      if(driveStep == 7){
-        translate(-19.0, 0, 50);
+        translate(0, 0, 0);
       }
       pros::delay(10);
     }
       printf("autonStep %i\n", driveStep);
 
-  }
+
 }
 
 void blueStackFive(){
@@ -212,7 +221,7 @@ void blueStackFive(){
       translate(19.0, 0, 50);
     }
     slopeMove(5000, 127, 7, 3);
-    if(driveStep == 7){
+    if(driveStep == 8){
       translate(-19.0, 0, 50);
     }
     pros::delay(10);

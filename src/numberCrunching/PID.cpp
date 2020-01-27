@@ -88,15 +88,12 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
 }
 
 //pass in 2 structure "positions" with an X and Y
-  int PIDdrive(kPID kPID, rectCoord targetPosition,  position currPosition){
+int PIDdrive(kPID kPID, double targetDistance, double distanceFromTarget){
     int voltage;
 
     //sets error
-    error = findDistance(targetPosition, currPosition);
-    if(targetPosition.y < 0)
-      error *= -1;
-    if(distanceFromInitial > initTargetDistance)
-      error *= -1;
+    error = targetDistance - distanceFromTarget;
+
     //increases error based on time taken to reach target - if resistance is encountered then integral will increase
     integral = integral + error;
     //resets integral if place is reached

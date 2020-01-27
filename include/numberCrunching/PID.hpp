@@ -31,6 +31,8 @@ kPID adjustkPID(kPID kPID, double kP, double kI, double kD);
 //do stuff functions
 kPID tunePID(kPID kPID);
 
+int PIDdrive(kPID kPID, double targetDistance, double distanceFromTarget);
+
 int PIDdrive(kPID kPID, rectCoord targetPosition, position currPosition);
 
 int PIDloop(kPID kPID, double units, double EncoderValue);

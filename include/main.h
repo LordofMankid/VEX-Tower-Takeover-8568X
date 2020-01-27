@@ -77,10 +77,10 @@ void opcontrol(void);
 #include "subsystemHeaders/drive.hpp"
 #include "subsystemHeaders/globals.hpp"
 #include "subsystemHeaders/slope.hpp"
-#include "subsystemHeaders/intakeAndArm.hpp"
-#include "subsystemHeaders/autonomousCode.hpp"
-#include "subsystemHeaders/alternateAuton.hpp"
 #include "numberCrunching/PID.hpp"
+#include "subsystemHeaders/intakeAndArm.hpp"
+#include "subsystemHeaders/alternateAuton.hpp"
+#include "subsystemHeaders/autonomousCode.hpp"
 
 /**
  * You can add C++-only headers here

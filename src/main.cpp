@@ -125,7 +125,7 @@ void opcontrol() {
 		if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1){
 			resetPosition();
 
-			slopeLift.tare_position();
+//			slopeLift.tare_position();
 		}
 
 

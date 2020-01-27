@@ -7,7 +7,7 @@ double slopeAngle;
 int slopeStopParameter;
 int percentageSlope;
 int macroPower;
-int slopeDownPower;
+int slopeDownPower = 127;
 
 bool slopeFirstCycle;
 bool slopeOn = true;
@@ -28,35 +28,35 @@ void setSlopeVelocity(int velocity){
 //DRIVER CODE
 void setSlopeMotors(){
 
-if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1 || slopeLimit.get_value() == 1)
+  if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1 || slopeLimit.get_value() == 1){
     slopeLift.tare_position();
+    slopeDownPower = 0;
+  }
+  else
+    slopeDownPower = 127;
   slopeAngle = slopeLift.get_position();
-  voltageSlope = PIDloop(0.05, 0.0, 0.0, 5050, slopeAngle);
+  voltageSlope = 127;
 
-  if(slopeAngle > 2500 && slopeAngle < 5050)
+  if(slopeAngle > 2500 && slopeAngle < 6300)
     {
         //voltageSlope = 100;
       //if(slopeAngle > 2400 && slopeAngle < 3600)
         //voltageSlope = 60;
-      if(slopeAngle > 3800 && slopeAngle <= 4700)
-        voltageSlope = 52;
-      if(slopeAngle > 4700)
+      if(slopeAngle > 3800 && slopeAngle <= 5700)
+        voltageSlope = 60;
+      if(slopeAngle > 5700)
         voltageSlope = 40;
 
       pros::lcd::print(5, "slope power= %i", voltageSlope);
     }
-    else
+    if(slopeAngle >= 6300)
     {
-      voltageSlope = PIDloop(0.05, 0.0, 0.0, 5050, slopeAngle);
+      voltageSlope = 30;
     }
-  if(slopeAngle < 100)
-    slopeDownPower = 0;
-  else
-    slopeDownPower = 127;
+    slopePower = voltageSlope*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) - slopeDownPower*controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2);
 
-  slopePower = voltageSlope*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2);
 
-  macroPower = 80*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN);
+  macroPower = 80*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) - slopeDownPower*controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN);
 
 
   slopeLift = slopePower + macroPower;

@@ -72,14 +72,14 @@ void opcontrol(void);
 #endif
 
 #ifdef __cplusplus
+#include "numberCrunching/odometry.hpp"
+#include "numberCrunching/numberCrunching.hpp"
 #include "subsystemHeaders/drive.hpp"
 #include "subsystemHeaders/globals.hpp"
 #include "subsystemHeaders/slope.hpp"
 #include "subsystemHeaders/intakeAndArm.hpp"
 #include "subsystemHeaders/autonomousCode.hpp"
 #include "subsystemHeaders/alternateAuton.hpp"
-#include "numberCrunching/odometry.hpp"
-#include "numberCrunching/numberCrunching.hpp"
 #include "numberCrunching/PID.hpp"
 
 /**

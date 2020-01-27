@@ -2,7 +2,41 @@
 
 bool autonRunning;
 bool runOnce = true;
-rectCoord target;
+
+
+//HELPER FUNCTIONS
+void autonUpdate(){
+  updatePosition();
+  if(slopeLimit.get_value() == 1)
+      slopeLift.tare_position();
+  slopeAngle = slopeLift.get_position();
+
+}
+
+void delay(int time, int targDriveStep){
+  if(driveStep == targDriveStep){
+    pros::delay(500);
+    driveStep++;
+  }
+}
+/*
+void startFunction(*function, int driveStepNumber, int subsysStep int subsystemStepNumber)
+    if(subsysStep == subsystemStepNumber){
+      if(driveStep == driveStepNumber){
+        initial stuff;
+      }
+      runFunction();
+    }
+
+*/
+void adjustkPID(kPID kPID, double kP, double kI, double kD, int driveStepNumber){
+
+  if(driveStep == driveStepNumber){
+    kPID = adjustkPID(kPID, kP, kI, kD);
+
+  }
+}
+
 void setAutonButton(){
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
@@ -17,7 +51,7 @@ void setAutonButton(){
       //redStackFive();
       //blueStackFive();
       //autonCorrect();
-      scoreTurnLeft();
+      //scoreTurnLeft();
       //scoreTurnRight();
       break;
   }
@@ -25,13 +59,29 @@ void setAutonButton(){
     autonRunning = false;
     setDriveBrake();
 }
+void autonDriveTest(){
+  while(1){
+    autonUpdate();
+    translate(20.0, 0.0, 0.0, 100, 0);
+    delay(500, 1);
+    translate(-20.0, 0.0, 0.0, 100, 2);
+    delay(500, 3);
+    rotate(45.0, 100, 4);
+    delay(500, 5);
+    translate(10.0, 0.0, 45.0, 100, 6);
+    delay(500, 7);
+    translate(-10, 0.0, 0.0, 100, 8);
+    delay(500, 9);
+    rotate(-135, 100, 10);
+    delay(500, 11);
+    translate(10, 0.0, -135, 100, 12);
+  }
 
+}
+/*
 void scoreTurnLeft(){
   while(1){
-    updatePosition();
-    if(slopeLimit.get_value() == 1)
-        slopeLift.tare_position();
-    slopeAngle = slopeLift.get_position();
+    autonUpdate();
 
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       break;
@@ -71,6 +121,7 @@ void scoreTurnLeft(){
 
 void scoreTurnRight(){
   while(1){
+    autonUpdate();
     if(driveStep == 0)
       translate(20.0, 0, 100);
     if(driveStep == 1)
@@ -92,10 +143,7 @@ void scoreTurnRight(){
 void slopeTest(){
 
   while(1){
-    updatePosition();
-    if(slopeLimit.get_value() == 1)
-        slopeLift.tare_position();
-    slopeAngle = slopeLift.get_position();
+    autonUpdate();
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       break;
       slopeMove(2000, 127, 0, 1);
@@ -110,10 +158,8 @@ void slopeTest(){
 
 void intakeTest(){
   while(1){
-    updatePosition();
-    if(slopeLimit.get_value() == 1)
-        slopeLift.tare_position();
-    slopeAngle = slopeLift.get_position();
+    autonUpdate();
+
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       break;
     startIntake(1000, 127, 0, 1);
@@ -129,10 +175,7 @@ void intakeTest(){
 
 void multipleSubsystemTest(){
   while(1){
-    updatePosition();
-    if(slopeLimit.get_value() == 1)
-        slopeLift.tare_position();
-    slopeAngle = slopeLift.get_position();
+    autonUpdate();
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       break;
     slopeMove(2500, 127, 0, 1);
@@ -147,16 +190,12 @@ void multipleSubsystemTest(){
   }
 
 }
-
+/*
 void redStackFive(){
 
 
     while(1){
-      updatePosition();
-      if(slopeLimit.get_value() == 1)
-          slopeLift.tare_position();
-      slopeAngle = slopeLift.get_position();
-
+      autonUpdate();
       if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
         break;
       //note for later, can you abuse the 'hold' boolean and have it start the intake, not letting any other intake commands go until you say stop
@@ -186,10 +225,7 @@ void redStackFive(){
 
 void blueStackFive(){
   while(1){
-    updatePosition();
-    if(slopeLimit.get_value() == 1)
-        slopeLift.tare_position();
-    slopeAngle = slopeLift.get_position();
+    autonUpdate();
 
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       break;
@@ -227,15 +263,16 @@ void blueStackFive(){
     pros::delay(10);
   }
     printf("autonStep %i\n", driveStep);
-}
+}*/
+/*
 void autonCorrect(){
   while(1){
-    updatePosition();
+    autonUpdate();
     if(driveStep == 0)
       rotate(180.0, 100);
     pros::delay(10);
   }
-}
+}*/
 
 /*void autonStackFiveRed(){
   double firstMove;

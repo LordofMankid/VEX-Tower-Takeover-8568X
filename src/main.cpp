@@ -77,7 +77,7 @@ void autonomous() {
 	//redStackFive();
 	//blueStackFive();
 	//autonCorrect();
-	scoreTurnLeft();
+	//scoreTurnLeft();
 	//scoreTurnRight();
 
 

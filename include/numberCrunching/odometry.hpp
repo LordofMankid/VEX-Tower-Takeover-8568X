@@ -19,7 +19,7 @@ typedef struct rectCoord{
   double y;
 } rectCoord;
 
-extern rectCoord target;
+
 //HELPER FUNCTIONS -- Functions used in other functions listed here
 
 polarCoord rectToPolar(double x, double y);

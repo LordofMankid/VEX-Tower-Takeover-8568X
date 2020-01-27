@@ -10,6 +10,8 @@ extern double KdDrive;
 extern double KiDrive;
 
 //auton variables
+//extern rectCoord relTarget;
+extern rectCoord absTarget;
 
 extern bool firstCycle;
 extern int driveStep;
@@ -53,9 +55,15 @@ void resetDriveEncoders();
 /*
 Tells robot to travel along the y-axis, with a target distance in inches, and a integer maxSpeed, range -127 - 127;
 */
+
+void translate(double targetDistance, double targetTheta, double endingOrientation, int maxSpeed, int driveStepNumber);
+void translate(double targetDistance, double targetTheta,  int maxSpeed);
+
+
+void rotate(double targetOrientation, int maxSpeed, int driveStepNumber);
 void rotate(double targetOrientation, int maxSpeed);
 
-void translate(double targetDistance, double targetTheta,  int maxSpeed);
+
 
 void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, double KpAdjustX);
 

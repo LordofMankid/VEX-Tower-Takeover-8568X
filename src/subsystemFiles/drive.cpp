@@ -34,6 +34,9 @@ double distanceFromInitial;
 double initTargetDistance;
 double lastOrientation;
 double correctionThreshold;
+
+//rectCoord relTarget;
+rectCoord absTarget;
 //
 //HELPER FUNCTIONS
 void setDrive(int yPower, int rPower){
@@ -86,84 +89,91 @@ void setDriveMotors(){
 }
 
 //AUTONOMOUS FUNCTIONS
-void translate(double targetDistance, double targetTheta,  int maxSpeed){
-int direction;
-  direction = fabs(targetDistance)/targetDistance;
-  if(firstCycle == true){
+void translate(double targetDistance, double targetTheta, double endingOrientation, int maxSpeed, int driveStepNumber){
 
-    //printf("kP %f", forwardPID.kP);
-    initialPosition = currPosition;
-    target = polarToRect(targetDistance, targetTheta);
-    initTargetDistance = findDistance(target, initialPosition);
-    firstCycle = false;
-    correctionThreshold = 40;
+
+  if(driveStep == driveStepNumber){
+
+    if(firstCycle == true){
+      rectCoord relTarget;
+      //printf("kP %f", forwardPID.kP);
+      initialPosition = currPosition;
+      relTarget = polarToRect(targetDistance, targetTheta);
+      absTarget = vectorSummation(relTarget, initialPosition);
+      initTargetDistance = targetDistance;
+      firstCycle = false;
+      correctionThreshold = 40;
+    }
+
+    //Finds the distance from the initial point
+    //distanceFromInitial = findDistance(initialPosition, currPosition);
+    printf("init %f\n target %f", distanceFromInitial, initTargetDistance);
+    //Finds the target orientation and converts the sign as necessary, 0 degrees being forward
+    targetOrientation = PI/2 - atan2(absTarget.y-currPosition.yPosition, absTarget.x-currPosition.xPosition);
+    if(targetOrientation >= PI)
+      targetOrientation -= 2*PI;
+    else if(targetOrientation <= -PI)
+      targetOrientation += 2*PI;
+
+
+      //Sets the PID loop
+    voltageY = PIDdrive(forwardPID, targetDistance, findDistance(absTarget, currPosition));
+    if(findDistance(absTarget, currPosition)*10 < correctionThreshold){
+      double correctedOrientation;
+      correctedOrientation = findDistance(absTarget, currPosition)/correctionThreshold*targetOrientation*180/PI + (1-(findDistance(absTarget, currPosition)/correctionThreshold))*targetTheta;
+      voltageR = PIDloop(adjustPID, correctedOrientation, getAngleDeg());
+    //  printf("distance to target: %f \nnew targetAngle %f\nangle %f\n", findDistance(target, currPosition), correctedOrientation, getAngleDeg());
+    }
+    else
+      voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
+
+    //printf("target angle %f \nvoltageR %i\ndistFromSts %f\nvoltageY %i\n", targetOrientation*180/PI, voltageR, distanceFromInitial, voltageY);
+
+    //Sets limit to speed as necessary
+    if(abs(voltageY) > maxSpeed)
+      voltageY = voltageY/abs(voltageY)*maxSpeed;
+    if(abs(voltageR) > maxSpeed)
+      voltageR = voltageR/abs(voltageR)*maxSpeed;
+
+    //Sets the drive
+    setDrive(voltageY, voltageR);
+
+    //Checks if target is reached
+    targetReached = positionReachCheck(currPosition, lastPosition, targetReached, absTarget);
+
+    //Updates last position to compare for next cycle
+    lastPosition = currPosition;
+
+    //Resets for next step if target is reached
+    if(targetReached > 50){
+      setDrive(0,0);
+      driveStep++;
+      firstCycle = true;
+      targetReached = 0;
+    }
   }
 
-  //Finds the distance from the initial point
-  distanceFromInitial = findDistance(initialPosition, currPosition);
-  printf("init %f\n target %f", distanceFromInitial, initTargetDistance);
-  //Finds the target orientation and converts the sign as necessary, 0 degrees being forward
-  targetOrientation = PI/2 - atan2(abs(target.y-currPosition.yPosition), target.x-currPosition.xPosition);
-  if(targetOrientation >= PI)
-    targetOrientation -= 2*PI;
-  else if(targetOrientation <= -PI)
-    targetOrientation += 2*PI;
-
-
-    //Sets the PID loop
-        voltageY = PIDdrive(forwardPID, target, currPosition);
-      if(findDistance(target, currPosition)*10 < correctionThreshold){
-        double correctedOrientation;
-        correctedOrientation = direction*(findDistance(target, currPosition)/correctionThreshold*targetOrientation*180/PI + (1-(findDistance(target, currPosition)/correctionThreshold))*targetTheta);
-        voltageR = PIDloop(adjustPID, correctedOrientation, getAngleDeg());
-      //  printf("distance to target: %f \nnew targetAngle %f\nangle %f\n", findDistance(target, currPosition), correctedOrientation, getAngleDeg());
-      }
-      else
-        voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
-
-  //printf("target angle %f \nvoltageR %i\ndistFromSts %f\nvoltageY %i\n", targetOrientation*180/PI, voltageR, distanceFromInitial, voltageY);
-
-  //Sets limit to speed as necessary
-  if(abs(voltageY) > maxSpeed)
-    voltageY = voltageY/abs(voltageY)*maxSpeed;
-  if(abs(voltageR) > maxSpeed)
-    voltageR = voltageR/abs(voltageR)*maxSpeed;
-
-  //Sets the drive
-  setDrive(voltageY, voltageR);
-
-  //Checks if target is reached
-  targetReached = positionReachCheck(currPosition, lastPosition, targetReached, target);
-
-  //Updates last position to compare for next cycle
-  lastPosition = currPosition;
-
-  //Resets for next step if target is reached
-  if(targetReached > 50){
-    setDrive(0,0);
-    driveStep++;
-    firstCycle = true;
-    targetReached = 0;
-  }
 }
 
-void rotate(double targetOrientation, int maxSpeed){
+void rotate(double targetOrientation, int maxSpeed, int driveStepNumber){
 
-  voltageR = PIDloop(turnPID, targetOrientation, getAngleDeg());
-  if(abs(voltageR) > maxSpeed)
-    voltageR = voltageR/abs(voltageR)*maxSpeed;
-  printf("voltageR %i\n", voltageR);
+  if(driveStep == driveStepNumber){
+    voltageR = PIDloop(turnPID, targetOrientation, getAngleDeg());
+    if(abs(voltageR) > maxSpeed)
+      voltageR = voltageR/abs(voltageR)*maxSpeed;
+    printf("voltageR %i\n", voltageR);
 
-  setDrive(0, voltageR);
+    setDrive(0, voltageR);
 
-  targetReached = positionReachCheck(getAngleDeg(), lastOrientation, targetReached, targetOrientation, 25.0);
+    targetReached = positionReachCheck(getAngleDeg(), lastOrientation, targetReached, targetOrientation, 25.0);
 
-  lastOrientation = getAngleDeg();
-  if(targetReached > 50){
-    setDrive(0,0);
-    driveStep++;
-    firstCycle = true;
-    targetReached = 0;
+    lastOrientation = getAngleDeg();
+    if(targetReached > 50){
+      setDrive(0,0);
+      driveStep++;
+      firstCycle = true;
+      targetReached = 0;
+    }
   }
 
 }
@@ -174,7 +184,7 @@ void translateY(double unitsY, double maxSpeed){
     //printf("kP %f", forwardPID.kP);
     initialPosition = currPosition;
     resetTrackingWheels();
-    initTargetDistance = findDistance(target, initialPosition);
+    initTargetDistance = findDistance(absTarget, initialPosition);
     firstCycle = false;
     correctionThreshold = 40;
   }

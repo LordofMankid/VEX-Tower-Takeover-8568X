@@ -30,6 +30,22 @@ double findDistance(position position1, position position2){
   return sqrt(pow(position1.yPosition-position2.yPosition,2) + pow(position1.xPosition-position2.xPosition,2));
 }
 
+rectCoord vectorSummation(rectCoord v1, rectCoord v2){
+  rectCoord newVector;
+  newVector.y = v1.y + v2.y;
+  newVector.x = v1.x + v2.x;
+
+  return newVector;
+}
+
+rectCoord vectorSummation(rectCoord v1, position v2){
+  rectCoord newVector;
+  newVector.y = v1.y + v2.yPosition;
+  newVector.x = v1.x + v2.xPosition;
+
+  return newVector;
+}
+
 double getAngle(){
   return angle;
 }
@@ -41,9 +57,9 @@ int positionReachCheck(position currentPosition, position lastPosition, int driv
   if(lastPosition.xPosition == currentPosition.xPosition && lastPosition.yPosition == currentPosition.yPosition ){
     driveStopParameter++;
   }
-  if((fabs(lastPosition.xPosition) - fabs(currentPosition.xPosition)) > 5 || (fabs(lastPosition.yPosition) - fabs(currentPosition.yPosition)) > 5)
+  if((fabs(lastPosition.xPosition - currentPosition.xPosition)) > 5 || (fabs(lastPosition.yPosition - currentPosition.yPosition)) > 5)
   {
-      driveStopParameter = 0.0;
+      driveStopParameter = 0;
   }
   return driveStopParameter;
 

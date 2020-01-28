@@ -27,6 +27,8 @@ double targetOrientation;
 bool firstCycle = true;
 int targetReached;
 int driveStep = 0;
+int autonDirection;
+
 position lastPosition;
 
 position initialPosition;
@@ -93,7 +95,6 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
 
 
   if(driveStep == driveStepNumber){
-
     if(firstCycle == true){
       rectCoord relTarget;
       //printf("kP %f", forwardPID.kP);
@@ -101,6 +102,7 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       relTarget = polarToRect(targetDistance, targetTheta);
       absTarget = vectorSummation(relTarget, initialPosition);
       initTargetDistance = targetDistance;
+      direction = absoluteDirection(absTarget, initialPosition, initialPosition.angle);
       firstCycle = false;
       correctionThreshold = 40;
     }

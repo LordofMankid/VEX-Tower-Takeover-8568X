@@ -15,6 +15,7 @@ extern rectCoord absTarget;
 
 extern bool firstCycle;
 extern int driveStep;
+extern int autonDirection;
 extern double distanceFromInitial;
 extern double initTargetDistance;
 

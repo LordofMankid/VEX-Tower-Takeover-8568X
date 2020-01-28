@@ -12,13 +12,18 @@ int RightPressed;
 int placeHolder;
 int stepChangeTimes = 0;
 
-void nextStep(int stepSet, int time){
-  if(stepChangeTimes == time){
-    driveStep = stepSet;
-    stepChangeTimes++;
-  }
-}
 //Helper Functions
+double radModulo(double theta){
+  theta += PI;
+  while(theta < 0) {
+    theta +=2*PI;
+  }
+  theta = modulo(theta, 2*PI);
+  theta -= PI;
+
+  return theta;
+}
+
 double findDistance(rectCoord targetCoord, position position){
   if(targetCoord.y < 0)
     return sqrt(pow(targetCoord.y+position.yPosition,2) + pow(targetCoord.x-position.xPosition,2));
@@ -45,6 +50,50 @@ rectCoord vectorSummation(rectCoord v1, position v2){
 
   return newVector;
 }
+
+
+int targetPass(rectCoord target, position currentPosition, double targetTheta){
+  double limitLineSlope = tan(PI/2+targetTheta);
+
+  if((currentPosition.yPosition/limitLineSlope - currentPosition.xPosition) > target.y/limitLineSlope - target.x)
+    return -1;
+  else
+    return 1;
+}
+
+int targetRelativePos(rectCoord target, position position, double initialTheta){
+  double currPosSlope = tan(PI/2 + initialTheta);
+
+    if((target.y/currPosSlope - target.x) > position.yPosition/currPosSlope - position.xPosition)
+      return 1; //target is forward relative to position (not orientation)
+    else
+      return -1;
+
+}
+
+int targetRelativeOrientation(double initialTheta){
+  double currPosSlope = tan(PI/2 + initialTheta);
+  double minThetaLimit = radModulo(initialTheta-PI/2);
+  double maxThetaLimit = radModulo(initialTheta+PI/2);
+
+  if(minThetaLimit < initialTheta < maxThetaLimit)
+    return 1; //target faces forward
+  else
+    return -1; //target faces backward
+}
+
+int absoluteDirection(rectCoord target, position position, double initialTheta){
+  return targetRelativePos(target, position, initialTheta)*targetRelativeOrientation(initialTheta);
+}
+
+
+void nextStep(int stepSet, int time){
+  if(stepChangeTimes == time){
+    driveStep = stepSet;
+    stepChangeTimes++;
+  }
+}
+
 
 double getAngle(){
   return angle;

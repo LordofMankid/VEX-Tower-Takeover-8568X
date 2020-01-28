@@ -17,6 +17,15 @@ double findDistance(rectCoord targetCoord, position position);
 
 double findDistance(position position1, position position2);
 
+/*For use in the PID loop, checks to see if the current position has passed an auton line, return 1 for no, -1 for yes
+ @Assumes current orientation is towards the line */
+int targetPass(rectCoord target, position currentPosition, double targetTheta);
+
+int targetRelativePos(rectCoord target, position currentPosition, double initialTheta);
+
+int targetRelativeOrientation(double initialTheta);
+
+int absoluteDirection(rectCoord target, position position, double initialTheta);
 
 int positionReachCheck(position currentPosition, position lastPosition, int driveStopParameter, rectCoord target);
 double positionReachCheck(double currentPositionY, double currentPositionX, double lastPositionY, double lastPositionX,  double driveStopParameter, double targetY, double targetX);

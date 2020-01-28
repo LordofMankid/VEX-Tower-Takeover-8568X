@@ -12,7 +12,7 @@ void autonUpdate(){
   slopeAngle = slopeLift.get_position();
 
 }
-/*
+
 void delay(int time, int targDriveStep){
   if(driveStep == targDriveStep){
     pros::delay(500);
@@ -190,7 +190,7 @@ void multipleSubsystemTest(){
   }
 
 }
-/*
+
 void redStackFive(){
 
 

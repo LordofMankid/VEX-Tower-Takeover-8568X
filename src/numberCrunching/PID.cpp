@@ -92,8 +92,8 @@ int PIDdrive(kPID kPID, double targetDistance, double distanceFromTarget){
     int voltage;
 
     //sets error
-    error = targetDistance - distanceFromTarget;
-
+    error = autonDirection*distanceFromTarget;
+    
     //increases error based on time taken to reach target - if resistance is encountered then integral will increase
     integral = integral + error;
     //resets integral if place is reached

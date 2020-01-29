@@ -41,7 +41,7 @@ void setAutonButton(){
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
     forwardPID = createkPID(9.5, 0.0, 0.25);
-    turnPID = createkPID(0.75, 0.0, 0.45);
+    turnPID = createkPID(1.75, 0.0, 0.45);
     adjustPID = createkPID(2.0, 0.0, 0.045);
     driveStep = 0;
     setDriveCoast();
@@ -52,7 +52,7 @@ void setAutonButton(){
       //blueStackFive();
       //autonCorrect();
       //scoreTurnLeft();
-      //scoreTurnRight();
+      autonDriveTest();
       break;
   }
 
@@ -62,19 +62,40 @@ void setAutonButton(){
 void autonDriveTest(){
   while(1){
     autonUpdate();
-    translate(20.0, 0.0, 0.0, 100, 0);
-    delay(500, 1);
-    translate(-20.0, 0.0, 0.0, 100, 2);
-    delay(500, 3);
-    rotate(45.0, 100, 4);
-    delay(500, 5);
-    translate(10.0, 0.0, 45.0, 100, 6);
+    slopeMove(2500, 127, 0, 1);
+    startIntake(1500, -127, 1, 1);
+    delay(10, 1);
+    delay(500, 2);
+    slopeMove(0, -127, 3, 2);
+    startIntake(5000, 127, 3, 2);
+    translate(40.0, 0.0, 0.0, 50, 4);
+    translate(-20.0, 0.0, 0.0, 100, 5);
+    rotate(-135.0, 100, 6);
+    if(driveStep == 7){
+      if(runOnce == true){
+          resetPosition();
+          runOnce = false;
+          driveStep++;
+        }
+    }
+
+    translate(10.0, 0.0, 0.0, 30, 8);
+    slopeMove(2500, 127, 9, 3);
+    translate(-10.0, 0, 0, 30, 10);
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+      break;
+
+
+
+    /*
     delay(500, 7);
     translate(-10, 0.0, 0.0, 100, 8);
     delay(500, 9);
     rotate(-135, 100, 10);
     delay(500, 11);
     translate(10, 0.0, -135, 100, 12);
+    printf("driveStep %i \n", driveStep);*/
+    pros::delay(10);
   }
 
 }
@@ -380,7 +401,7 @@ void autonloopTest(){
 
 }
 
-}*/
+}
 void autonSkills(){
 
     double firstMove;
@@ -404,3 +425,4 @@ void autonSkills(){
     rotatePID(40, 67, 0.00);
 
 }
+*/

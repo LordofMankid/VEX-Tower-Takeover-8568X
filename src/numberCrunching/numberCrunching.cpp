@@ -25,9 +25,7 @@ double radModulo(double theta){
 }
 
 double findDistance(rectCoord targetCoord, position position){
-  if(targetCoord.y < 0)
-    return sqrt(pow(targetCoord.y+position.yPosition,2) + pow(targetCoord.x-position.xPosition,2));
-  else
+
     return sqrt(pow(targetCoord.y-position.yPosition,2) + pow(targetCoord.x-position.xPosition,2));
 }
 
@@ -53,37 +51,90 @@ rectCoord vectorSummation(rectCoord v1, position v2){
 
 
 int targetPass(rectCoord target, position currentPosition, double targetTheta){
-  double limitLineSlope = tan(PI/2+targetTheta);
+  if(targetTheta == PI/2 || targetTheta == -PI/2){
+    if(currentPosition.xPosition < target.x)
+      return 1;
+    else
+      return -1;
+  }
+  else if(targetTheta == 0 || targetTheta == PI){
+    if(currentPosition.yPosition < target.y)
+      return 1;
+    else
+      return -1;
+  }
+  else{
+    double limitLineSlope = tan(PI/2 - targetTheta);
+    if(limitLineSlope < 0){
+      if((currentPosition.yPosition/limitLineSlope - currentPosition.xPosition) < target.y/limitLineSlope - target.x)
+        return 1;
+      else
+        return -1;
+    }
+    else{
+      if((currentPosition.yPosition/limitLineSlope - currentPosition.xPosition) > target.y/limitLineSlope - target.x)
+        return -1*targetRelativeOrientation(targetTheta);
+      else
+        return 1*targetRelativeOrientation(targetTheta);
+    }
+  }
 
-  if((currentPosition.yPosition/limitLineSlope - currentPosition.xPosition) > target.y/limitLineSlope - target.x)
-    return -1;
-  else
-    return 1;
 }
 
 int targetRelativePos(rectCoord target, position position, double initialTheta){
-  double currPosSlope = tan(PI/2 + initialTheta);
 
-    if((target.y/currPosSlope - target.x) > position.yPosition/currPosSlope - position.xPosition)
-      return 1; //target is forward relative to position (not orientation)
-    else
-      return -1;
+    if(initialTheta == PI/2 || initialTheta == -PI/2){
+      if(position.xPosition < target.x)
+        return 1;
+      else
+        return -1;
+    }
+    else if(initialTheta == 0 || initialTheta == PI){
+      if(position.yPosition < target.y)
+        return 1;
+      else
+        return -1;
+    }
+    else{
+      double currPosSlope = tan(initialTheta);
+      if(currPosSlope < 0){
+          if((target.y/currPosSlope - target.x) < position.yPosition/currPosSlope - position.xPosition)
+            return 1;
+          else
+            return -1;
+      }
+      else{
+        if((target.y/currPosSlope - target.x) > position.yPosition/currPosSlope - position.xPosition){
+          printf("currPosSlope %f\n left side%f\n rightSide%f\n", currPosSlope, target.y/currPosSlope - target.x, position.yPosition/currPosSlope - position.xPosition);
+          return 1;
+        }
+           //target is forward relative to position (not orientation)
+        else{
+          printf("currPosSlope %f\n left side%f\n rightSide%f\n", currPosSlope, target.y/currPosSlope - target.x, position.yPosition/currPosSlope - position.xPosition);
+          return -1;
+        }
+      }
+
+    }
 
 }
 
 int targetRelativeOrientation(double initialTheta){
-  double currPosSlope = tan(PI/2 + initialTheta);
+  double currPosSlope = tan(initialTheta);
   double minThetaLimit = radModulo(initialTheta-PI/2);
   double maxThetaLimit = radModulo(initialTheta+PI/2);
 
   if(minThetaLimit < initialTheta < maxThetaLimit)
-    return 1; //target faces forward
+    return 1; //robot faces forward
   else
     return -1; //target faces backward
 }
 
 int absoluteDirection(rectCoord target, position position, double initialTheta){
+
+  printf("target front %i\nfacing target%i\n", targetRelativePos(target, position, initialTheta), targetRelativeOrientation(initialTheta));
   return targetRelativePos(target, position, initialTheta)*targetRelativeOrientation(initialTheta);
+
 }
 
 

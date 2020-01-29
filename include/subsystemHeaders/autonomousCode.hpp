@@ -13,11 +13,15 @@ void setAutonButton();
 //HELPER
 void autonUpdate();
 
+
 void adjustkPID(kPID kPID, double kP, double kI, double kD, int driveStep);
 
 void delay(int time, int targDriveStep);
 
 //TESTS
+
+void autonDriveTest();
+
 void autonTest();
 
 void slopeTest();

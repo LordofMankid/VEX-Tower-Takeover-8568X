@@ -66,7 +66,7 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
   //sets error
   error = units - EncoderValue;
   pros::lcd::print(0, "error: %f, %f, %f", error, units, EncoderValue);
-  printf("encoder value %f\n units %f\n error %f\n", EncoderValue, units, error);
+
   //increases error based on time taken to reach target - if resistance is encountered then integral will increase
   integral = integral + error;
   //resets integral if place is reached
@@ -92,8 +92,11 @@ int PIDdrive(kPID kPID, double targetDistance, double distanceFromTarget){
     int voltage;
 
     //sets error
-    error = autonDirection*distanceFromTarget;
-    
+    limitPass = limitPass*autonDirection;
+
+    error = autonDirection*distanceFromTarget*limitPass;
+
+//    printf("voltage %i\n units %f\n error %f\n", voltage, targetDistance, error);
     //increases error based on time taken to reach target - if resistance is encountered then integral will increase
     integral = integral + error;
     //resets integral if place is reached
@@ -119,7 +122,7 @@ int PIDloop(float Kp, float Ki, float Kd, double units, double EncoderValue){
 
   //sets error
   error = units - EncoderValue;
-  pros::lcd::print(0, "error: %f, %f, %f", error, units, EncoderValue);
+//  pros::lcd::print(0, "error: %f, %f, %f", error, units, EncoderValue);
   //increases error based on time taken to reach target - if resistance is encountered then integral will increase
   integral = integral + error;
   //resets integral if place is reached

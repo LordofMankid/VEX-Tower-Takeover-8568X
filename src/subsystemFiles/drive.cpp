@@ -28,7 +28,7 @@ bool firstCycle = true;
 int targetReached;
 int driveStep = 0;
 int autonDirection;
-
+int limitPass;
 position lastPosition;
 
 position initialPosition;
@@ -99,35 +99,47 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       rectCoord relTarget;
       //printf("kP %f", forwardPID.kP);
       initialPosition = currPosition;
-      relTarget = polarToRect(targetDistance, targetTheta);
+      relTarget = polarToRect(targetDistance, targetTheta*PI/180);
       absTarget = vectorSummation(relTarget, initialPosition);
       initTargetDistance = targetDistance;
-      direction = absoluteDirection(absTarget, initialPosition, initialPosition.angle);
+      pros::delay(10);
+      autonDirection = absoluteDirection(absTarget, initialPosition, initialPosition.angle);
       firstCycle = false;
-      correctionThreshold = 40;
+      correctionThreshold = 500;
+      printf("initX %f\n init Y %f\n", relTarget.x, relTarget.y);
     }
 
+    limitPass = targetPass(absTarget, currPosition, targetTheta*PI/180);
+    printf("targetPassed %i\nautonDirection %i\n", limitPass, autonDirection);
+
+    printf("X %f\n Y%f\n", absTarget.x, absTarget.y);
     //Finds the distance from the initial point
     //distanceFromInitial = findDistance(initialPosition, currPosition);
-    printf("init %f\n target %f", distanceFromInitial, initTargetDistance);
     //Finds the target orientation and converts the sign as necessary, 0 degrees being forward
-    targetOrientation = PI/2 - atan2(absTarget.y-currPosition.yPosition, absTarget.x-currPosition.xPosition);
+    if(autonDirection > 0){
+      targetOrientation = PI/2 - atan2(absTarget.y-currPosition.yPosition, absTarget.x-currPosition.xPosition);
+    }
+    else
+      targetOrientation = 3*PI/2 - atan2(absTarget.y-currPosition.yPosition, absTarget.x-currPosition.xPosition);
+
     if(targetOrientation >= PI)
       targetOrientation -= 2*PI;
     else if(targetOrientation <= -PI)
       targetOrientation += 2*PI;
 
-
       //Sets the PID loop
     voltageY = PIDdrive(forwardPID, targetDistance, findDistance(absTarget, currPosition));
-    if(findDistance(absTarget, currPosition)*10 < correctionThreshold){
+
+    if(findDistance(absTarget, currPosition)*100 < correctionThreshold){
       double correctedOrientation;
-      correctedOrientation = findDistance(absTarget, currPosition)/correctionThreshold*targetOrientation*180/PI + (1-(findDistance(absTarget, currPosition)/correctionThreshold))*targetTheta;
+      printf("distance to target: %f \nnew targetAngle %f\nangle %f\n", findDistance(absTarget, currPosition), correctedOrientation, getAngleDeg());
+      correctedOrientation = findDistance(absTarget, currPosition)/correctionThreshold*targetOrientation*180/PI + (1-(findDistance(absTarget, currPosition)/correctionThreshold))*endingOrientation;
       voltageR = PIDloop(adjustPID, correctedOrientation, getAngleDeg());
-    //  printf("distance to target: %f \nnew targetAngle %f\nangle %f\n", findDistance(target, currPosition), correctedOrientation, getAngleDeg());
     }
     else
       voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
+
+      printf("target angle: %f\n angle %f\n", targetOrientation*180/PI, currPosition.angle*180/PI);
 
     //printf("target angle %f \nvoltageR %i\ndistFromSts %f\nvoltageY %i\n", targetOrientation*180/PI, voltageR, distanceFromInitial, voltageY);
 
@@ -136,7 +148,8 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       voltageY = voltageY/abs(voltageY)*maxSpeed;
     if(abs(voltageR) > maxSpeed)
       voltageR = voltageR/abs(voltageR)*maxSpeed;
-
+    //printf("voltageY %i\nkP %f\nkI %f\nkD %f\n", voltageY, forwardPID.kP, forwardPID.kI, forwardPID.kD);
+    printf("distanceLeft %f\n", findDistance(absTarget, currPosition));
     //Sets the drive
     setDrive(voltageY, voltageR);
 
@@ -152,6 +165,7 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       driveStep++;
       firstCycle = true;
       targetReached = 0;
+      limitPass = 1;
     }
   }
 

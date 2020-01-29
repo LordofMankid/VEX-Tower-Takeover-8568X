@@ -42,9 +42,9 @@ void setSlopeMotors(){
         //voltageSlope = 100;
       //if(slopeAngle > 2400 && slopeAngle < 3600)
         //voltageSlope = 60;
-      if(slopeAngle > 3800 && slopeAngle <= 5700)
+      if(slopeAngle > 3600 && slopeAngle <= 5500)
         voltageSlope = 60;
-      if(slopeAngle > 5700)
+      if(slopeAngle > 5500)
         voltageSlope = 40;
 
       pros::lcd::print(5, "slope power= %i", voltageSlope);
@@ -135,9 +135,11 @@ void slopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStep
         }
         else
           voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
-        if(currentTarget - slopeAngle < 0)
-          voltageSlope = -127;
-      setSlopeLift(voltageSlope);
+      if(currentTarget - slopeAngle < 0){
+        voltageSlope = -127;
+      }
+
+    setSlopeLift(voltageSlope);
     //  printf("hi %f\n", abs(slopeAngle - currentTarget));
     if(abs(slopeAngle - currentTarget) <= 50){
         printf("slopeTargetReached");

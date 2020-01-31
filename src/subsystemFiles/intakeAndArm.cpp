@@ -78,9 +78,7 @@ void startIntake(int targetTime, int speed, int driveStepNumber, int intakeStepN
       }
 
       if(intakeOn == true){
-
           setIntake(speed);
-
           printf("targetTime %i, currTime%i\n", targTime, pros::millis());
           if(pros::millis() >= targTime){
               printf("targetReached");
@@ -89,15 +87,14 @@ void startIntake(int targetTime, int speed, int driveStepNumber, int intakeStepN
               intFirstCycle = true; //prepares for the next cycle
             //intakeStepNumber++; //adds one to the intake step number
             }
-
           }
-          else
+      else
             setIntake(0);
       }
-      else{
-        printf("exited %i\n", intakeOn);
-      }
-      if(intakeOn == false)
+    else{
+      printf("exited %i\n", intakeOn);
+    }
+    if(intakeOn == false)
         setIntake(0);
 }
 

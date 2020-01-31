@@ -108,7 +108,7 @@ void startSlopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slop
         slopeStep++;
         slopeOn = false; // turns slope off
         slopeFirstCycle = true; //prepares for the next cycle
-        
+
       }
     }
     else
@@ -133,25 +133,26 @@ void slopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStep
 //if the slopeis on do the following
   if(slopeOn == true){
     slopeAngle = slopeLift.get_position();
+    printf("slopeAngle %f", slopeAngle-targetAngle);
     voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
-      if(slopeAngle > 2500 && slopeAngle < 6000)
-        {
-          if(slopeAngle > 3800 && slopeAngle <= 4700)
-            voltageSlope = 52;
-          if(slopeAngle > 4700)
-            voltageSlope = 40;
-          pros::lcd::print(5, "slope power= %i", voltageSlope);
-        }
-        else
-          voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
-      if(currentTarget - slopeAngle < 0){
-        voltageSlope = -127;
+    if(slopeAngle > 3000 && slopeAngle < 6000)
+      {
+        if(slopeAngle > 3800 && slopeAngle <= 4700)
+          voltageSlope = 52;
+        if(slopeAngle > 4700)
+          voltageSlope = 40;
+        pros::lcd::print(5, "slope power= %i", voltageSlope);
       }
+    else
+      voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
+    if(currentTarget - slopeAngle < 0){
+      voltageSlope = -127;
+    }
     lastSlopeAngle = slopeAngle;
     slopeStopParameter = positionReachCheck(slopeAngle, lastSlopeAngle, slopeStopParameter, 6000, 50);
     setSlopeLift(voltageSlope);
     //  printf("hi %f\n", abs(slopeAngle - currentTarget));
-    if(abs(slopeAngle - currentTarget) <= 50 || slopeStopParameter > 50){
+    if(abs(slopeAngle - targetAngle) <= 50 || slopeStopParameter > 50){
         printf("slopeTargetReached");
         slopeStep++;
         driveStep++;
@@ -162,6 +163,60 @@ void slopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStep
     else
     setSlopeLift(0);
 }
+
+void slopeMoveTest(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStepNumber){
+  if(slopeStep == slopeStepNumber - 1){
+    if(driveStepNumber == driveStep){
+      slopeOn = true;
+      slopeStopParameter = 0;
+      currentTarget = targetAngle;
+
+    if(slopeFirstCycle == true){ //if it is the 1st cycle b
+        slopeFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
+      }
+    }
+
+    if(slopeOn == true){
+      slopeAngle = slopeLift.get_position();
+      if(slopeAngle > 3000 && slopeAngle < 6000)
+        {
+          voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
+          if(slopeAngle > 3800 && slopeAngle <= 4700)
+            voltageSlope = 52;
+          if(slopeAngle > 4700)
+            voltageSlope = 40;
+          pros::lcd::print(5, "slope power= %i", voltageSlope);
+        }
+      else
+        voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
+      if(currentTarget - slopeAngle < 0){
+        voltageSlope = -127;
+      }
+      lastSlopeAngle = slopeAngle;
+      slopeStopParameter = positionReachCheck(slopeAngle, lastSlopeAngle, slopeStopParameter, 6000, 50);
+      setSlopeLift(voltageSlope);
+      //  printf("hi %f\n", abs(slopeAngle - currentTarget));
+      if(abs(slopeAngle - targetAngle) <= 50 || slopeStopParameter > 50){
+          printf("slopeAngle %f", slopeAngle-targetAngle);
+          slopeStep++;
+          driveStep++;
+          slopeOn = false; // turns slope off
+          slopeFirstCycle = true; //prepares for the next cycle
+        }
+      }
+      else
+      setSlopeLift(0);
+
+
+  }
+  else
+    slopeOn = false;
+
+//printf("slopeStep %i\n", slopeStep);
+//if the slopeis on do the following
+
+}
+
 
 void slopeUp(int targetAngle, int maxSpeed){
   int lastSlopeAngle;

@@ -48,29 +48,68 @@ void setAutonButton(){
       //slopeTest();
       //intakeTest();
       //multipleSubsystemTest();
-      //redStackFive();
+      //redFiveStack();
       //blueStackFive();
       //autonCorrect();
       //scoreTurnLeft();
-      autonDriveTest();
+      //blueFiveStack();
+      autonSkills();
       break;
   }
 
     autonRunning = false;
     setDriveBrake();
 }
-void autonDriveTest(){
+
+void autonSkills(){
   while(1){
     autonUpdate();
-    slopeMove(2500, 127, 0, 1);
+    slopeMove(3000, 127, 0, 1);
     startIntake(1500, -127, 1, 1);
     delay(10, 1);
     delay(500, 2);
-    slopeMove(0, -127, 3, 2);
+    startSlopeMove(0, -127, 3, 2);
+    startIntake(15000, 127, 3, 2);
+    translate(10.0, 0.0, 0.0, 30, 3);
+    translate(106.0, 0.0, 0.0, 45, 4);
+    translate(10.0, 0.0, 0.0, 100, 5);
+    translate(-15.0, 0.0, 0.0, 60, 6);
+  //  startIntake(200, -80, 5, 3);
+    rotate(45.0, 70, 7);
+    if(driveStep == 8){
+      if(runOnce == true){
+          resetPosition();
+          runOnce = false;
+          driveStep++;
+        }
+    }
+
+    //startSlopeMove(1500, 127, 8, 3);
+    translate(16.0, 0.0, 0.0, 60, 9);
+    slopeMove(5000, 127, 10, 4);
+    translate(-12.0, 0, 0, 35, 11);
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+      break;
+
+
+    pros::delay(10);
+  }
+
+}
+void redFiveStack(){
+  while(1){
+    autonUpdate();
+    slopeMove(4000, 127, 0, 1);
+    startIntake(1500, -127, 1, 1);
+    delay(10, 1);
+    delay(500, 2);
+    startSlopeMove(0, -127, 3, 2);
     startIntake(5000, 127, 3, 2);
-    translate(40.0, 0.0, 0.0, 50, 4);
-    translate(-20.0, 0.0, 0.0, 100, 5);
-    rotate(-135.0, 100, 6);
+    translate(10.0, 0.0, 0.0, 30, 3);
+    translate(34.0, 0.0, 0.0, 51, 4);
+    translate(-21.5, 0.0, 0.0, 100, 5);
+    startIntake(200, -80, 5, 3);
+    rotate(135.0, 70, 6);
     if(driveStep == 7){
       if(runOnce == true){
           resetPosition();
@@ -79,22 +118,50 @@ void autonDriveTest(){
         }
     }
 
-    translate(10.0, 0.0, 0.0, 30, 8);
-    slopeMove(2500, 127, 9, 3);
-    translate(-10.0, 0, 0, 30, 10);
+    startSlopeMove(1500, 127, 8, 3);
+    translate(15.0, 0.0, 0.0, 60, 8);
+    slopeMove(5000, 127, 9, 4);
+    translate(-12.0, 0, 0, 35, 10);
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       break;
 
 
+    pros::delay(10);
+  }
 
-    /*
-    delay(500, 7);
-    translate(-10, 0.0, 0.0, 100, 8);
-    delay(500, 9);
-    rotate(-135, 100, 10);
-    delay(500, 11);
-    translate(10, 0.0, -135, 100, 12);
-    printf("driveStep %i \n", driveStep);*/
+}
+
+
+void blueFiveStack(){
+  while(1){
+    autonUpdate();
+    slopeMove(4000, 127, 0, 1);
+    startIntake(1500, -127, 1, 1);
+    delay(10, 1);
+    delay(500, 2);
+    startSlopeMove(0, -127, 3, 2);
+    startIntake(5000, 127, 3, 2);
+    translate(10.0, 0.0, 0.0, 30, 3);
+    translate(34.0, 0.0, 0.0, 51, 4);
+    translate(-21.5, 0.0, 0.0, 100, 5);
+    startIntake(200, -80, 5, 3);
+    rotate(-135.0, 70, 6);
+    if(driveStep == 7){
+      if(runOnce == true){
+          resetPosition();
+          runOnce = false;
+          driveStep++;
+        }
+    }
+
+    startSlopeMove(1500, 127, 8, 3);
+    translate(15.0, 0.0, 0.0, 60, 8);
+    slopeMove(5000, 127, 9, 4);
+    translate(-12.0, 0, 0, 35, 10);
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+      break;
+
+
     pros::delay(10);
   }
 

@@ -9,11 +9,13 @@ int percentageSlope;
 int macroPower;
 int slopeDownPower = 127;
 
+double lastSlopeAngle;
 bool slopeFirstCycle;
 bool slopeOn = true;
 bool hold;
 int slopeStep = 0;
 int currentTarget;
+
 /////////////////////////////////////////////////////////////////
 const double slopeThreshold = 35.5;
 
@@ -69,21 +71,22 @@ void startSlopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slop
   if(slopeStep < slopeStepNumber){
     if(driveStepNumber == driveStep){
       slopeOn = true;
+      slopeStopParameter = 0;
       currentTarget = targetAngle;
       if(slopeFirstCycle == true){ //if it is the 1st cycle b
         slopeFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
-
       }
     }
   }
   else
     slopeOn = false;
 
-printf("slopeStep %i\n", slopeStep);
-//if the slopeis on do the following
+  //printf("slopeStep %i\n", slopeStep);
+  //if the slopeis on do the following
   if(slopeOn == true){
-    voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
-      if(slopeAngle > 2500 && slopeAngle < 5000)
+    slopeAngle = slopeLift.get_position();
+    voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
+      if(slopeAngle > 2500 && slopeAngle < 6000)
         {
           if(slopeAngle > 3800 && slopeAngle <= 4700)
             voltageSlope = 52;
@@ -92,16 +95,20 @@ printf("slopeStep %i\n", slopeStep);
           pros::lcd::print(5, "slope power= %i", voltageSlope);
         }
         else
-          voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
-        if(currentTarget - slopeAngle < 0)
-          voltageSlope = -127;
-      setSlopeLift(voltageSlope);
-      printf("hi %f\n", abs(slopeAngle - currentTarget));
-    if(abs(slopeAngle - currentTarget) <= 50){
-        printf("targetReached");
+          voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
+      if(currentTarget - slopeAngle < 0){
+        voltageSlope = -127;
+      }
+    lastSlopeAngle = slopeAngle;
+    slopeStopParameter = positionReachCheck(slopeAngle, lastSlopeAngle, slopeStopParameter, 6000, 50);
+    setSlopeLift(voltageSlope);
+    //  printf("hi %f\n", abs(slopeAngle - currentTarget));
+    if(abs(slopeAngle - currentTarget) <= 50 || slopeStopParameter > 50){
+        printf("slopeTargetReached");
+        slopeStep++;
         slopeOn = false; // turns slope off
         slopeFirstCycle = true; //prepares for the next cycle
-        slopeStep++;
+        
       }
     }
     else
@@ -112,6 +119,7 @@ void slopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStep
   if(slopeStep < slopeStepNumber){
     if(driveStepNumber == driveStep){
       slopeOn = true;
+      slopeStopParameter = 0;
       currentTarget = targetAngle;
       if(slopeFirstCycle == true){ //if it is the 1st cycle b
         slopeFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
@@ -124,8 +132,9 @@ void slopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStep
 //printf("slopeStep %i\n", slopeStep);
 //if the slopeis on do the following
   if(slopeOn == true){
-    voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
-      if(slopeAngle > 2500 && slopeAngle < 5000)
+    slopeAngle = slopeLift.get_position();
+    voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
+      if(slopeAngle > 2500 && slopeAngle < 6000)
         {
           if(slopeAngle > 3800 && slopeAngle <= 4700)
             voltageSlope = 52;
@@ -134,14 +143,15 @@ void slopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStep
           pros::lcd::print(5, "slope power= %i", voltageSlope);
         }
         else
-          voltageSlope = PIDloop(0.05, 0.0, 0.0, 5000, slopeAngle);
+          voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
       if(currentTarget - slopeAngle < 0){
         voltageSlope = -127;
       }
-
+    lastSlopeAngle = slopeAngle;
+    slopeStopParameter = positionReachCheck(slopeAngle, lastSlopeAngle, slopeStopParameter, 6000, 50);
     setSlopeLift(voltageSlope);
     //  printf("hi %f\n", abs(slopeAngle - currentTarget));
-    if(abs(slopeAngle - currentTarget) <= 50){
+    if(abs(slopeAngle - currentTarget) <= 50 || slopeStopParameter > 50){
         printf("slopeTargetReached");
         slopeStep++;
         driveStep++;

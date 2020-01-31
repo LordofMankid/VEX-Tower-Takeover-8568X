@@ -50,6 +50,7 @@ void disabled() {}
  * starts.
  */
 void competition_initialize() {
+	armLift.set_brake_mode(MOTOR_BRAKE_HOLD);
 
 	resetTrackingWheels();
 }
@@ -79,7 +80,7 @@ void autonomous() {
 	//autonCorrect();
 	//scoreTurnLeft();
 	//scoreTurnRight();
-
+	redFiveStack();
 
 
 
@@ -101,6 +102,7 @@ void autonomous() {
  */
 void opcontrol() {
 
+	armLift.set_brake_mode(MOTOR_BRAKE_HOLD);
 
 	while (true) {
 

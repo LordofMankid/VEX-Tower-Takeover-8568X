@@ -160,7 +160,7 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
     lastPosition = currPosition;
 
     //Resets for next step if target is reached
-    if(targetReached > 50){
+    if(targetReached > 10){
       setDrive(0,0);
       driveStep++;
       firstCycle = true;
@@ -184,7 +184,7 @@ void rotate(double targetOrientation, int maxSpeed, int driveStepNumber){
     targetReached = positionReachCheck(getAngleDeg(), lastOrientation, targetReached, targetOrientation, 25.0);
 
     lastOrientation = getAngleDeg();
-    if(targetReached > 50){
+    if(targetReached > 10){
       setDrive(0,0);
       driveStep++;
       firstCycle = true;

@@ -73,7 +73,7 @@ void startSlopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slop
       slopeOn = true;
       slopeStopParameter = 0;
       currentTarget = targetAngle;
-      if(slopeFirstCycle == true){ //if it is the 1st cycle b
+    if(slopeFirstCycle == true){ //if it is the 1st cycle b
         slopeFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
       }
     }
@@ -108,7 +108,7 @@ void startSlopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slop
         slopeStep++;
         slopeOn = false; // turns slope off
         slopeFirstCycle = true; //prepares for the next cycle
-        
+
       }
     }
     else

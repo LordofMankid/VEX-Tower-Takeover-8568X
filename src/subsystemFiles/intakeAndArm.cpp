@@ -51,8 +51,8 @@ void setArmMotor(){
 Ties the lift of the slope to buttons R1 and R2
 */
 void setMacroMotors(){
-  macroPowerArm = 127*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_B) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN));
-  armPower = armMotorSpeed*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y));
+  macroPowerArm = 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_B) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN);
+  armPower = 127*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_B) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN));
 
   armLift = macroPowerArm+armPower;
 //  pros::lcd::print(7, "macropower %i", macroPowerArm);

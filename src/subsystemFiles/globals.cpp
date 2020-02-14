@@ -7,7 +7,7 @@ pros::Motor FrontLeft(1, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_
 pros::Motor BackLeft(3, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor FrontRight(2, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor BackRight(12, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor intakeLeft(14, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor intakeLeft(15, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor intakeRight(10, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor armLift(8, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 
@@ -31,7 +31,7 @@ const double TR_TICK_INCH = (2.75*PI)/TICKS_TRACKING_REV;
 const double TR_INCH_TICK = 360/(2.75*PI);
 const double TICK_DEG_REG = DEG_CIRCLE/TICKS_REGULAR_REV;
 const double TICK_DEG_TORQUE = DEG_CIRCLE/TICKS_TORQUE_REV;
-
+const double REG_INCH_TICK = TICKS_REGULAR_REV/(4*PI);
 
 
 

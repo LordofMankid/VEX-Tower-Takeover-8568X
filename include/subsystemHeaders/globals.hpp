@@ -62,6 +62,7 @@ extern const double TICK_DEG_REG;
 //Conversion factor, turning encoder ticks to degrees for torque motors.
 extern const double TICK_DEG_TORQUE;
 
+extern const double REG_INCH_TICK;
 //setup environment
 
 void setUp();

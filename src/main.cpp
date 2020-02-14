@@ -78,12 +78,13 @@ void autonomous() {
 	//redStackFive();
 	//blueStackFive();
 	//autonCorrect();
-	//scoreTurnLeft();
+	scoreTurnLeft();
 	//scoreTurnRight();
-	redFiveStack();
+	//redFiveStack();
 
-
-
+	//blueFiveStack();
+	//protectedBlue();
+	//protectedRed();
 
 }
 
@@ -132,6 +133,6 @@ void opcontrol() {
 
 
 		//pros::lcd::print(0, "armAngle %f", armLift.get_position());
-		pros::delay(30);
+		pros::delay(20);
 	}
 }

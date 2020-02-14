@@ -2,7 +2,7 @@
 
 //VARIABLES
 extern bool autonRunning;
-
+extern int delayTick;
 
 void setAutonButton();
 
@@ -11,8 +11,10 @@ void setAutonButton();
 /////////////////
 
 //HELPER
+
 void autonUpdate();
 
+void coolDelay(int time, int targDriveStep, int targDelay);
 
 void adjustkPID(kPID kPID, double kP, double kI, double kD, int driveStep);
 
@@ -25,7 +27,8 @@ void autonDriveTest();
 void autonTest();
 
 void slopeTest();
-
+void protectedBlue();
+void protectedRed();
 void autonCorrect();
 
 void intakeTest();

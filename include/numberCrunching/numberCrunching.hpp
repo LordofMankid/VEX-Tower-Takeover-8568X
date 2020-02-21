@@ -7,6 +7,13 @@ extern int stepChangeTimes;
 
 void nextStep(int stepSet, int time);
 
+/**
+Checks if a < b, return 1 if it is
+**/
+int compareValues(double a, double b);
+
+
+
 //CALCULATION FUNCTIONS
 
 rectCoord vectorSummation(rectCoord v1, rectCoord v2);
@@ -19,7 +26,8 @@ double findDistance(position position1, position position2);
 
 /*For use in the PID loop, checks to see if the current position has passed an auton line, return 1 for no, -1 for yes
  @Assumes current orientation is towards the line */
-int targetPass(rectCoord target, position currentPosition, double targetTheta);
+//int targetPass(rectCoord target, position currentPosition, double targetTheta);
+int targetPass(rectCoord target, position currentPosition, double targetTheta, position initialPosition, double initialTheta);
 
 int targetRelativePos(rectCoord target, position currentPosition, double initialTheta);
 

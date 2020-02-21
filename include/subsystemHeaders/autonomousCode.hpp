@@ -14,7 +14,7 @@ void setAutonButton();
 
 void autonUpdate();
 
-void coolDelay(int time, int targDriveStep, int targDelay);
+void coolDelay(int time, int targDriveStep);
 
 void adjustkPID(kPID kPID, double kP, double kI, double kD, int driveStep);
 

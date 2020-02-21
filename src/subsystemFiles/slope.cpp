@@ -5,14 +5,12 @@ int slopePower;
 double slopeMaxAngle;
 double slopeAngle;
 int slopeStopParameter;
-int percentageSlope;
 int macroPower;
 int slopeDownPower = 127;
 
 double lastSlopeAngle;
 bool slopeFirstCycle;
 bool slopeOn = true;
-bool hold;
 int slopeStep = 0;
 int currentTarget;
 

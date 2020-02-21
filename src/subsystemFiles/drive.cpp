@@ -109,7 +109,7 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       printf("initX %f\n init Y %f\n", relTarget.x, relTarget.y);
     }
 
-    limitPass = targetPass(absTarget, currPosition, targetTheta*PI/180);
+    limitPass = targetPass(absTarget, currPosition, targetTheta*DEG_RAD, initialPosition, initialPosition.angle);
     printf("targetPassed %i\nautonDirection %i\n", limitPass, autonDirection);
 
     printf("X %f\n Y%f\n", absTarget.x, absTarget.y);

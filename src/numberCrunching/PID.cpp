@@ -92,7 +92,7 @@ int PIDdrive(kPID kPID, double targetDistance, double distanceFromTarget){
     int voltage;
 
     //sets error
-    limitPass = limitPass*autonDirection;
+    //limitPass = limitPass*autonDirection;
 
     error = autonDirection*distanceFromTarget*limitPass;
 

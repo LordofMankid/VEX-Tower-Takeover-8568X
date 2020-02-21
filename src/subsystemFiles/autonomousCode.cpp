@@ -1,4 +1,4 @@
-#include "main.h"
+  #include "main.h"
 
 bool autonRunning;
 bool runOnce = true;
@@ -21,7 +21,7 @@ void delay(int time, int targDriveStep){
   }
 }
 
-void coolDelay(int time, int targDriveStep, int targDelay){
+void coolDelay(int time, int targDriveStep){
   if(driveStep == targDriveStep){
       delayStep++;
   }
@@ -55,6 +55,7 @@ void setAutonButton(){
     forwardPID = createkPID(9.5, 0.0, 0.25);
     turnPID = createkPID(1.75, 0.0, 0.45);
     adjustPID = createkPID(2.0, 0.0, 0.045);
+    armPID = createkPID(0.0, 0.0, 0.0);
     driveStep = 0;
     setDriveCoast();
       //slopeTest();
@@ -72,6 +73,28 @@ void setAutonButton(){
 
     autonRunning = false;
     setDriveBrake();
+}
+void armTest(){
+  while(1){
+    autonUpdate();
+    armMove(2000, 127, 0, 1);
+    coolDelay(500, 1);
+    armMove(0, 127, 2, 2);
+    pros::delay(10);
+  }
+
+}
+
+void driveTest(){
+    while(1){
+      autonUpdate();
+
+      translate(40.0, 0.0, 0.0, 30, 0);
+      translate(-20.0, 0.0, 0.0, 45, 1);
+      rotate(135, 70, 2);
+      translate(20.0, 0.0, 0.0, 100, 3);
+      pros::delay(10);
+      }
 }
 
 void autonSkills(){
@@ -141,7 +164,7 @@ void redFiveStack(){
     startIntake(1500, -127, 1, 1);
     delay(100, 1);
     startSlopeMove(0, -127, 2, 2);
-    coolDelay(600, 2, 0);
+    coolDelay(600, 2);
     startSlopeMove(0, -127, 3, 3);
     startIntake(5000, 127, 3, 2);
     translate(10.0, 0.0, 0.0, 30, 3);
@@ -201,7 +224,7 @@ void blueFiveStack(){
     startIntake(1500, -127, 1, 1);
     delay(100, 1);
     startSlopeMove(0, -127, 2, 2);
-    coolDelay(600, 2, 0);
+    coolDelay(600, 2);
     startSlopeMove(0, -127, 3, 3);
     startIntake(5000, 127, 3, 2);
     translate(10.0, 0.0, 0.0, 30, 3);
@@ -258,7 +281,7 @@ void protectedBlue(){
     startIntake(1500, -127, 1, 1);
     delay(100, 1);
     startSlopeMove(0, -127, 2, 2);
-    coolDelay(600, 2, 0);
+    coolDelay(600, 2);
     startSlopeMove(0, -127, 3, 3);
     startIntake(4000, 127, 3, 2);
     translate(10.0, 0.0, 0.0, 30, 3);
@@ -315,7 +338,7 @@ void protectedRed(){
      startIntake(1500, -127, 1, 1);
      delay(100, 1);
      startSlopeMove(0, -127, 2, 2);
-     coolDelay(600, 2, 0);
+     coolDelay(600, 2);
      startSlopeMove(0, -127, 3, 3);
      startIntake(4000, 127, 3, 2);
      translate(10.0, 0.0, 0.0, 30, 3);

@@ -10,8 +10,9 @@ void autonUpdate(){
   updatePosition();
   if(slopeLimit.get_value() == 1)
       slopeLift.tare_position();
-  slopeAngle = slopeLift.get_position();
 
+  slopeAngle = slopeLift.get_position();
+  armAngle = armLift.get_position();
 }
 
 void delay(int time, int targDriveStep){
@@ -58,6 +59,8 @@ void setAutonButton(){
     armPID = createkPID(0.0, 0.0, 0.0);
     driveStep = 0;
     setDriveCoast();
+    driveTest();
+    //armTest();
       //slopeTest();
       //intakeTest();
       //multipleSubsystemTest();
@@ -67,7 +70,7 @@ void setAutonButton(){
       //scoreTurnLeft();
       //blueFiveStack();
       //autonSkills();
-      protectedBlue();
+      //protectedBlue();
       break;
   }
 
@@ -77,7 +80,10 @@ void setAutonButton(){
 void armTest(){
   while(1){
     autonUpdate();
-    armMove(2000, 127, 0, 1);
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+      break;
+
+    armMove(1500, 127, 0, 1);
     coolDelay(500, 1);
     armMove(0, 127, 2, 2);
     pros::delay(10);
@@ -89,9 +95,9 @@ void driveTest(){
     while(1){
       autonUpdate();
 
-      translate(40.0, 0.0, 0.0, 30, 0);
-      translate(-20.0, 0.0, 0.0, 45, 1);
-      rotate(135, 70, 2);
+      translate(40.0, 0.0, 0.0, 100, 0);
+      translate(-20.0, 0.0, 0.0, 100, 1);
+      rotate(-135, 70, 2);
       translate(20.0, 0.0, 0.0, 100, 3);
       pros::delay(10);
       }
@@ -125,8 +131,6 @@ void autonSkills(){
     translate(16.0, 0.0, 0.0, 60, 9);
     slopeMove(5000, 127, 10, 4);
     translate(-12.0, 0, 0, 35, 11);
-    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
-      break;
 
 
     pros::delay(10);

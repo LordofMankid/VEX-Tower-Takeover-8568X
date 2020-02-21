@@ -118,8 +118,6 @@ void opcontrol() {
 
 		setIntakeMotors();
 
-		setArmMotor();
-
 		setMacroMotors();
 
 		setAutonButton();

@@ -58,23 +58,22 @@ void setIntakeMotors(){
   setIntake(intakePower);
 }
 
-void setArmMotor(){
+void setArmLift(){
   armLift = armPower;
 }
 /*
 Ties the lift of the slope to buttons R1 and R2
 */
 void setMacroMotors(){
+  armAngle = armLift.get_position();
   macroPowerArm = 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_B) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN);
   armPower = 127*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_B) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN));
 
   armLift = macroPowerArm+armPower;
-//  pros::lcd::print(7, "macropower %i", macroPowerArm);
+  pros::lcd::print(7, "armAngle %i", armAngle);
 }
 
 //AUTONOMOUS CODE
-
-
 
 void startIntake(int targetTime, int speed, int driveStepNumber, int intakeStepNumber){
 //checks to see if the drive step is same as the one it was assigned to
@@ -153,7 +152,7 @@ void intakeMove(int targetTime, int speed, int driveStepNumber, int intakeStepNu
 
 
 void armMove(int targetAngle, int maxSpeed, int driveStepNumber, int armStepNumber){
-  if(armStep < armStepNumber){
+  if(armStep == armStepNumber-1){
     if(driveStepNumber == driveStep){
       armOn = true;
       armStopParameter = 0;
@@ -162,32 +161,32 @@ void armMove(int targetAngle, int maxSpeed, int driveStepNumber, int armStepNumb
         armFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
       }
     }
-  }
-  else
-    armOn = false;
-
-//printf("armStep %i\n", armStep);
-//if the armis on do the following
-  if(armOn == true){
-    armAngle = armLift.get_position();
-    printf("slopeAngle %f", slopeAngle-targetAngle);
-    voltageArm = 127;
-    if(currentArmTarget - armAngle < 0)
-      voltageArm = -127;
-    setMegaLift(voltageArm);
-    if(armAngle < 0)
-      setArmLift(0);
-    //  printf("hi %f\n", abs(armAngle - currentArmTarget));
-    if(abs(armAngle - targetAngle) <= 50){
-        printf("armTargetReached");
-        armStep++;
-        driveStep++;
-        armOn = false; // turns arm off
-        armFirstCycle = true; //prepares for the next cycle
+    if(armOn == true){
+      armAngle = armLift.get_position();
+      printf("armAngle %i\n", armAngle-targetAngle);
+      voltageArm = 127;
+      if(currentArmTarget - armAngle < 0)
+        voltageArm = -127;
+      setMegaLift(voltageArm);
+      setArmLift(voltageArm);
+      if(armAngle < 0 && voltageArm < 0)
+        setArmLift(0);
+      //  printf("hi %f\n", abs(armAngle - currentArmTarget));
+      if(abs(armAngle - targetAngle) <= 50){
+          printf("armTargetReached\n");
+          armStep++;
+          driveStep++;
+          armOn = false; // turns arm off
+          armFirstCycle = true; //prepares for the next cycle
+        }
       }
-    }
-    else
-    setArmLift(0);
+      else{
+        setArmLift(0);
+        setSlopeLift(0);
+      }
+  }
+//if the armis on do the followin
+
 }
 void armDown(){
   armPower = -127;

@@ -21,7 +21,9 @@ void adjustkPID(kPID kPID, double kP, double kI, double kD, int driveStep);
 void delay(int time, int targDriveStep);
 
 //TESTS
+void armTest();
 
+void driveTest();
 void autonDriveTest();
 
 void autonTest();

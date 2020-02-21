@@ -6,7 +6,7 @@
 ///////////////////////////
 const double ARMLENGTH = 16.0;
 const double ARM_SLOPE_RATIO = 0.5;
-int armAngle;
+
 int intakeMotorSpeed;
 int armMotorSpeed;
 double armHeight;
@@ -17,11 +17,25 @@ int armPower;
 int macroPowerArm;
 int macroSpeed;
 
+////
+//Intake autonomous variables
 bool intFirstCycle = true;
 bool intakeOn;
 int intakeStep;
 int targTime;
 
+////
+//Arm autonomous variables
+bool armFirstCycle = true;
+bool armOn;
+int armStep;
+int targHeight;
+int armStopParameter;
+int lastArmAngle;
+int armAngle;
+double currentArmTarget;
+int voltageArm;
+kPID armPID;
 //const double LIFT_INCHES_TICKS = 900/chord length of arm thing;
 
 //HELPER FUNCTIONS
@@ -134,22 +148,47 @@ void intakeMove(int targetTime, int speed, int driveStepNumber, int intakeStepNu
     printf("intakeStep %i\n", intakeStep);
   }
 }
-void intakeOut(){
 
-  intakePower = 100;
-  setIntake(intakePower);
+
+
+
+void armMove(int targetAngle, int maxSpeed, int driveStepNumber, int armStepNumber){
+  if(armStep < armStepNumber){
+    if(driveStepNumber == driveStep){
+      armOn = true;
+      armStopParameter = 0;
+      currentArmTarget = targetAngle;
+      if(armFirstCycle == true){ //if it is the 1st cycle b
+        armFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
+      }
+    }
+  }
+  else
+    armOn = false;
+
+//printf("armStep %i\n", armStep);
+//if the armis on do the following
+  if(armOn == true){
+    armAngle = armLift.get_position();
+    printf("slopeAngle %f", slopeAngle-targetAngle);
+    voltageArm = 127;
+    if(currentArmTarget - armAngle < 0)
+      voltageArm = -127;
+    setMegaLift(voltageArm);
+    if(armAngle < 0)
+      setArmLift(0);
+    //  printf("hi %f\n", abs(armAngle - currentArmTarget));
+    if(abs(armAngle - targetAngle) <= 50){
+        printf("armTargetReached");
+        armStep++;
+        driveStep++;
+        armOn = false; // turns arm off
+        armFirstCycle = true; //prepares for the next cycle
+      }
+    }
+    else
+    setArmLift(0);
 }
-
-void intakeStop(){
-  intakePower = 0;
-  setIntake(intakePower);
-}
-
-void armUp(){
-  armPower = 127;
-  setArmLift(armPower);
-}
-
 void armDown(){
   armPower = -127;
   setArmLift(armPower);

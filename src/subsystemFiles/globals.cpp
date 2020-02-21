@@ -32,7 +32,8 @@ const double TR_INCH_TICK = 360/(2.75*PI);
 const double TICK_DEG_REG = DEG_CIRCLE/TICKS_REGULAR_REV;
 const double TICK_DEG_TORQUE = DEG_CIRCLE/TICKS_TORQUE_REV;
 const double REG_INCH_TICK = TICKS_REGULAR_REV/(4*PI);
-
+const double DEG_RAD = PI/180;
+const double RAD_DEG = 180/PI;
 
 
 void setUp(){

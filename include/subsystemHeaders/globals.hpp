@@ -63,6 +63,12 @@ extern const double TICK_DEG_REG;
 extern const double TICK_DEG_TORQUE;
 
 extern const double REG_INCH_TICK;
+
+//Converts degrees to radians
+extern const double DEG_RAD;
+
+//Converts radians to degrees
+extern const double RAD_DEG;
 //setup environment
 
 void setUp();

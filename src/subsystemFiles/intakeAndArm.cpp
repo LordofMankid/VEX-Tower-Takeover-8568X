@@ -91,19 +91,19 @@ void startIntake(int targetTime, int speed, int driveStepNumber, int intakeStepN
       }
 
       if(intakeOn == true){
-          setIntake(speed);
-          printf("targetTime %i, currTime%i\n", targTime, pros::millis());
-          if(pros::millis() >= targTime){
-              printf("targetReached");
-              intakeStep++;
-              intakeOn = false; // turns intake off
-              intFirstCycle = true; //prepares for the next cycle
-            //intakeStepNumber++; //adds one to the intake step number
-            }
-          }
-      else
-            setIntake(0);
+        setIntake(speed);
+        printf("targetTime %i, currTime%i\n", targTime, pros::millis());
+        if(pros::millis() >= targTime){
+            printf("targetReached");
+            intakeStep++;
+            intakeOn = false; // turns intake off
+            intFirstCycle = true; //prepares for the next cycle
+          //intakeStepNumber++; //adds one to the intake step number
+        }
       }
+      else
+        setIntake(0);
+    }
     else{
       printf("exited %i\n", intakeOn);
     }
@@ -161,6 +161,7 @@ void armMove(int targetAngle, int maxSpeed, int driveStepNumber, int armStepNumb
         armFirstCycle = false; //says 'ay this is not the 1st cycle anymore'
       }
     }
+
     if(armOn == true){
       armAngle = armLift.get_position();
       printf("armAngle %i\n", armAngle-targetAngle);
@@ -179,14 +180,12 @@ void armMove(int targetAngle, int maxSpeed, int driveStepNumber, int armStepNumb
           armOn = false; // turns arm off
           armFirstCycle = true; //prepares for the next cycle
         }
-      }
-      else{
-        setArmLift(0);
-        setSlopeLift(0);
-      }
+    }
+    else{
+      setArmLift(0);
+      setSlopeLift(0);
+    }
   }
-//if the armis on do the followin
-
 }
 void armDown(){
   armPower = -127;

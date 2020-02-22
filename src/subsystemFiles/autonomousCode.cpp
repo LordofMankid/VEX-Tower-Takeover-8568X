@@ -77,6 +77,20 @@ void setAutonButton(){
     autonRunning = false;
     setDriveBrake();
 }
+
+void slopeTest(){
+  while(1){
+    autonUpdate();
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+      break;
+
+    slopeMove(1500, 127, 0, 1);
+    coolDelay(500, 1);
+    slopeMove(0, 127, 2, 2);
+    pros::delay(10);
+  }
+
+}
 void armTest(){
   while(1){
     autonUpdate();

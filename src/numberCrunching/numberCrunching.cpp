@@ -62,8 +62,10 @@ int targetPass(rectCoord target, position currentPosition, double targetTheta, p
     passed = compareValues(currentPosition.yPosition, target.y);
   else{
     double limitLineSlope = tan(PI/2 - targetTheta);
-    if(targetRelativePos(target, initialPosition, initialTheta) == 1)
+    if(targetRelativePos(target, initialPosition, initialTheta) == 1){
       passed = compareValues((currentPosition.yPosition/limitLineSlope - currentPosition.xPosition), (target.y/limitLineSlope - target.x));
+      printf("target in front");
+    }
     else
       passed = compareValues((target.y/limitLineSlope - target.x), (currentPosition.yPosition/limitLineSlope - currentPosition.xPosition));
   }
@@ -78,10 +80,10 @@ int targetRelativePos(rectCoord target, position position, double initialTheta){
     passed = compareValues(position.yPosition, target.y);
   else{
     double currPosSlope = tan(initialTheta);
-    if(currPosSlope < 0)
+    //if(currPosSlope < 0)
       passed = compareValues((target.y/currPosSlope - target.x), (position.yPosition/currPosSlope - position.xPosition));
-    else
-      passed = compareValues((position.yPosition/currPosSlope - position.xPosition), (target.y/currPosSlope - target.x));
+    //else
+    //  passed = compareValues((position.yPosition/currPosSlope - position.xPosition), (target.y/currPosSlope - target.x));
   }
   return passed;
 }

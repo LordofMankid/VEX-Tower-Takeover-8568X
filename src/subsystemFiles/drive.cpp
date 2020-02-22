@@ -106,7 +106,7 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       autonDirection = absoluteDirection(absTarget, initialPosition, initialPosition.angle);
       firstCycle = false;
       correctionThreshold = 500;
-      printf("initX %f\n init Y %f\n", relTarget.x, relTarget.y);
+      printf("initX %f\n init Y %f\n", absTarget.x, absTarget.y);
     }
 
     limitPass = targetPass(absTarget, currPosition, targetTheta*DEG_RAD, initialPosition, initialPosition.angle);

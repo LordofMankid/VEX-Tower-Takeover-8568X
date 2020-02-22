@@ -104,16 +104,19 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       initTargetDistance = targetDistance;
       pros::delay(10);
       autonDirection = fabs(targetDistance)/targetDistance;
-      //autonDirection = absoluteDirection(absTarget, initialPosition, initialPosition.angle);
       firstCycle = false;
-      correctionThreshold = 500;
+      //autonDirection = absoluteDirection(absTarget, initialPosition, initialPosition.angle);
+      correctionThreshold = 5000;
       printf("initX %f\n init Y %f\n", absTarget.x, absTarget.y);
     }
 
-    limitPass = targetPass(absTarget, currPosition, targetTheta*DEG_RAD, initialPosition, initialPosition.angle);
+    limitPass = targetPass(absTarget, currPosition, endingOrientation*DEG_RAD, initialPosition, initialPosition.angle);
     printf("targetPassed %i\nautonDirection %i\n", limitPass, autonDirection);
 
     printf("X %f\n Y%f\n", absTarget.x, absTarget.y);
+
+    printf("X %f\n Y%f\n", currPosition.xPosition, currPosition.yPosition);
+
     //Finds the distance from the initial point
     //distanceFromInitial = findDistance(initialPosition, currPosition);
     //Finds the target orientation and converts the sign as necessary, 0 degrees being forward
@@ -131,14 +134,14 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       //Sets the PID loop
     voltageY = PIDdrive(forwardPID, targetDistance, findDistance(absTarget, currPosition));
 
-    if(findDistance(absTarget, currPosition)*100 < correctionThreshold){
+    if(findDistance(absTarget, currPosition)*1000 < correctionThreshold){
       double correctedOrientation;
       correctedOrientation = (findDistance(absTarget, currPosition)/correctionThreshold*targetOrientation*180/PI) + (1-(findDistance(absTarget, currPosition)/correctionThreshold))*endingOrientation;
       printf("distance to target: %f \nnew targetAngle %f\nangle %f\n", findDistance(absTarget, currPosition), correctedOrientation, getAngleDeg());
       voltageR = PIDloop(adjustPID, correctedOrientation, getAngleDeg());
     }
     else
-      voltageR = PIDloop(adjustPID, (targetOrientation+initialPosition.angle)*180/PI, getAngleDeg());
+      voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
 
       printf("target angle: %f\n angle %f\n", targetOrientation*180/PI, currPosition.angle*180/PI);
 

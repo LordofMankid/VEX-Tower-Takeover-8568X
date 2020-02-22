@@ -59,7 +59,14 @@ void setAutonButton(){
     armPID = createkPID(0.0, 0.0, 0.0);
     driveStep = 0;
     setDriveCoast();
-    driveTest();
+    while(1){
+      autonUpdate();
+      if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+        break;
+      driveTest();
+      pros::delay(10);
+    }
+
     //armTest();
       //slopeTest();
       //intakeTest();
@@ -106,15 +113,12 @@ void armTest(){
 }
 
 void driveTest(){
-    while(1){
-      autonUpdate();
 
-      translate(40.0, 0.0, 0.0, 100, 0);
-      translate(-20.0, 0.0, 0.0, 100, 1);
-      rotate(-135, 70, 2);
-      translate(20.0, 0.0, 0.0, 100, 3);
-      pros::delay(10);
-      }
+  translate(40.0, 0.0, 0.0, 100, 0);
+  translate(-20.0, 0.0, 0.0, 100, 1);
+  rotate(-135, 70, 2);
+  translate(20.0, 0.0, 0.0, 100, 3);
+  pros::delay(10);
 }
 
 void autonSkills(){
@@ -178,6 +182,9 @@ void redFiveStack(){
 
   while(autonRunning == true){
     autonUpdate();
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
+      break;
+
     slopeMove(3500, 127, 0, 1);
     startIntake(1500, -127, 1, 1);
     delay(100, 1);
@@ -202,8 +209,6 @@ void redFiveStack(){
     translate(16.5, 0.0, 0.0, 70, 8);
     slopeMove(5000, 127, 9, 5);
     translate(-12.0, 0, 0, 50, 10);
-    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
-      break;
 
 
     pros::delay(10);

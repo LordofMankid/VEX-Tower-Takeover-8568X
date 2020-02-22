@@ -56,18 +56,27 @@ rectCoord vectorSummation(rectCoord v1, position v2){
 
 int targetPass(rectCoord target, position currentPosition, double targetTheta, position initialPosition, double initialTheta){
   int passed;
-  if(targetTheta == PI/2 || targetTheta == -PI/2)
-    passed = compareValues(currentPosition.xPosition, target.x);
-  else if(targetTheta == 0 || targetTheta == PI)
-    passed = compareValues(currentPosition.yPosition, target.y);
-  else{
-    double limitLineSlope = tan(PI/2 - targetTheta);
-    if(targetRelativePos(target, initialPosition, initialTheta) == 1){
+  if(targetRelativePos(target, initialPosition, initialTheta) == 1){
+    printf("target in front");
+    if(targetTheta == PI/2 || targetTheta == -PI/2)
+      passed = compareValues(currentPosition.xPosition, target.x);
+    else if(targetTheta == 0 || targetTheta == PI || targetTheta == -PI)
+      passed = compareValues(currentPosition.yPosition, target.y);
+    else{
+      double limitLineSlope = tan(PI/2 - targetTheta);
       passed = compareValues((currentPosition.yPosition/limitLineSlope - currentPosition.xPosition), (target.y/limitLineSlope - target.x));
-      printf("target in front");
     }
-    else
+  }
+  else{
+    printf("target behind");
+    if(targetTheta == PI/2 || targetTheta == -PI/2)
+      passed = compareValues(target.x, currentPosition.xPosition);
+    else if(targetTheta == 0 || targetTheta == PI || targetTheta == -PI)
+      passed = compareValues(target.y, currentPosition.yPosition);
+    else{
+      double limitLineSlope = tan(PI/2 - targetTheta);
       passed = compareValues((target.y/limitLineSlope - target.x), (currentPosition.yPosition/limitLineSlope - currentPosition.xPosition));
+    }
   }
   return passed;
 }

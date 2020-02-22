@@ -99,11 +99,12 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       rectCoord relTarget;
       //printf("kP %f", forwardPID.kP);
       initialPosition = currPosition;
-      relTarget = polarToRect(targetDistance, targetTheta*PI/180);
+      relTarget = polarToRect(targetDistance, (targetTheta*PI/180) + initialPosition.angle);
       absTarget = vectorSummation(relTarget, initialPosition);
       initTargetDistance = targetDistance;
       pros::delay(10);
-      autonDirection = absoluteDirection(absTarget, initialPosition, initialPosition.angle);
+      autonDirection = fabs(targetDistance)/targetDistance;
+      //autonDirection = absoluteDirection(absTarget, initialPosition, initialPosition.angle);
       firstCycle = false;
       correctionThreshold = 500;
       printf("initX %f\n init Y %f\n", absTarget.x, absTarget.y);
@@ -132,12 +133,12 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
 
     if(findDistance(absTarget, currPosition)*100 < correctionThreshold){
       double correctedOrientation;
+      correctedOrientation = (findDistance(absTarget, currPosition)/correctionThreshold*targetOrientation*180/PI) + (1-(findDistance(absTarget, currPosition)/correctionThreshold))*endingOrientation;
       printf("distance to target: %f \nnew targetAngle %f\nangle %f\n", findDistance(absTarget, currPosition), correctedOrientation, getAngleDeg());
-      correctedOrientation = findDistance(absTarget, currPosition)/correctionThreshold*targetOrientation*180/PI + (1-(findDistance(absTarget, currPosition)/correctionThreshold))*endingOrientation;
       voltageR = PIDloop(adjustPID, correctedOrientation, getAngleDeg());
     }
     else
-      voltageR = PIDloop(adjustPID, targetOrientation*180/PI, getAngleDeg());
+      voltageR = PIDloop(adjustPID, (targetOrientation+initialPosition.angle)*180/PI, getAngleDeg());
 
       printf("target angle: %f\n angle %f\n", targetOrientation*180/PI, currPosition.angle*180/PI);
 

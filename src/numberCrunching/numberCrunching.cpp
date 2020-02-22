@@ -57,7 +57,7 @@ rectCoord vectorSummation(rectCoord v1, position v2){
 int targetPass(rectCoord target, position currentPosition, double targetTheta, position initialPosition, double initialTheta){
   int passed;
   if(targetRelativePos(target, initialPosition, initialTheta) == 1){
-    printf("target in front");
+    printf("target in front\n");
     if(targetTheta == PI/2 || targetTheta == -PI/2)
       passed = compareValues(currentPosition.xPosition, target.x);
     else if(targetTheta == 0 || targetTheta == PI || targetTheta == -PI)
@@ -68,7 +68,7 @@ int targetPass(rectCoord target, position currentPosition, double targetTheta, p
     }
   }
   else{
-    printf("target behind");
+    printf("target behind\n");
     if(targetTheta == PI/2 || targetTheta == -PI/2)
       passed = compareValues(target.x, currentPosition.xPosition);
     else if(targetTheta == 0 || targetTheta == PI || targetTheta == -PI)
@@ -89,10 +89,10 @@ int targetRelativePos(rectCoord target, position position, double initialTheta){
     passed = compareValues(position.yPosition, target.y);
   else{
     double currPosSlope = tan(initialTheta);
-    //if(currPosSlope < 0)
+    if(currPosSlope < 0)
       passed = compareValues((target.y/currPosSlope - target.x), (position.yPosition/currPosSlope - position.xPosition));
-    //else
-    //  passed = compareValues((position.yPosition/currPosSlope - position.xPosition), (target.y/currPosSlope - target.x));
+    else
+      passed = compareValues((position.yPosition/currPosSlope - position.xPosition), (target.y/currPosSlope - target.x));
   }
   return passed;
 }

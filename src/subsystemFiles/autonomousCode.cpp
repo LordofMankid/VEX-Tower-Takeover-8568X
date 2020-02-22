@@ -116,8 +116,8 @@ void driveTest(){
 
   translate(40.0, 0.0, 0.0, 100, 0);
   translate(-20.0, 0.0, 0.0, 100, 1);
-  rotate(-135, 70, 2);
-  translate(20.0, 0.0, 0.0, 100, 3);
+  rotate(45, 70, 2);
+  translate(20.0, 0.0, 45.0, 100, 3);
   pros::delay(10);
 }
 

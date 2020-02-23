@@ -74,9 +74,14 @@ polarCoord rectToPolar(double x, double y){
 
 rectCoord polarToRect(double r, double theta){
     rectCoord rectCoord;
-    rectCoord.x = r*sin(theta);
-    rectCoord.y = r*cos(theta);
-
+    if(-PI/2 <= theta <= PI/2){
+      rectCoord.x = r*sin(theta);
+      rectCoord.y = r*cos(theta);
+    }
+    else{
+      rectCoord.x = r*sin(theta)*-1;
+      rectCoord.y = r*cos(theta)*-1;
+    }
     return rectCoord;
 }
 

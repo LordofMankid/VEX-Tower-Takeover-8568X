@@ -64,6 +64,7 @@ int targetPass(rectCoord target, position currentPosition, double targetTheta, p
       passed = compareValues(currentPosition.yPosition, target.y);
     else{
       double limitLineSlope = tan(PI/2 - targetTheta);
+      printf("hi\n");
       passed = compareValues((currentPosition.yPosition/limitLineSlope - currentPosition.xPosition), (target.y/limitLineSlope - target.x));
     }
   }

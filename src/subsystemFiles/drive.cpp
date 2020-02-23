@@ -101,18 +101,21 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       //printf("kP %f", forwardPID.kP);
       initialPosition = currPosition;
 
-      relTarget = polarToRect(targetDistance, (targetTheta*PI/180) + initialPosition.angle);
+      relTarget = polarToRect(targetDistance, (targetTheta+endingOrientation)*PI/180);
+      printf("last Y %f\n last X%f\n", lastTarget.y, lastTarget.x);
       absTarget = vectorSummation(relTarget, lastTarget);
       initTargetDistance = targetDistance;
       autonDirection = fabs(targetDistance)/targetDistance;
-      if(absTarget.y < initialPosition.yPosition)
-        atanAdjust = true;
+      if(absTarget.y < initialPosition.yPosition){
+          atanAdjust = true;
+          printf("yes backward");
+      }
       else
         atanAdjust = false;
       firstCycle = false;
       //autonDirection = absoluteDirection(absTarget, initialPosition, initialPosition.angle);
       correctionThreshold = 5000;
-      printf("initX %f\n init Y %f\n", absTarget.x, absTarget.y);
+      printf("initX %f\n init Y %f\n", relTarget.x, relTarget.y);
     }
 
     limitPass = targetPass(absTarget, currPosition, endingOrientation*DEG_RAD, initialPosition, initialPosition.angle);
@@ -131,15 +134,16 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
     else
       targetOrientation = 3*PI/2 - atan2(absTarget.y-currPosition.yPosition, absTarget.x-currPosition.xPosition);
 
+    if(atanAdjust == true && endingOrientation < -90)
+        targetOrientation -= PI/2;
+    else if(atanAdjust == true && endingOrientation > 90)
+        targetOrientation += PI/2;
+
+
     if(targetOrientation >= PI)
       targetOrientation -= 2*PI;
     else if(targetOrientation <= -PI)
       targetOrientation += 2*PI;
-    /*
-    if(atanAdjust == true && targetOrientation < 0)
-      targetOrientation -= PI/2;
-    else if(atanAdjust == true && targetOrientation > 0)
-      targetOrientation += PI/2;*/
 
       //Sets the PID loop
     voltageY = PIDdrive(forwardPID, targetDistance, findDistance(absTarget, currPosition));
@@ -204,7 +208,10 @@ void rotate(double targetOrientation, int maxSpeed, int driveStepNumber){
       driveStep++;
       firstCycle = true;
       targetReached = 0;
+      lastTarget.y = currPosition.yPosition;
+      lastTarget.x = currPosition.xPosition;
     }
+
   }
 
 }

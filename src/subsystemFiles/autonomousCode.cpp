@@ -53,9 +53,9 @@ void adjustkPID(kPID kPID, double kP, double kI, double kD, int driveStepNumber)
 void setAutonButton(){
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
-    forwardPID = createkPID(12.5, 0.0, 2.0);
-    turnPID = createkPID(1.75, 0.0, 0.45);
-    adjustPID = createkPID(2.0, 0.0, 0.045);
+    forwardPID = createkPID(12.5, 0.1, 2.3);
+    turnPID = createkPID(1.75, 0.0, 0.8);
+    adjustPID = createkPID(2.0, 0.0, 0.04);
     armPID = createkPID(0.0, 0.0, 0.0);
     driveStep = 0;
     setDriveCoast();
@@ -116,7 +116,7 @@ void driveTest(){
 
   translate(40.0, 0.0, 0.0, 100, 0);
   translate(-20.0, 0.0, 0.0, 100, 1);
-  rotate(45, 70, 2);
+  rotate(-135, 70, 2);
   translate(20.0, 0.0, 45.0, 100, 3);
   pros::delay(10);
 }

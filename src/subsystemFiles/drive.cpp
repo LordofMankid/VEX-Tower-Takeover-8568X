@@ -25,6 +25,7 @@ double newAngle;
 double targetOrientation;
 
 bool firstCycle = true;
+bool atanAdjust = false;
 int targetReached;
 int driveStep = 0;
 int autonDirection;
@@ -39,6 +40,7 @@ double correctionThreshold;
 
 //rectCoord relTarget;
 rectCoord absTarget;
+rectCoord lastTarget;
 //
 //HELPER FUNCTIONS
 void setDrive(int yPower, int rPower){
@@ -93,17 +95,20 @@ void setDriveMotors(){
 //AUTONOMOUS FUNCTIONS
 void translate(double targetDistance, double targetTheta, double endingOrientation, int maxSpeed, int driveStepNumber){
 
-
   if(driveStep == driveStepNumber){
     if(firstCycle == true){
       rectCoord relTarget;
       //printf("kP %f", forwardPID.kP);
       initialPosition = currPosition;
+
       relTarget = polarToRect(targetDistance, (targetTheta*PI/180) + initialPosition.angle);
-      absTarget = vectorSummation(relTarget, initialPosition);
+      absTarget = vectorSummation(relTarget, lastTarget);
       initTargetDistance = targetDistance;
-      pros::delay(10);
       autonDirection = fabs(targetDistance)/targetDistance;
+      if(absTarget.y < initialPosition.yPosition)
+        atanAdjust = true;
+      else
+        atanAdjust = false;
       firstCycle = false;
       //autonDirection = absoluteDirection(absTarget, initialPosition, initialPosition.angle);
       correctionThreshold = 5000;
@@ -130,6 +135,11 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       targetOrientation -= 2*PI;
     else if(targetOrientation <= -PI)
       targetOrientation += 2*PI;
+    /*
+    if(atanAdjust == true && targetOrientation < 0)
+      targetOrientation -= PI/2;
+    else if(atanAdjust == true && targetOrientation > 0)
+      targetOrientation += PI/2;*/
 
       //Sets the PID loop
     voltageY = PIDdrive(forwardPID, targetDistance, findDistance(absTarget, currPosition));
@@ -170,6 +180,7 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
       firstCycle = true;
       targetReached = 0;
       limitPass = 1;
+      lastTarget = absTarget;
     }
   }
 

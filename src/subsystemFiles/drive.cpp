@@ -134,11 +134,6 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
     else
       targetOrientation = 3*PI/2 - atan2(absTarget.y-currPosition.yPosition, absTarget.x-currPosition.xPosition);
 
-    if(atanAdjust == true && endingOrientation < -90)
-        targetOrientation -= PI/2;
-    else if(atanAdjust == true && endingOrientation > 90)
-        targetOrientation += PI/2;
-
 
     if(targetOrientation >= PI)
       targetOrientation -= 2*PI;

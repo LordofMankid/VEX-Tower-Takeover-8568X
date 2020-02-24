@@ -63,8 +63,8 @@ int targetPass(rectCoord target, position currentPosition, double targetTheta, p
     else if(targetTheta == 0 || targetTheta == PI || targetTheta == -PI)
       passed = compareValues(currentPosition.yPosition, target.y);
     else{
-      double limitLineSlope = tan(PI/2 - targetTheta);
-      printf("hi\n");
+      double limitLineSlope = -tan(targetTheta);
+      printf("limitLineSlope %f\n", limitLineSlope);
       passed = compareValues((currentPosition.yPosition/limitLineSlope - currentPosition.xPosition), (target.y/limitLineSlope - target.x));
     }
   }
@@ -75,8 +75,12 @@ int targetPass(rectCoord target, position currentPosition, double targetTheta, p
     else if(targetTheta == 0 || targetTheta == PI || targetTheta == -PI)
       passed = compareValues(target.y, currentPosition.yPosition);
     else{
-      double limitLineSlope = tan(PI/2 - targetTheta);
-      passed = compareValues((target.y/limitLineSlope - target.x), (currentPosition.yPosition/limitLineSlope - currentPosition.xPosition));
+      double limitLineSlope = -tan(targetTheta);
+      printf("limitLineSlope %f\n", limitLineSlope);
+      if(limitLineSlope < 0)
+        passed = -1*compareValues((target.y/limitLineSlope - target.x), (currentPosition.yPosition/limitLineSlope - currentPosition.xPosition));
+      else
+        passed = compareValues((target.y/limitLineSlope - target.x), (currentPosition.yPosition/limitLineSlope - currentPosition.xPosition));
     }
   }
   return passed;
@@ -89,11 +93,13 @@ int targetRelativePos(rectCoord target, position position, double initialTheta){
   else if(initialTheta == 0 || initialTheta == PI)
     passed = compareValues(position.yPosition, target.y);
   else{
-    double currPosSlope = tan(initialTheta);
+    double currPosSlope = -tan(initialTheta);
+    printf("currPosSlope %f\n", currPosSlope);
     if(currPosSlope < 0)
       passed = compareValues((target.y/currPosSlope - target.x), (position.yPosition/currPosSlope - position.xPosition));
     else
       passed = compareValues((position.yPosition/currPosSlope - position.xPosition), (target.y/currPosSlope - target.x));
+
   }
   return passed;
 }

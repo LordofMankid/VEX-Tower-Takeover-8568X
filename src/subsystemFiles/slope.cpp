@@ -149,6 +149,7 @@ void slopeMove(int targetAngle, int maxSpeed, int driveStepNumber, int slopeStep
         driveStep++;
         slopeOn = false; // turns slope off
         slopeFirstCycle = true; //prepares for the next cycle
+        setSlopeLift(0);
       }
     }
     else

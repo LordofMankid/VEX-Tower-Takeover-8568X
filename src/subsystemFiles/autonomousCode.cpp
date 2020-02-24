@@ -63,12 +63,12 @@ void setAutonButton(){
       autonUpdate();
       if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
         break;
-      driveTest();
-      pros::delay(10);
+        //slopeTest();
+        driveTest();
+        pros::delay(10);
     }
 
     //armTest();
-      //slopeTest();
       //intakeTest();
       //multipleSubsystemTest();
       //redFiveStack();
@@ -77,7 +77,7 @@ void setAutonButton(){
       //scoreTurnLeft();
       //blueFiveStack();
       //autonSkills();
-      //protectedBlue();
+    //protectedBlue();
       break;
   }
 
@@ -86,29 +86,19 @@ void setAutonButton(){
 }
 
 void slopeTest(){
-  while(1){
-    autonUpdate();
-    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
-      break;
 
     slopeMove(1500, 127, 0, 1);
     coolDelay(500, 1);
     slopeMove(0, 127, 2, 2);
-    pros::delay(10);
-  }
 
 }
 void armTest(){
-  while(1){
-    autonUpdate();
-    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
-      break;
 
     armMove(1500, 127, 0, 1);
     coolDelay(500, 1);
     armMove(0, 127, 2, 2);
-    pros::delay(10);
-  }
+
+
 
 }
 
@@ -116,9 +106,10 @@ void driveTest(){
 
   translate(40.0, 0.0, 0.0, 100, 0);
   translate(-20.0, 0.0, 0.0, 100, 1);
-  rotate(-135, 70, 2);
-  translate(20.0, 0.0, 45.0, 100, 3);
+  rotate(-180, 70, 2);
+  translate(10.0, 0.0, -135.0, 100, 3);
   pros::delay(10);
+  
 }
 
 void autonSkills(){

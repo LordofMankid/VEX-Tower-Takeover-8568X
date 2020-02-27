@@ -87,6 +87,43 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
   return voltage;
 }
 
+
+int turnLoop(kPID kPID, double targetAngleDeg, double EncoderValue){
+  int voltage;
+  if(targetAngleDeg < 0){
+    while(EncoderValue < 0){
+      EncoderValue += 360;
+    }
+  }
+  else{
+    while(EncoderValue > 0){
+      EncoderValue -= 360;
+    }
+  }
+  //sets error
+  error = targetAngleDeg - EncoderValue;
+  pros::lcd::print(0, "error: %f, %f, %f", error, targetAngleDeg, EncoderValue);
+
+  //increases error based on time taken to reach target - if resistance is encountered then integral will increase
+  integral = integral + error;
+  //resets integral if place is reached
+  if(error == 0)
+    integral = 0;
+  //reset integral if it becomes super big
+  if(fabs(error) >= integralMax)
+    integral = 0;
+  derivative = prevError - error; //finds derivative of errors
+  prevError = error; //updates prevError
+  //set voltage to equal the error
+  voltage = (error*kPID.kP) + (integral*kPID.kI) + (derivative*kPID.kD);
+  if(voltage > 127)
+    voltage = 127;
+  if(voltage < -127)
+    voltage = -127;
+
+  return voltage;
+}
+
 //pass in 2 structure "positions" with an X and Y
 int PIDdrive(kPID kPID, double targetDistance, double distanceFromTarget){
     int voltage;
@@ -101,6 +138,8 @@ int PIDdrive(kPID kPID, double targetDistance, double distanceFromTarget){
     integral = integral + error;
     //resets integral if place is reached
     if(error == 0)
+      integral = 0;
+    if(error > 5.0)
       integral = 0;
     //reset integral if it becomes super big
     if(fabs(error) >= integralMax)

@@ -3,7 +3,7 @@
 //VARIABLES
 extern bool autonRunning;
 extern int delayTick;
-
+extern int delayStep;
 void setAutonButton();
 
 /////////////////

@@ -15,6 +15,7 @@ void autonUpdate(){
   armAngle = armLift.get_position();
 }
 
+
 void delay(int time, int targDriveStep){
   if(driveStep == targDriveStep){
     pros::delay(500);
@@ -59,6 +60,8 @@ void setAutonButton(){
     armPID = createkPID(0.0, 0.0, 0.0);
     driveStep = 0;
     setDriveCoast();
+    autoTranslate(8.0, 127, 500);
+    autoTranslate(0.0, 127, 500);
     while(1){
       autonUpdate();
       if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
@@ -109,13 +112,12 @@ void driveTest(){
   rotate(-180, 70, 2);
   translate(10.0, 0.0, -135.0, 100, 3);
   pros::delay(10);
-  
+
 }
 
 void autonSkills(){
 
-  while(1){
-    autonUpdate();
+
     slopeMove(3000, 127, 0, 1);
     startIntake(1500, -127, 1, 1);
     delay(10, 1);
@@ -128,34 +130,16 @@ void autonSkills(){
     translate(-15.0, 0.0, 0.0, 60, 6);
   //  startIntake(200, -80, 5, 3);
     rotate(45.0, 70, 7);
-    if(driveStep == 8){
-      if(runOnce == true){
-          resetPosition();
-          runOnce = false;
-          driveStep++;
-        }
-    }
-
     //startSlopeMove(1500, 127, 8, 3);
-    translate(16.0, 0.0, 0.0, 60, 9);
-    slopeMove(5000, 127, 10, 4);
-    translate(-12.0, 0, 0, 35, 11);
+    translate(16.0, 0.0, 0.0, 60, 8);
+    slopeMove(5000, 127, 9, 4);
+    translate(-12.0, 0, 0, 35, 10);
 
-
-    pros::delay(10);
-  }
 
 }
 void redFiveStack(){
   autonRunning = false;
-  FrontLeft.move_absolute(8.0*REG_INCH_TICK, 75);
-  FrontRight.move_absolute(8.0*REG_INCH_TICK, 75);
-  BackLeft.move_absolute(8.0*REG_INCH_TICK, 75);
-  BackRight.move_absolute(8.0*REG_INCH_TICK, 75);
-  while(!((FrontLeft.get_position() < 4.1*REG_INCH_TICK) && (FrontLeft.get_position() > 3.9*REG_INCH_TICK))){
 
-    pros::delay(10);
-  }
   pros::delay(200);
   FrontLeft.move_absolute(0, 65);
   FrontRight.move_absolute(0, 65);
@@ -188,18 +172,10 @@ void redFiveStack(){
     translate(-20.0, 0.0, 0.0, 100, 5);
     startIntake(300, -110, 6, 3);
     rotate(135.0, 70, 6);
-    if(driveStep == 7){
-      if(runOnce == true){
-          resetPosition();
-          runOnce = false;
-          driveStep++;
-        }
-    }
-
-    startSlopeMove(1500, 127, 8, 4);
-    translate(16.5, 0.0, 0.0, 70, 8);
-    slopeMove(5000, 127, 9, 5);
-    translate(-12.0, 0, 0, 50, 10);
+    startSlopeMove(1500, 127, 7, 4);
+    translate(16.5, 0.0, 0.0, 70, 7);
+    slopeMove(5000, 127, 8, 5);
+    translate(-12.0, 0, 0, 50, 9);
 
 
     pros::delay(10);
@@ -246,18 +222,10 @@ void blueFiveStack(){
     translate(-20.0, 0.0, 0.0, 100, 5);
     startIntake(300, -110, 6, 3);
     rotate(-135.0, 70, 6);
-    if(driveStep == 7){
-      if(runOnce == true){
-          resetPosition();
-          runOnce = false;
-          driveStep++;
-        }
-    }
-
-    startSlopeMove(1500, 127, 8, 4);
-    translate(16.5, 0.0, 0.0, 70, 8);
-    slopeMove(5000, 127, 9, 5);
-    translate(-12.0, 0, 0, 50, 10);
+    startSlopeMove(1500, 127, 7, 4);
+    translate(16.5, 0.0, 0.0, 70, 7);
+    slopeMove(5000, 127, 8, 5);
+    translate(-12.0, 0, 0, 50, 9);
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
       break;
 

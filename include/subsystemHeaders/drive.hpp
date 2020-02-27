@@ -13,6 +13,7 @@ extern double KiDrive;
 //extern rectCoord relTarget;
 extern rectCoord absTarget;
 
+extern bool turnClockwise;
 extern bool firstCycle;
 extern int driveStep;
 extern int autonDirection;
@@ -55,10 +56,19 @@ void resetDriveEncoders();
 
 //AUTONOMOUS FUNCTIONS
 /*
+Uses built-in PROS parameters to move to a target(absolute) position
+targetDistance is in inches
+targetSpeed is from 0 to 127 (it will reverse automatically)
+maxTime is in millis
+
+*/
+void autoTranslate(double targetDistance, int targetSpeed, int maxTime);
+/*
 Tells robot to travel along the y-axis, with a target distance in inches, and a integer maxSpeed, range -127 - 127;
 */
-
 void translate(double targetDistance, double targetTheta, double endingOrientation, int maxSpeed, int driveStepNumber);
+
+
 void translate(double targetDistance, double targetTheta,  int maxSpeed);
 
 

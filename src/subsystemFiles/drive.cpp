@@ -26,6 +26,7 @@ double targetOrientation;
 
 bool firstCycle = true;
 bool atanAdjust = false;
+bool turnClockwise = true;
 int targetReached;
 int driveStep = 0;
 int autonDirection;
@@ -93,6 +94,22 @@ void setDriveMotors(){
 }
 
 //AUTONOMOUS FUNCTIONS
+void autoTranslate(double targetDistance, int targetSpeed, int maxTime){
+  FrontLeft.move_absolute(targetDistance*REG_INCH_TICK, targetSpeed);
+  FrontRight.move_absolute(targetDistance*REG_INCH_TICK, targetSpeed);
+  BackLeft.move_absolute(targetDistance*REG_INCH_TICK, targetSpeed);
+  BackRight.move_absolute(targetDistance*REG_INCH_TICK, targetSpeed);
+  while(!((FrontLeft.get_position() < (targetDistance + 0.1)*REG_INCH_TICK) && (FrontLeft.get_position() > (targetDistance - 0.1)*REG_INCH_TICK))){
+    updatePosition();
+    delayStep++;
+    if(delayStep > maxTime/10){
+      delayStep = 0;
+      break;
+    }
+    pros::delay(10);
+  }
+
+}
 void translate(double targetDistance, double targetTheta, double endingOrientation, int maxSpeed, int driveStepNumber){
 
   if(driveStep == driveStepNumber){
@@ -188,6 +205,14 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
 void rotate(double targetOrientation, int maxSpeed, int driveStepNumber){
 
   if(driveStep == driveStepNumber){
+    if(firstCycle == true){
+      if(targetOrientation < 0)
+        turnClockwise = true;
+      else
+        turnClockwise = false;
+      firstCycle = false;
+
+    }
     voltageR = PIDloop(turnPID, targetOrientation, getAngleDeg());
     if(abs(voltageR) > maxSpeed)
       voltageR = voltageR/abs(voltageR)*maxSpeed;

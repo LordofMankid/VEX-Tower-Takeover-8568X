@@ -137,6 +137,30 @@ void autonSkills(){
 
 
 }
+
+void protectedRed(){
+
+  slopeMove(3500, 127, 0, 1);
+  startIntake(1500, -127, 1, 1);
+  delay(100, 1);
+  startSlopeMove(0, -127, 2, 2);
+  coolDelay(600, 2);
+  startSlopeMove(0, -127, 3, 3);
+  translate(30.0, 0.0, 0.0, 100, 3);
+  startIntake(2500, 127, 4, 2);
+  rotate(90, 70, 4);
+  translate(6.0, 0.0, 90.0, 30, 5);
+  rotate(90, 70, 6);
+  startIntake(3000, 127, 7, 3);
+  translate(30.0, 0.0, 180.0, 30, 7);
+  rotate(-90, 70, 8);
+  startSlopeMove(1500, 127, 9, 4);
+  translate(40.0, 0.0, 90.0, 127, 9);
+  slopeMove(5000, 127, 10, 5);
+  translate(-10.0, 0.0, 90.0, 127, 11);
+
+
+}
 void redFiveStack(){
   autonRunning = false;
 
@@ -290,7 +314,7 @@ void protectedBlue(){
   }
 
 }
-
+/*
 void protectedRed(){
   autonRunning = false;
   FrontLeft.move_absolute(6.0*REG_INCH_TICK, 75);
@@ -346,7 +370,7 @@ void protectedRed(){
      pros::delay(10);
    }
 
-}
+}*/
 
 void scoreTurnLeft(){
   autonRunning = false;

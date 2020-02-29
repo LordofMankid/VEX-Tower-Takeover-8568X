@@ -59,15 +59,16 @@ void setAutonButton(){
     adjustPID = createkPID(2.0, 0.0, 0.04);
     armPID = createkPID(0.0, 0.0, 0.0);
     driveStep = 0;
-    setDriveCoast();
+    /*setDriveCoast();
     autoTranslate(8.0, 127, 500);
-    autoTranslate(0.0, 127, 500);
+    autoTranslate(0.0, 127, 500);*/
+    //timeDrive(1000, 127);
     while(1){
       autonUpdate();
       if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
         break;
         //slopeTest();
-        driveTest();
+        //driveTest();
         pros::delay(10);
     }
 

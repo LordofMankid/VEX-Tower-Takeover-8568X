@@ -21,6 +21,7 @@ pros::ADIEncoder trackingX('A','B');
 pros::ADIEncoder trackingLeft('E','F');
 pros::ADIEncoder trackingRight('G','H');
 pros::ADIButton slopeLimit('D');
+
 //SETUP VARIABLE
 
 const double RADIUS = 10;

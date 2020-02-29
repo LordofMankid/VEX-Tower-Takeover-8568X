@@ -96,20 +96,6 @@ void setDriveMotors(){
 }
 
 //AUTONOMOUS FUNCTIONS
-void timeDrive(int time, int voltage){
-  int direction = abs(voltage)/voltage;
-  pros::c::imu_accel_s_t accel = inertia_sensor.get_accel();
-  time += pros::millis();
-  resetDriveEncoders();
-  inertia_sensor.reset();
-
-  while(pros::millis() > time){
-    setDrive(127, 0);
-    printf("%f,%f,%f,\n", accel.x, accel.y, accel.z);
-    pros::delay(10);
-  }
-  setDrive(0, 0);
-}
 
 
 

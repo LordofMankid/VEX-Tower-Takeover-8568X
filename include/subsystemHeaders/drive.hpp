@@ -21,6 +21,8 @@ extern int limitPass;
 extern double distanceFromInitial;
 extern double initTargetDistance;
 extern rectCoord lastTarget;
+
+
 void translateY(double unitsY, double maxSpeed);
 //helper functions
 

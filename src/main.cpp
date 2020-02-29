@@ -29,7 +29,12 @@ void initialize() {
 	setUp();
 	pros::lcd::register_btn1_cb(on_center_button);
 	printf("initialize exit");
-
+	inertia_sensor.reset();
+	int timePassed;
+	while(inertia_sensor.is_calibrating()){
+		printf("time spent %i\n", timePassed);
+		pros::delay(10);
+	}
 
 }
 

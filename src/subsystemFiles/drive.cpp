@@ -103,15 +103,12 @@ void timeDrive(int time, int voltage){
   resetDriveEncoders();
   inertia_sensor.reset();
 
-  while(inertia_sensor.is_calibrating()){
-    pros::delay(10);
-  }
   while(pros::millis() > time){
     setDrive(127, 0);
     printf("%f,%f,%f,\n", accel.x, accel.y, accel.z);
     pros::delay(10);
   }
-  
+  setDrive(0, 0);
 }
 
 

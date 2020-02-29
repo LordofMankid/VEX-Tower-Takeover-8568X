@@ -101,8 +101,6 @@ void armTest(){
     coolDelay(500, 1);
     armMove(0, 127, 2, 2);
 
-
-
 }
 
 void driveTest(){

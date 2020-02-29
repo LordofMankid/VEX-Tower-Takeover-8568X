@@ -12,6 +12,7 @@ extern pros::Motor slopeLift;
 extern pros::Motor armLift;
 
 //setup sensors
+extern pros::Imu inertia_sensor;
 extern pros::Controller controller;
 extern pros::ADIEncoder trackingX;
 extern pros::ADIEncoder trackingLeft;

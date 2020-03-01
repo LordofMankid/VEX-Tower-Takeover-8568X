@@ -2,11 +2,11 @@
 
 using namespace okapi;
 auto leftSide = okapi::MotorGroup({1,3});
-auto rightSide = okapi::MotorGroup({-2,-12});
+auto rightSide = okapi::MotorGroup({2,12});
 const QLength WHEELDIAMETER = 4_in;
 
 
-MotorGroup intake({-14, 10});
+MotorGroup intake({14, 10});
 Motor slopeMotor(7);
 /*
 pros::Motor slopeLift(7, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
@@ -25,7 +25,7 @@ std::shared_ptr<ChassisController> myChassis =
   ChassisControllerBuilder()
     .withMotors(leftSide, rightSide)
     // Green gearset, 4 in wheel diam, 11.5 in wheel track
-    .withDimensions(AbstractMotor::gearset::green, {{WHEELDIAMETER, 11.5_in}, imev5GreenTPR})
+    .withDimensions(AbstractMotor::gearset::green, {{WHEELDIAMETER, 8.75_in}, imev5GreenTPR})
     .build();
 
 std::shared_ptr<AsyncMotionProfileController> profileControllerF =
@@ -53,7 +53,7 @@ auto slopeController = AsyncVelControllerBuilder()
 
 auto intakeControllerIn = AsyncVelControllerBuilder()
   .withMotor(intake)
-  .withMaxVelocity(200)
+  .withMaxVelocity(600)
   .withGearset(AbstractMotor::gearset::red)
   .build();
 
@@ -66,11 +66,15 @@ auto intakeControllerOut = AsyncVelControllerBuilder()
 void autonTest() {
 
   profileControllerF->generatePath(
-    {{0_ft, 0_ft, 0_deg}, {3_ft, 0_ft, 0_deg}}, "Movement 1");
+    {{0_ft, 0_ft, 0_deg}, {3_ft, 0_ft, 0_deg}}, "Movement 1", {0.5, 2.0, 10.0});
   profileControllerF->setTarget("Movement 1");
-  intakeControllerIn->setTarget(200);
-
+  intakeControllerIn->setTarget(1000);
   profileControllerF->waitUntilSettled();
+  profileControllerM->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {-1.5_ft, 0_ft, 0_deg}}, "Movement 2");
+  profileControllerM->setTarget("Movement 2",true);
+  intakeControllerIn->setTarget(0);
+  profileControllerM->waitUntilSettled();
 
 
 }

@@ -109,17 +109,17 @@ void autonomous() {
 void opcontrol() {
 
 	armLift.set_brake_mode(MOTOR_BRAKE_HOLD);
-
+	double angle;
 	while (true) {
 
 		updatePosition();
 		pros::lcd::print(6, "A: %f", getAngleDeg());
 		setDriveMotors();
-
-		pros::lcd::print(2, "SlopeAngle %f", slopeAngle);
+		angle = inertia_sensor.get_rotation();
+		pros::lcd::print(2, "Orientation %f", angle);
 	//	angleTrack();
 
-		
+
 		setSlopeMotors();
 
 		setIntakeMotors();

@@ -16,6 +16,8 @@ void autonUpdate(){
 }
 
 
+
+
 void delay(int time, int targDriveStep){
   if(driveStep == targDriveStep){
     pros::delay(500);
@@ -62,7 +64,8 @@ void setAutonButton(){
     /*setDriveCoast();
     autoTranslate(8.0, 127, 500);
     autoTranslate(0.0, 127, 500);*/
-    timeDrive(1000, 127);
+    autonTest();
+    //timeDrive(1000, 127);
     while(1){
       autonUpdate();
       if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)

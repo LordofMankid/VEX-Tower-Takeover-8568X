@@ -369,12 +369,16 @@ void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, dou
   //setDrive(0,0,0);
   //pros::delay(20);
 
+void gyroTurn(double targetAngle, int maxSpeed, double KdAdjust){
 
+
+}
 void rotatePID(double targetAngle, int maxSpeed, double KdAdjust){
   //define direction based on units provided
   int directionR = fabs(targetAngle) / targetAngle;
   int voltageY = 0;
   int voltageX = 0;
+  int angle;
   int voltageR = 0;
   int count = 0;
   int maxErrorX = 0;
@@ -388,13 +392,10 @@ void rotatePID(double targetAngle, int maxSpeed, double KdAdjust){
   {
     count++;
     //angleTrack();
-    positionY = (trackingLeft.get_value()+trackingRight.get_value()/2);
-    positionX = trackingX.get_value();
-    positionA = angle;
+    angle = inertia_sensor.get_rotation();
 
-    voltageY = PIDloop(0.0, 0.0, 0.0, 0.0, positionY);
-    voltageX = PIDloop(0.0, 0.0, 0.0, 0.0, positionX);
-    voltageR = PIDloop(1.75, 0.0, 0.0045+KdAdjust, targetAngle, positionA);
+
+    voltageR = PIDloop(1.75, 0.0, 0.0045+KdAdjust, targetAngle, angle);
     pros::lcd::print(1, "voltage %i, count %i", voltageR, count);
     if(voltageR > maxSpeed)
       voltageR = maxSpeed;
@@ -411,9 +412,7 @@ void rotatePID(double targetAngle, int maxSpeed, double KdAdjust){
     pros::lcd::print(4, "distanceLeft %f", targetAngle-positionA);
     setDrive(voltageY,  voltageR );
 
-    lastPositionX = positionX; //"saves" the last recorded position to compare with the next one
-    lastPositionY = positionY;
-    lastPositionA = positionA;
+
     pros::delay(10);
   }
   //reset drive

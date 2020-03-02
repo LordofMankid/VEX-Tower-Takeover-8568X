@@ -28,6 +28,8 @@ extern okapi::MotorGroup drive;
 //helper functions
 kPID createkPID(double kP, double kI, double kD);
 kPID adjustkPID(kPID kPID, double kP, double kI, double kD);
+
+
 //do stuff functions
 kPID tunePID(kPID kPID);
 
@@ -38,3 +40,5 @@ int PIDdrive(kPID kPID, rectCoord targetPosition, position currPosition);
 int PIDloop(kPID kPID, double units, double EncoderValue);
 
 int PIDloop(float Kp, float Ki, float Kd, double units, double EncoderValue);
+
+int turnLoop(kPID kPID, double targetAngleDeg, double EncoderValue);

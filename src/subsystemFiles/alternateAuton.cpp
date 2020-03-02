@@ -46,9 +46,10 @@ std::shared_ptr<AsyncMotionProfileController> profileControllerS =
     .withOutput(myChassis)
     .buildMotionProfileController();
 
-auto slopeController = AsyncVelControllerBuilder()
+auto slopeController = AsyncPosControllerBuilder()
   .withMotor(slopeMotor)
   .withGearset(AbstractMotor::gearset::green)
+  .withSensor(slopeMotor)
   .build();
 
 auto intakeControllerIn = AsyncVelControllerBuilder()
@@ -63,19 +64,32 @@ auto intakeControllerOut = AsyncVelControllerBuilder()
   .withGearset(AbstractMotor::gearset::red)
   .build();
 
-void autonTest() {
 
+void autonTest() {
+  ////Path Generation
+  /*
+  Goes as follows:
+  generatePath({inside these brackets is the targets}, "Movement name", {velocityLimit, accelerationLimit, "jerk" limit})
+  The 3rd one is optional
+  */
   profileControllerF->generatePath(
     {{0_ft, 0_ft, 0_deg}, {3_ft, 0_ft, 0_deg}}, "Movement 1", {0.5, 2.0, 10.0});
-  profileControllerF->setTarget("Movement 1");
-  intakeControllerIn->setTarget(1000);
-  profileControllerF->waitUntilSettled();
+
   profileControllerM->generatePath(
     {{0_ft, 0_ft, 0_deg}, {-1.5_ft, 0_ft, 0_deg}}, "Movement 2");
-  profileControllerM->setTarget("Movement 2",true);
+
+
+  profileControllerF->setTarget("Movement 1");
+  intakeControllerIn->setTarget(1000);
+  profileControllerF->waitUntilSettled(); //blocks everything else until finished
+
+  profileControllerM->setTarget("Movement 2",true); //"True" reverses it
   intakeControllerIn->setTarget(0);
   profileControllerM->waitUntilSettled();
-
+  gyroTurn(90.0, 70, 0);
+  slopeController->setMaxVelocity(600);
+  slopeController->setTarget(2000);
+  slopeController->waitUntilSettled();
 
 }
 

@@ -73,7 +73,7 @@ void translate(double targetDistance, double targetTheta, double endingOrientati
 
 void translate(double targetDistance, double targetTheta,  int maxSpeed);
 
-
+void gyroTurn(double targetAngle, int maxSpeed, double KdAdjust);
 void rotate(double targetOrientation, int maxSpeed, int driveStepNumber);
 void rotate(double targetOrientation, int maxSpeed);
 

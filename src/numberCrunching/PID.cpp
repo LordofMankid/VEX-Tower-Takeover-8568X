@@ -107,7 +107,7 @@ int turnLoop(kPID kPID, double targetAngleDeg, double EncoderValue){
   //increases error based on time taken to reach target - if resistance is encountered then integral will increase
   integral = integral + error;
   //resets integral if place is reached
-  if(error == 0)
+  if(error == 0 || error > 5.0)
     integral = 0;
   //reset integral if it becomes super big
   if(fabs(error) >= integralMax)

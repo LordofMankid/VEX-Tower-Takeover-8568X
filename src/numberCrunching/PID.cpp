@@ -28,7 +28,7 @@ auto testGroup = std::make_shared<okapi::MotorGroup>(drive);
 //okapi::PIDTuner drivePID = okapi::PIDTuner(test, testGroup, TimeUtilFactory::create(), 2500.0_ms, 40.0*TR_INCH_TICK, 0.000, 0.00016, 0.0000, 0.000, 0.000, 0.00);
 
 //okapi::PIDTuner turnPID = okapi::PIDTuner(position.angle, testGroup, TimeUtilFactory::create(), 3000.0_ms, 20.0*TR_TICK_INCH, 0.001, 2.0, 0.0005, 0.1, 0.0001, 1.0);
-
+/*
   kPID createkPID(double kP, double kI, double kD){
     kPID kPID;
     kPID.kP = kP;
@@ -45,7 +45,7 @@ auto testGroup = std::make_shared<okapi::MotorGroup>(drive);
 
     return kPID;
   }
-/*
+
 kPID tunePID(kPID kPID){
   okapi::PIDTuner::Output bestPID;
 
@@ -91,20 +91,15 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
 int turnLoop(kPID kPID, double targetAngleDeg, double EncoderValue){
   int voltage;
   if(targetAngleDeg < 0){
-    while(EncoderValue > 0) {
-      EncoderValue -=360.0;
-
+    while(EncoderValue < 0){
+      EncoderValue += 360;
     }
-    EncoderValue = godulo(EncoderValue, -360.0);
   }
   else{
-    while(EncoderValue < 0) {
-      EncoderValue +=360.0;
-      printf("hi\n");
+    while(EncoderValue > 0){
+      EncoderValue -= 360;
     }
-    EncoderValue = modulo(EncoderValue, 360.0);
   }
-  printf("GyroAngle: %f TargetAngle:  %f\n", EncoderValue, targetAngleDeg);
   //sets error
   error = targetAngleDeg - EncoderValue;
   pros::lcd::print(0, "error: %f, %f, %f", error, targetAngleDeg, EncoderValue);
@@ -112,7 +107,7 @@ int turnLoop(kPID kPID, double targetAngleDeg, double EncoderValue){
   //increases error based on time taken to reach target - if resistance is encountered then integral will increase
   integral = integral + error;
   //resets integral if place is reached
-  if(error == 0 || error > 5.0)
+  if(error == 0)
     integral = 0;
   //reset integral if it becomes super big
   if(fabs(error) >= integralMax)
@@ -142,9 +137,7 @@ int PIDdrive(kPID kPID, double targetDistance, double distanceFromTarget){
     //increases error based on time taken to reach target - if resistance is encountered then integral will increase
     integral = integral + error;
     //resets integral if place is reached
-    if(error == 0)
-      integral = 0;
-    if(error > 5.0)
+    if(error == 0 || error > 5.0)
       integral = 0;
     //reset integral if it becomes super big
     if(fabs(error) >= integralMax)

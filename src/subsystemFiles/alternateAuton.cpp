@@ -72,9 +72,10 @@ void autonTest() {
   generatePath({inside these brackets is the targets}, "Movement name", {velocityLimit, accelerationLimit, "jerk" limit})
   The 3rd one is optional
   */
-  /*
+
+
   profileControllerF->generatePath(
-    {{0_ft, 0_ft, 0_deg}, {3_ft, 0_ft, 0_deg}}, "Movement 1", {0.5, 2.0, 10.0});
+    {{0_ft, 0_ft, 0_deg}, {1_ft, -1_ft, 90_deg}, {3_ft, -3_ft, 0_deg}}, "Movement 1", {0.5, 2.0, 10.0});
 
   profileControllerM->generatePath(
     {{0_ft, 0_ft, 0_deg}, {-1.5_ft, 0_ft, 0_deg}}, "Movement 2");
@@ -84,9 +85,9 @@ void autonTest() {
   intakeControllerIn->setTarget(1000);
   profileControllerF->waitUntilSettled(); //blocks everything else until finished
 
-  profileControllerM->setTarget("Movement 2",true); //"True" reverses it
+  profileControllerM->setTarget("Movement 2", true); //"True" reverses it
   intakeControllerIn->setTarget(0);
-  profileControllerM->waitUntilSettled();*/
+  profileControllerM->waitUntilSettled();
 
   gyroTurn(-90.0, 70, 0);
   slopeController->setMaxVelocity(100);

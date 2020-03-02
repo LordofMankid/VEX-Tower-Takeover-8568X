@@ -57,7 +57,7 @@ void setAutonButton(){
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
     forwardPID = createkPID(12.5, 0.1, 2.3);
-    turnPID = createkPID(1.75, 0.0, 0.8);
+    turnPID = createkPID(1.3, 0.0, 1.5);
     adjustPID = createkPID(2.0, 0.0, 0.04);
     armPID = createkPID(0.0, 0.0, 0.0);
     driveStep = 0;

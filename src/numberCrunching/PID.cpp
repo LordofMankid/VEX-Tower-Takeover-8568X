@@ -91,15 +91,20 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
 int turnLoop(kPID kPID, double targetAngleDeg, double EncoderValue){
   int voltage;
   if(targetAngleDeg < 0){
-    while(EncoderValue < 0){
-      EncoderValue += 360;
+    while(EncoderValue > 0) {
+      EncoderValue -=360.0;
+
     }
+    EncoderValue = godulo(EncoderValue, -360.0);
   }
   else{
-    while(EncoderValue > 0){
-      EncoderValue -= 360;
+    while(EncoderValue < 0) {
+      EncoderValue +=360.0;
+      printf("hi\n");
     }
+    EncoderValue = modulo(EncoderValue, 360.0);
   }
+  printf("GyroAngle: %f TargetAngle:  %f\n", EncoderValue, targetAngleDeg);
   //sets error
   error = targetAngleDeg - EncoderValue;
   pros::lcd::print(0, "error: %f, %f, %f", error, targetAngleDeg, EncoderValue);

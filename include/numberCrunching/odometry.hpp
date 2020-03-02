@@ -48,6 +48,8 @@ void updatePosition(); //main position tracking algorithm
 
 double modulo (double a, double b);
 
+double godulo(double a, double b);
+
 double getXposition(); //gets X position in inches
 
 double getYposition(); //get Y position in inches

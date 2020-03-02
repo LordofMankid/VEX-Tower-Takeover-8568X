@@ -189,11 +189,11 @@ double positionReachCheck(double currentPositionY, double currentPositionX, doub
 }
 
 int positionReachCheck(double currentPosition, double lastPosition, int motorStopParameter, double target, double marginOfError){
-  if(lastPosition == currentPosition && fabs(target - currentPosition) < marginOfError)
+  if(abs(lastPosition - currentPosition) <= 1 && fabs(target - currentPosition) < marginOfError)
     motorStopParameter++;
-  else if(lastPosition != currentPosition)
+  else if(abs(lastPosition - currentPosition) > 1)
     motorStopParameter = 0;
-    return motorStopParameter;
+  return motorStopParameter;
 }
 
 void armHeightTrack(){

@@ -245,7 +245,10 @@ void rotate(double targetOrientation, int maxSpeed, int driveStepNumber){
 void gyroTurn(double targetAngle, int maxSpeed, double KdAdjust){
 
   targetAngle += getGyroAngle();
-  while(true){
+  printf("voltageR %i\n", voltageR);
+  bool autonRunning = true;
+  setDriveCoast();
+  while(autonRunning == true){
     voltageR = turnLoop(turnPID, targetAngle, getGyroAngle());
     if(abs(voltageR) > maxSpeed)
       voltageR = voltageR/abs(voltageR)*maxSpeed;
@@ -253,11 +256,12 @@ void gyroTurn(double targetAngle, int maxSpeed, double KdAdjust){
 
     setDrive(0, voltageR);
 
-    targetReached = positionReachCheck(getGyroAngle(), lastOrientation, targetReached, targetOrientation, 25.0);
+    targetReached = positionReachCheck(getGyroAngle(), lastOrientation, targetReached, targetAngle, 25.0);
 
     lastOrientation = getGyroAngle();
     if(targetReached > 10){
       setDrive(0,0);
+      printf("targetReached");
       break;
     }
     pros::delay(10);

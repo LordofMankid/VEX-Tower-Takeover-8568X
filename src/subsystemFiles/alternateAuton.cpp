@@ -7,7 +7,7 @@ const QLength WHEELDIAMETER = 4_in;
 
 
 MotorGroup intake({14, 10});
-Motor slopeMotor(7);
+Motor slopeMotor(-7);
 /*
 pros::Motor slopeLift(7, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor FrontLeft(1, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
@@ -72,6 +72,7 @@ void autonTest() {
   generatePath({inside these brackets is the targets}, "Movement name", {velocityLimit, accelerationLimit, "jerk" limit})
   The 3rd one is optional
   */
+  /*
   profileControllerF->generatePath(
     {{0_ft, 0_ft, 0_deg}, {3_ft, 0_ft, 0_deg}}, "Movement 1", {0.5, 2.0, 10.0});
 
@@ -85,9 +86,10 @@ void autonTest() {
 
   profileControllerM->setTarget("Movement 2",true); //"True" reverses it
   intakeControllerIn->setTarget(0);
-  profileControllerM->waitUntilSettled();
-  gyroTurn(90.0, 70, 0);
-  slopeController->setMaxVelocity(600);
+  profileControllerM->waitUntilSettled();*/
+
+  gyroTurn(-90.0, 70, 0);
+  slopeController->setMaxVelocity(100);
   slopeController->setTarget(2000);
   slopeController->waitUntilSettled();
 

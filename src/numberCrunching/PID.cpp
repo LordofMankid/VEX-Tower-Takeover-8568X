@@ -45,7 +45,10 @@ auto testGroup = std::make_shared<okapi::MotorGroup>(drive);
 
     return kPID;
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> adbf2a60a0af68f7e7ddba2d2063956a794d4484
 /*
 kPID tunePID(kPID kPID){
   okapi::PIDTuner::Output bestPID;
@@ -89,19 +92,22 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
   return voltage;
 }
 
-
 int turnLoop(kPID kPID, double targetAngleDeg, double EncoderValue){
   int voltage;
   if(targetAngleDeg < 0){
-    while(EncoderValue < 0){
-      EncoderValue += 360;
+    while(EncoderValue > 0) {
+      EncoderValue -=360.0;
     }
+  //  EncoderValue = godulo(EncoderValue, -360.0);
   }
   else{
-    while(EncoderValue > 0){
-      EncoderValue -= 360;
+    while(EncoderValue < 0) {
+      EncoderValue +=360.0;
+      printf("hi\n");
     }
+    EncoderValue = modulo(EncoderValue, 360.0);
   }
+  printf("GyroAngle: %f TargetAngle:  %f\n", EncoderValue, targetAngleDeg);
   //sets error
   error = targetAngleDeg - EncoderValue;
   pros::lcd::print(0, "error: %f, %f, %f", error, targetAngleDeg, EncoderValue);
@@ -109,7 +115,7 @@ int turnLoop(kPID kPID, double targetAngleDeg, double EncoderValue){
   //increases error based on time taken to reach target - if resistance is encountered then integral will increase
   integral = integral + error;
   //resets integral if place is reached
-  if(error == 0)
+  if(error == 0 || error > 5.0)
     integral = 0;
   //reset integral if it becomes super big
   if(fabs(error) >= integralMax)

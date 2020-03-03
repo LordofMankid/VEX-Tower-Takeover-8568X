@@ -123,6 +123,20 @@ int absoluteDirection(rectCoord target, position position, double initialTheta){
 }
 
 
+double getGyroAngle(){
+  double angle;
+  angle = inertia_sensor.get_rotation();
+  angle += 180.0;
+  while(angle < 0) {
+    angle +=360.0;
+  }
+  angle = modulo(angle, 360.0);
+  angle -= PI;
+
+  return angle;
+}
+
+
 void nextStep(int stepSet, int time){
   if(stepChangeTimes == time){
     driveStep = stepSet;

@@ -45,6 +45,9 @@ int positionReachCheck(double currentPosition, double lastPosition, int motorSto
 Returns a motorStope parameter used to exit a PID loop.
 */
 
+
+double getGyroAngle();
+
 double adjustKp(double Kpid, double increment);
 
 void printToBrain();

@@ -193,6 +193,13 @@ double modulo(double a, double b) {
   return a;
 }
 
+double godulo(double a, double b) {
+  while (a<b) {
+    a-=b;
+  }
+  return a;
+}
+
 double getXposition(){
   return currPosition.xPosition;
 }

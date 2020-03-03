@@ -73,12 +73,8 @@ void translate(double targetDistance, double targetTheta,  int maxSpeed);
 
 
 void rotate(double targetOrientation, int maxSpeed, int driveStepNumber);
+
 void rotate(double targetOrientation, int maxSpeed);
 
-
-
-void translateY(double unitsY, double unitsX, int maxSpeed, double KdAdjust, double KpAdjustX);
-
-void translateX(double distanceX, int maxSpeed);
-
+void gyroTurn(double targetAngle, int maxSpeed);
 void rotatePID(double targetAngle, int maxSpeed, double KdAdjust);

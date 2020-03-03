@@ -215,23 +215,33 @@ void slopeUp(int targetAngle, int maxSpeed){
   int lastSlopeAngle;
   bool targetReach = false;
 
-  while(autonRunning == true && targetReach == false){
-    slopeAngle = slopeLift.get_position();
-    voltageSlope = PIDloop(0.05, 0.0, 0.0, targetAngle, slopeAngle);
-    slopePower = voltageSlope;
-    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1)
-      autonRunning = false;
-    if(slopeAngle > 3250 && slopePower > 127)
-      slopePower = maxSpeed;
-    if(fabs(slopeAngle) > 6800){
-      targetReach = true;
-      break;
+  while(targetReach == false){
+      slopeAngle = slopeLift.get_position();
+      printf("slopeAngle %f", slopeAngle-targetAngle);
+      voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
+      if(slopeAngle > 3000 && slopeAngle < 6000)
+        {
+          if(slopeAngle > 3800 && slopeAngle <= 4700)
+            voltageSlope = 52;
+          if(slopeAngle > 4700)
+            voltageSlope = 40;
+          pros::lcd::print(5, "slope power= %i", voltageSlope);
+        }
+      else
+        voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
+      if(currentTarget - slopeAngle < 0){
+        voltageSlope = -127;
+      }
+      lastSlopeAngle = slopeAngle;
+      slopeStopParameter = positionReachCheck(slopeAngle, lastSlopeAngle, slopeStopParameter, 6000, 50);
+      setSlopeLift(voltageSlope);
+      //  printf("hi %f\n", abs(slopeAngle - currentTarget));
+      if(abs(slopeAngle - targetAngle) <= 50 || slopeStopParameter > 50){
+        printf("slopeTargetReached");
+        setSlopeLift(0);
+        targetReach = true;
+      }
     }
-}
-      setSlopeLift(slopePower);
-    pros::lcd::print(1, "slopeAngle = %f", slopeAngle);
-//    positionReachCheck(slopeAngle, lastSlopeAngle, slopeStopParameter, targetAngle, 75);
-//    lastSlopeAngle = slopeAngle;
 }
 
 

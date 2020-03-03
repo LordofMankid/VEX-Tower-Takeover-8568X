@@ -38,3 +38,5 @@ int PIDdrive(kPID kPID, rectCoord targetPosition, position currPosition);
 int PIDloop(kPID kPID, double units, double EncoderValue);
 
 int PIDloop(float Kp, float Ki, float Kd, double units, double EncoderValue);
+
+int turnLoop(kPID kPID, double units, double EncoderValue);

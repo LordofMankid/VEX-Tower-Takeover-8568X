@@ -52,6 +52,8 @@ void adjustkPID(kPID kPID, double kP, double kI, double kD, int driveStepNumber)
 }
 
 void setAutonButton(){
+
+
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
     forwardPID = createkPID(12.5, 0.1, 2.3);
@@ -59,9 +61,11 @@ void setAutonButton(){
     adjustPID = createkPID(2.0, 0.0, 0.04);
     armPID = createkPID(0.0, 0.0, 0.0);
     driveStep = 0;
-    /*setDriveCoast();
+    setDriveCoast();
+    autonTest();
+    /*
     autoTranslate(8.0, 127, 500);
-    autoTranslate(0.0, 127, 500);*/
+    autoTranslate(0.0, 127, 500);
     //timeDrive(1000, 127);
     while(1){
       autonUpdate();
@@ -70,6 +74,7 @@ void setAutonButton(){
         //slopeTest();
         //driveTest();
         pros::delay(10);
+
     }
 
     //armTest();
@@ -82,11 +87,14 @@ void setAutonButton(){
       //blueFiveStack();
       //autonSkills();
     //protectedBlue();
+      */
       break;
+
   }
 
     autonRunning = false;
     setDriveBrake();
+
 }
 
 void slopeTest(){

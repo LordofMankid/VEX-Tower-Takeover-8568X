@@ -131,7 +131,7 @@ double getGyroAngle(){
     angle +=360.0;
   }
   angle = modulo(angle, 360.0);
-  angle -= PI;
+  angle -= 180.0;
 
   return angle;
 }
@@ -194,10 +194,15 @@ double positionReachCheck(double currentPositionY, double currentPositionX, doub
 }
 
 int positionReachCheck(double currentPosition, double lastPosition, int motorStopParameter, double target, double marginOfError){
-  if(lastPosition == currentPosition && fabs(target - currentPosition) < marginOfError)
+  if(fabs(fabs(lastPosition)-fabs(currentPosition)) <= 1 && fabs(fabs(currentPosition) - fabs(target)) < marginOfError){
+    printf("aaa %f", fabs(fabs(target) - fabs(currentPosition)));
     motorStopParameter++;
-  else if(lastPosition != currentPosition)
+  }
+  else if(fabs(fabs(lastPosition) - fabs(currentPosition)) > 1){
     motorStopParameter = 0;
+  printf("aa %f\n", fabs(fabs(lastPosition) - fabs(currentPosition)));
+  }
+  printf("aaa %f\n", fabs(target) - fabs(currentPosition));
     return motorStopParameter;
 }
 

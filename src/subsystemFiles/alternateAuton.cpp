@@ -6,7 +6,7 @@ auto rightSide = okapi::MotorGroup({2,12});
 const QLength WHEELDIAMETER = 3.25_in;
 
 
-MotorGroup intake({-14, 10});
+MotorGroup intake({-19, 10});
 Motor slopeMotor(7);
 /*
 pros::Motor slopeLift(7, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
@@ -30,7 +30,7 @@ std::shared_ptr<ChassisController> myChassis =
 
 std::shared_ptr<AsyncMotionProfileController> profileControllerF =
   AsyncMotionProfileControllerBuilder()
-    .withLimits({1.0, 2.0, 10.0})
+    .withLimits({1.5, 2.0, 10.0})
     .withOutput(myChassis)
     .buildMotionProfileController();
 
@@ -72,30 +72,45 @@ void autonTest() {
   generatePath({inside these brackets is the targets}, "Movement name", {velocityLimit, accelerationLimit, "jerk" limit})
   The 3rd one is optional
   */
+
+/*
   slopeController->setMaxVelocity(600);
-  slopeController->setTarget(2000);
+  slopeController->setTarget(600);
   intakeController->setTarget(-600);
   slopeController->waitUntilSettled();
   slopeController->setTarget(0);
   intakeController->setTarget(600);
+*/
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {10_in, 0_ft, 0_deg}, {39_in, -15_in, 0_deg}}, "Movement 1", {1.0, 0.9, 5.0});
 
   profileControllerF->generatePath(
-    {{0_ft, 0_ft, 0_deg}, {1_ft, -1_ft, 90_deg}, {3_ft, -3_ft, 0_deg}}, "Movement 1", {0.5, 2.0, 10.0});
+    {{0_ft, 0_ft, 0_deg}, {16_in, 0_ft, 0_deg}}, "Movement 2", {1.5, 0.9, 7.5});
 
-  profileControllerM->generatePath(
-    {{0_ft, 0_ft, 0_deg}, {-1.5_ft, 0_ft, 0_deg}}, "Movement 2");
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {25_in, 0_ft, 0_deg}}, "Movement 3", {1.5, 0.9, 7.5});
 
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {18_in, 5_in, 0_deg}}, "Movement 4", {1.5, 0.9, 7.5});
 
   profileControllerF->setTarget("Movement 1");
   intakeController->setTarget(1000);
   profileControllerF->waitUntilSettled(); //blocks everything else until finished
+  gyroTurn(-90.0, 40);
 
-  profileControllerM->setTarget("Movement 2", true); //"True" reverses it
-  intakeController->setTarget(0);
-  profileControllerM->waitUntilSettled();
+  profileControllerF->setTarget("Movement 2"); //"True" reverses it
+  profileControllerF->waitUntilSettled();
 
-  gyroTurn(-90.0, 70);
+  gyroTurn(-90.0, 42);
 
+
+  profileControllerF->setTarget("Movement 3"); //"True" reverses it
+  profileControllerF->waitUntilSettled();
+
+  gyroTurn(-90, 42);
+
+  profileControllerF->setTarget("Movement 4"); //"True" reverses it
+  profileControllerF->waitUntilSettled();
 
 }
 

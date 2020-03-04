@@ -33,6 +33,7 @@ int autonDirection;
 int limitPass;
 position lastPosition;
 
+double lastTargetAngle;
 position initialPosition;
 double distanceFromInitial;
 double initTargetDistance;
@@ -237,24 +238,34 @@ void rotate(double targetOrientation, int maxSpeed, int driveStepNumber){
 }
 
 void gyroTurn(double targetAngle, int maxSpeed){
+  double realTarget;
+  realTarget = targetAngle + lastTargetAngle;
+  realTarget += 180;
+  while(realTarget < 0) {
+      realTarget +=360.0;
+    }
+  realTarget = modulo(realTarget, 360.0);
 
-  targetAngle += getGyroAngle();
-  printf("voltageR %i\n", voltageR);
+  realTarget -= 180;
   bool autonRunning = true;
+
   setDriveCoast();
   while(autonRunning == true){
-    voltageR = turnLoop(turnPID, targetAngle, getGyroAngle());
+    voltageR = turnLoop(turnPID, realTarget, getGyroAngle());
     if(abs(voltageR) > maxSpeed)
       voltageR = voltageR/abs(voltageR)*maxSpeed;
     printf("voltageR %i\n", voltageR);
 
+    printf("last Target %f\n", lastTargetAngle);
     setDrive(0, voltageR);
 
-    targetReached = positionReachCheck(getGyroAngle(), lastOrientation, targetReached, targetAngle, 25.0);
+    targetReached = positionReachCheck(getGyroAngle(), lastOrientation, targetReached, realTarget, 5.0);
 
     lastOrientation = getGyroAngle();
     if(targetReached > 10){
       setDrive(0,0);
+      targetReached = 0;
+      lastTargetAngle += targetAngle;
       printf("targetReached");
       break;
     }

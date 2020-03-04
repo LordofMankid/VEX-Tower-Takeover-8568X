@@ -218,7 +218,7 @@ void slopeUp(int targetAngle, int maxSpeed){
   while(targetReach == false){
       slopeAngle = slopeLift.get_position();
       printf("slopeAngle %f", slopeAngle-targetAngle);
-      voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
+      voltageSlope = 127;
       if(slopeAngle > 3000 && slopeAngle < 6000)
         {
           if(slopeAngle > 3800 && slopeAngle <= 4700)
@@ -229,7 +229,7 @@ void slopeUp(int targetAngle, int maxSpeed){
         }
       else
         voltageSlope = PIDloop(0.05, 0.0, 0.0, 6000, slopeAngle);
-      if(currentTarget - slopeAngle < 0){
+      if(targetAngle - slopeAngle < 0){
         voltageSlope = -127;
       }
       lastSlopeAngle = slopeAngle;
@@ -241,6 +241,7 @@ void slopeUp(int targetAngle, int maxSpeed){
         setSlopeLift(0);
         targetReach = true;
       }
+      pros::delay(10);
     }
 }
 

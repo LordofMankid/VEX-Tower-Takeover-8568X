@@ -45,6 +45,10 @@ auto testGroup = std::make_shared<okapi::MotorGroup>(drive);
 
     return kPID;
   }
+<<<<<<< HEAD
+
+=======
+>>>>>>> adbf2a60a0af68f7e7ddba2d2063956a794d4484
 /*
 kPID tunePID(kPID kPID){
   okapi::PIDTuner::Output bestPID;
@@ -57,7 +61,8 @@ kPID tunePID(kPID kPID){
   //okapi::QTime
 
   return kPID;
-}*/
+}
+*/
 
 
 int PIDloop(kPID kPID, double units, double EncoderValue){

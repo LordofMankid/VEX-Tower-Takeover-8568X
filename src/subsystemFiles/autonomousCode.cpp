@@ -61,8 +61,8 @@ void setAutonButton(){
     adjustPID = createkPID(2.0, 0.0, 0.04);
     armPID = createkPID(0.0, 0.0, 0.0);
     driveStep = 0;
-    setDriveCoast();
-    autonTest();
+
+    eightStack();
     /*
     autoTranslate(8.0, 127, 500);
     autoTranslate(0.0, 127, 500);

@@ -64,6 +64,30 @@ auto intakeControllerOut = AsyncVelControllerBuilder()
   .withGearset(AbstractMotor::gearset::red)
   .build();
 
+void eightStack(){
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {30_in, 0_ft, 0_deg}}, "Movement 1", {1.0, 0.9, 5.0});
+
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {-5_in, 0_in, 0_deg}, {-30_in, -27.5_in, 0_deg}}, "Movement 2", {1.5, 0.9, 7.5});
+
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {35_in, 0_ft, 0_deg}}, "Movement 3", {1.5, 0.9, 7.5});
+
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {18_in, 5_in, 0_deg}}, "Movement 4", {1.5, 0.9, 7.5});
+
+    profileControllerF->setTarget("Movement 1");
+    profileControllerF->waitUntilSettled(); //blocks everything else until finished
+
+
+    profileControllerF->setTarget("Movement 2", true); //"True" reverses it
+    profileControllerF->waitUntilSettled();
+
+    profileControllerF->setTarget("Movement 3"); //"True" reverses it
+    profileControllerF->waitUntilSettled();
+
+}
 
 void autonTest() {
   ////Path Generation
@@ -73,14 +97,14 @@ void autonTest() {
   The 3rd one is optional
   */
 
-/*
+
   slopeController->setMaxVelocity(600);
-  slopeController->setTarget(600);
+  slopeController->setTarget(4000);
   intakeController->setTarget(-600);
   slopeController->waitUntilSettled();
   slopeController->setTarget(0);
   intakeController->setTarget(600);
-*/
+/*
   profileControllerF->generatePath(
     {{0_ft, 0_ft, 0_deg}, {10_in, 0_ft, 0_deg}, {39_in, -15_in, 0_deg}}, "Movement 1", {1.0, 0.9, 5.0});
 
@@ -111,7 +135,7 @@ void autonTest() {
 
   profileControllerF->setTarget("Movement 4"); //"True" reverses it
   profileControllerF->waitUntilSettled();
-
+*/
 }
 
 void timeDrive(int time, int voltage){

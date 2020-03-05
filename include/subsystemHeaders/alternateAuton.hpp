@@ -10,3 +10,5 @@ extern const double REG_INCH_TICK;
 void timeDrive(int time, int voltage);
 
 void autonTest();
+
+void eightStack();

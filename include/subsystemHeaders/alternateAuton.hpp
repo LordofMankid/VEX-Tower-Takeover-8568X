@@ -11,4 +11,6 @@ void timeDrive(int time, int voltage);
 
 void autonTest();
 
+void connor();
+
 void eightStack();

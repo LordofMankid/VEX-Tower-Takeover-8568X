@@ -54,7 +54,7 @@ void setMegaLift(int power){
 }
 //DRIVER CODE
 void setIntakeMotors(){
-  intakePower = 127*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) - 70*controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
+  intakePower = 127*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
   setIntake(intakePower);
 }
 
@@ -148,7 +148,26 @@ void intakeMove(int targetTime, int speed, int driveStepNumber, int intakeStepNu
   }
 }
 
+void intakeTime(int targetTime, int speed){
+  intakeOn = true;
+  targTime = pros::millis() + targetTime; //set the target to whatever the current time is + the target duration
 
+
+//checks to see if the target has been reached before
+
+//if the intake is on do the following
+while(intakeOn == true){
+  setIntake(speed);
+  if(pros::millis() >= targTime){
+      printf("targetReached");
+      intakeOn = false; // turns intake off
+      intFirstCycle = true; //prepares for the next cycle
+      driveStep++;
+      intakeStep++;
+    }
+}
+setIntake(0);
+}
 
 
 void armMove(int targetAngle, int maxSpeed, int driveStepNumber, int armStepNumber){

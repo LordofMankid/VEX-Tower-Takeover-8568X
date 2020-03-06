@@ -86,12 +86,13 @@ void setDriveMotors(){
     drive_rPower = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
     //"deadzone" - the absolute value thing
+/*
     if(abs(drive_yPower) < 30 && abs(drive_xPower) > 50)
       drive_yPower = 0;
     if(abs(drive_xPower) < 30 && abs(drive_yPower) < 50 )
       drive_xPower = 0;
-
-      setDrive(drive_yPower*driveFactor, drive_rPower*driveFactor);
+*/
+      setDrive(drive_yPower, drive_rPower);
 }
 
 //AUTONOMOUS FUNCTIONS
@@ -109,8 +110,8 @@ void autoTranslate(double targetDistance, int targetSpeed, int maxTime){
     }
     pros::delay(10);
   }
-
 }
+
 void translate(double targetDistance, double targetTheta, double endingOrientation, int maxSpeed, int driveStepNumber){
 
   if(driveStep == driveStepNumber){

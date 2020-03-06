@@ -41,6 +41,8 @@ void startIntake(int targetTime, int speed, int driveStepNumber, int timeReached
 
 void intakeMove(int targetTime, int speed, int driveStepNumber, int timeReachedNumber);
 
+void intakeTime(int targetTime, int speed);
+
 void intakeIn();
 
 void intakeOut();

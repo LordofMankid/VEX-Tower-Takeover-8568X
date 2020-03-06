@@ -90,6 +90,7 @@ int PIDloop(kPID kPID, double units, double EncoderValue){
 
 int turnLoop(kPID kPID, double targetAngleDeg, double EncoderValue){
   int voltage;
+
   if(targetAngleDeg < 0){
     while(EncoderValue > 0) {
       EncoderValue -=360.0;
@@ -113,10 +114,10 @@ int turnLoop(kPID kPID, double targetAngleDeg, double EncoderValue){
   //increases error based on time taken to reach target - if resistance is encountered then integral will increase
   integral = integral + error;
   //resets integral if place is reached
-  if(error == 0 || error > 5.0)
+  if(error == 0 || error > 1.0)
     integral = 0;
   //reset integral if it becomes super big
-  if(fabs(error) >= integralMax)
+  if(fabs(error) >= 20)
     integral = 0;
   derivative = prevError - error; //finds derivative of errors
   prevError = error; //updates prevError

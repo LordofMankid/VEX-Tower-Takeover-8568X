@@ -93,15 +93,21 @@ void eightStack(){
 
 void connor(){
 
+  auto intakeController = AsyncVelControllerBuilder()
+    .withMotor(intake)
+    .withMaxVelocity(600)
+    .withGearset(AbstractMotor::gearset::red)
+    .build();
+
       slopeController->setMaxVelocity(600);
-      slopeController->setTarget(3500);
+      slopeController->setTarget(4000);
       intakeController->setTarget(-600);
       slopeController->waitUntilSettled();
       slopeController->setTarget(0);
       intakeController->setTarget(0);
 
     profileControllerF->generatePath(
-      {{0_ft, 0_ft, 0_deg}, {10_in, 0_ft, 0_deg}, {46.5_in, -16_in, 0_deg}}, "Move 1", {1.5, 0.9, 5.0});
+      {{0_ft, 0_ft, 0_deg}, {10_in, 0_ft, 0_deg}, {46.5_in, -17_in, 0_deg}}, "Move 1", {1.5, 0.9, 5.0});
 
     profileControllerF->generatePath(
       {{0_ft, 0_ft, 0_deg}, {20.5_in, 0_ft, 0_deg}}, "Move 2", {1.7, 1.6, 7.5});
@@ -134,11 +140,67 @@ void connor(){
     intakeController->setTarget(0);
     slopeController->setTarget(2000);
 
-    slopeUp(6125, 127);
+    slopeUp(6200, 127);
 
     profileControllerF->setTarget("Move 4", true);
     profileControllerF->waitUntilSettled();
 
+}
+
+void connorRed(){
+
+    auto intakeController = AsyncVelControllerBuilder()
+      .withMotor(intake)
+      .withMaxVelocity(600)
+      .withGearset(AbstractMotor::gearset::red)
+      .build();
+
+      slopeController->setMaxVelocity(600);
+      slopeController->setTarget(4000);
+      intakeController->setTarget(-600);
+      slopeController->waitUntilSettled();
+      slopeController->setTarget(0);
+      intakeController->setTarget(0);
+
+    profileControllerF->generatePath(
+      {{0_ft, 0_ft, 0_deg}, {10_in, 0_ft, 0_deg}, {46.5_in, 17_in, 0_deg}}, "Move 1", {1.5, 0.9, 5.0});
+
+    profileControllerF->generatePath(
+      {{0_ft, 0_ft, 0_deg}, {21.5_in, 0_ft, 0_deg}}, "Move 2", {1.7, 1.6, 7.5});
+
+    profileControllerF->generatePath(
+      {{0_ft, 0_ft, 0_deg}, {45_in, 0_ft, 0_deg}}, "Move 3", {1.5, 0.9, 7.5});
+
+
+    profileControllerF->generatePath(
+      {{0_ft, 0_ft, 0_deg}, {-10_in, 0_in, 0_deg}}, "Move 4", {0.5, 0.5, 7.5});
+/*
+    profileControllerF->setTarget("Move 1");
+    profileControllerF->waitUntilSettled(); //blocks everything else until finished
+
+
+    gyroTurn(89.0, 70);
+
+    intakeController->setTarget(600);
+
+    profileControllerF->setTarget("Move 2"); //"True" reverses it
+    profileControllerF->waitUntilSettled();
+
+    gyroTurn(131.5, 65);
+
+
+    profileControllerF->setTarget("Move 3"); //"True" reverses it
+    profileControllerF->waitUntilSettled();
+
+    intakeTime(340, -127);
+    intakeController->setTarget(0);
+    slopeController->setTarget(2000);
+
+    slopeUp(6125, 127);
+
+    profileControllerF->setTarget("Move 4", true);
+    profileControllerF->waitUntilSettled();
+*/
 }
 
 

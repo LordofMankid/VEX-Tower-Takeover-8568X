@@ -13,4 +13,6 @@ void autonTest();
 
 void connor();
 
+void connorRed();
+
 void eightStack();

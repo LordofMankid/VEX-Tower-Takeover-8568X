@@ -50,9 +50,9 @@ void setSlopeMotors(){
 
 
     }
-    if(slopeAngle >= 6300)
+    if(slopeAngle >= 6000)
     {
-      voltageSlope = 30;
+      voltageSlope = 27;
     }
     slopePower = voltageSlope*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) - slopeDownPower*controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2);
 

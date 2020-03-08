@@ -52,8 +52,7 @@ void adjustkPID(kPID kPID, double kP, double kI, double kD, int driveStepNumber)
 }
 
 void setAutonButton(){
-
-
+  
   while(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1)
   {
     forwardPID = createkPID(12.5, 0.1, 2.3);

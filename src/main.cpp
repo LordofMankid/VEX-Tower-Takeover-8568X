@@ -67,18 +67,22 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	forwardPID = createkPID(9.5, 0.0, 0.25);
-	turnPID = createkPID(1.75, 0.0, 0.0);
-	adjustPID = createkPID(2.0, 0.0, 0.045);
+	forwardPID = createkPID(12.5, 0.1, 2.3);
+	turnPID = createkPID(1.75, 0.06, 1.1);
+	adjustPID = createkPID(2.0, 0.0, 0.04);
+	armPID = createkPID(0.0, 0.0, 0.0);
 	driveStep = 0;
-	setDriveCoast();
+
+	connor();
+	//connorRed();
+	//setDriveCoast();
 	//slopeTest();
 	//intakeTest();
 	//multipleSubsystemTest();
 	//redStackFive();
 	//blueStackFive();
 	//autonCorrect();
-	scoreTurnLeft();
+	//scoreTurnLeft();
 	//scoreTurnRight();
 	//redFiveStack();
 

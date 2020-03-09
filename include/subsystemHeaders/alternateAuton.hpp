@@ -9,7 +9,7 @@ extern const double REG_INCH_TICK;
 //extern okapi::ChassisControllerBuilder myChassis;
 void timeDrive(int time, int voltage);
 
-void autonTest();
+void sixStackBlue();
 
 void connor();
 

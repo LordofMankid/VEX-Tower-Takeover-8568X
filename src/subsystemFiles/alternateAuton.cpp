@@ -66,7 +66,7 @@ auto intakeControllerPos = AsyncPosControllerBuilder()
   .withGearset(AbstractMotor::gearset::red)
   .build();
 
-void eightStack(){
+void autonSkills(){
   profileControllerF->generatePath(
     {{0_ft, 0_ft, 0_deg}, {30_in, 0_ft, 0_deg}}, "Movement 1", {1.0, 0.9, 5.0});
 
@@ -77,8 +77,22 @@ void eightStack(){
     {{0_ft, 0_ft, 0_deg}, {35_in, 0_ft, 0_deg}}, "Movement 3", {1.5, 0.9, 7.5});
 
   profileControllerF->generatePath(
-    {{0_ft, 0_ft, 0_deg}, {18_in, 5_in, 0_deg}}, "Movement 4", {1.5, 0.9, 7.5});
+    {{0_ft, 0_ft, 0_deg}, {-18_in, 5_in, 0_deg}}, "Movement 4", {1.5, 0.9, 7.5});
 
+  profileControllerF->generatePath(
+      {{0_ft, 0_ft, 0_deg}, {10_in, 5_in, 0_deg}}, "Movement 5", {1.5, 0.9, 7.5});
+
+  profileControllerF->generatePath(
+      {{0_ft, 0_ft, 0_deg}, {10_in, 5_in, 0_deg}}, "Movement 6", {1.5, 0.9, 7.5});
+
+    slopeController->setMaxVelocity(600);
+    slopeController->setTarget(4000);
+    intakeController->setTarget(-600);
+    slopeController->waitUntilSettled();
+    slopeController->setTarget(0);
+    intakeController->setTarget(0);
+
+    intakeController->setTarget(600);
     profileControllerF->setTarget("Movement 1");
     profileControllerF->waitUntilSettled(); //blocks everything else until finished
 
@@ -89,8 +103,71 @@ void eightStack(){
     profileControllerF->setTarget("Movement 3"); //"True" reverses it
     profileControllerF->waitUntilSettled();
 
+    profileControllerF->setTarget("Movement 4", true); //"True" reverses it
+    profileControllerF->waitUntilSettled();
+
+    rotate(-135, 70);
+
+    intakeTime(340, -127);
+    intakeController->setTarget(0);
+    slopeController->setTarget(2000);
+
+    profileControllerF->setTarget("Movement 5"); //"True" reverses it
+    profileControllerF->waitUntilSettled();
+
+    slopeUp(6125, 127);
+
+    profileControllerF->setTarget("Movement 6", true); //"True" reverses it
+    profileControllerF->waitUntilSettled();
+
+    rotate(-135, 70);
 }
 
+void fiveStackBlue(){
+
+
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {45_in, 0_ft, 0_deg}}, "Movement 1", {1.0, 0.9, 5.0});
+
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {-30_in, 0_in, 0_deg}}, "Movement 2", {1.5, 0.9, 7.5});
+
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {10_in, 0_ft, 0_deg}}, "Movement 3", {1.5, 0.9, 7.5});
+
+  profileControllerF->generatePath(
+    {{0_ft, 0_ft, 0_deg}, {-10_in, 5_in, 0_deg}}, "Movement 4", {1.5, 0.9, 7.5});
+    autoTranslate(5.0, 127, 500);
+    autoTranslate(0.0, 127, 500);
+
+    slopeController->setMaxVelocity(600);
+    slopeController->setTarget(4000);
+    intakeController->setTarget(-600);
+    slopeController->waitUntilSettled();
+    slopeController->setTarget(0);
+    intakeController->setTarget(0);
+
+    profileControllerF->setTarget("Movement 1");
+    profileControllerF->waitUntilSettled(); //blocks everything else until finished
+
+
+    profileControllerF->setTarget("Movement 2", true); //"True" reverses it
+    profileControllerF->waitUntilSettled();
+
+    rotate(135, 70);
+
+    intakeTime(340, -127);
+    intakeController->setTarget(0);
+    slopeController->setTarget(2000);
+
+    profileControllerF->setTarget("Movement 3"); //"True" reverses it
+    profileControllerF->waitUntilSettled();
+
+    slopeUp(6125, 127);
+
+    profileControllerF->setTarget("Movement 4");
+    profileControllerF->waitUntilSettled();
+}
 void connor(){
 
   auto intakeController = AsyncVelControllerBuilder()
@@ -99,12 +176,7 @@ void connor(){
     .withGearset(AbstractMotor::gearset::red)
     .build();
 
-      slopeController->setMaxVelocity(600);
-      slopeController->setTarget(4000);
-      intakeController->setTarget(-600);
-      slopeController->waitUntilSettled();
-      slopeController->setTarget(0);
-      intakeController->setTarget(0);
+
 
     profileControllerF->generatePath(
       {{0_ft, 0_ft, 0_deg}, {10_in, 0_ft, 0_deg}, {46.5_in, -17_in, 0_deg}}, "Move 1", {1.5, 0.9, 5.0});
@@ -120,6 +192,12 @@ void connor(){
       {{0_ft, 0_ft, 0_deg}, {-10_in, 0_in, 0_deg}}, "Move 4", {0.5, 0.5, 7.5});
 
     profileControllerF->setTarget("Move 1");
+    slopeController->setMaxVelocity(600);
+    slopeController->setTarget(4000);
+    intakeController->setTarget(-600);
+    slopeController->waitUntilSettled();
+    slopeController->setTarget(0);
+    intakeController->setTarget(0);
     profileControllerF->waitUntilSettled(); //blocks everything else until finished
 
 
@@ -174,7 +252,7 @@ void connorRed(){
 
     profileControllerF->generatePath(
       {{0_ft, 0_ft, 0_deg}, {-10_in, 0_in, 0_deg}}, "Move 4", {0.5, 0.5, 7.5});
-/*
+
     profileControllerF->setTarget("Move 1");
     profileControllerF->waitUntilSettled(); //blocks everything else until finished
 
@@ -200,19 +278,22 @@ void connorRed(){
 
     profileControllerF->setTarget("Move 4", true);
     profileControllerF->waitUntilSettled();
-*/
+
 }
 
 
-void autonTest() {
+void sixStackBlue() {
   ////Path Generation
   /*
   Goes as follows:
   generatePath({inside these brackets is the targets}, "Movement name", {velocityLimit, accelerationLimit, "jerk" limit})
   The 3rd one is optional
   */
-
-
+  auto intakeController = AsyncVelControllerBuilder()
+    .withMotor(intake)
+    .withMaxVelocity(600)
+    .withGearset(AbstractMotor::gearset::red)
+    .build();
 
   profileControllerF->generatePath(
     {{0_ft, 0_ft, 0_deg}, {10_in, 0_ft, 0_deg}, {47_in, -16_in, 0_deg}}, "Movement 1", {1.5, 0.9, 5.0});

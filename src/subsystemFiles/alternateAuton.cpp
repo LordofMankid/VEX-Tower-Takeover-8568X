@@ -66,7 +66,7 @@ auto intakeControllerPos = AsyncPosControllerBuilder()
   .withGearset(AbstractMotor::gearset::red)
   .build();
 
-void autonSkills(){
+/*void autonSkills(){
   profileControllerF->generatePath(
     {{0_ft, 0_ft, 0_deg}, {30_in, 0_ft, 0_deg}}, "Movement 1", {1.0, 0.9, 5.0});
 
@@ -122,7 +122,7 @@ void autonSkills(){
 
     rotate(-135, 70);
 }
-
+*/
 void fiveStackBlue(){
 
 

@@ -75,12 +75,14 @@ void opcontrol(void);
 #include "numberCrunching/odometry.hpp"
 #include "numberCrunching/numberCrunching.hpp"
 #include "numberCrunching/PID.hpp"
-#include "subsystemHeaders/drive.hpp"
+#include "subsystemHeaders/drive/drive.hpp"
 #include "subsystemHeaders/globals.hpp"
-#include "subsystemHeaders/slope.hpp"
-#include "subsystemHeaders/intakeAndArm.hpp"
-#include "subsystemHeaders/alternateAuton.hpp"
-#include "subsystemHeaders/autonomousCode.hpp"
+#include "subsystemHeaders/drive/slopeControl.hpp"
+#include "subsystemHeaders/drive/intakeAndArm.hpp"
+#include "subsystemHeaders/auton/alternateAuton.hpp"
+#include "subsystemHeaders/auton/autonomousCode.hpp"
+#include "subsystemHeaders/auton/auton.hpp"
+
 
 /**
  * You can add C++-only headers here

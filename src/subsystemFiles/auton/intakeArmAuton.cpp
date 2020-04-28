@@ -1,29 +1,12 @@
 #include "main.h"
 
 
-///////////////////////////
-//GLOBAL VARIABLES
-///////////////////////////
-const double ARMLENGTH = 16.0;
-const double ARM_SLOPE_RATIO = 0.5;
-
-int intakeMotorSpeed;
-int armMotorSpeed;
-double armHeight;
-double armTarget;
-///////////////////
-int intakePower;
-int armPower;
-int macroPowerArm;
-int macroSpeed;
-
-////
 //Intake autonomous variables
 bool intFirstCycle = true;
 bool intakeOn;
 int intakeStep;
 int targTime;
-
+double armTarget;
 ////
 //Arm autonomous variables
 bool armFirstCycle = true;
@@ -36,44 +19,12 @@ int armAngle;
 double currentArmTarget;
 int voltageArm;
 kPID armPID;
-//const double LIFT_INCHES_TICKS = 900/chord length of arm thing;
 
-//HELPER FUNCTIONS
-void setArmLift(int power){
-  armLift = power;
-}
-
-void setIntake(int power){
-  intakeRight = power;
-  intakeLeft = power;
-}
-
+//helper functions
 void setMegaLift(int power){
     armLift = power;
     slopeLift = power;
 }
-//DRIVER CODE
-void setIntakeMotors(){
-  intakePower = 127*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
-  setIntake(intakePower);
-}
-
-void setArmLift(){
-  armLift = armPower;
-}
-/*
-Ties the lift of the slope to buttons R1 and R2
-*/
-void setMacroMotors(){
-  armAngle = armLift.get_position();
-  macroPowerArm = 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_B) - 127*controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN);
-  armPower = 127*(controller.get_digital(pros::E_CONTROLLER_DIGITAL_B) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN));
-
-  armLift = macroPowerArm+armPower;
-  pros::lcd::print(7, "armAngle %i", armAngle);
-}
-
-//AUTONOMOUS CODE
 
 void startIntake(int targetTime, int speed, int driveStepNumber, int intakeStepNumber){
 //checks to see if the drive step is same as the one it was assigned to

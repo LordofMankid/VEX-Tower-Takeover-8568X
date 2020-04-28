@@ -28,6 +28,11 @@ int compareValues(double a, double b){
   return (a < b ? 1:-1);
 
 }
+template <class SomeType>
+SomeType sum (SomeType a, SomeType b){
+  return sqrt(pow(a.y-b.yPosition,2) + pow(a.x-b.xPosition,2));
+}
+/*
 double findDistance(rectCoord targetCoord, position position){
 
     return sqrt(pow(targetCoord.y-position.yPosition,2) + pow(targetCoord.x-position.xPosition,2));
@@ -35,7 +40,7 @@ double findDistance(rectCoord targetCoord, position position){
 
 double findDistance(position position1, position position2){
   return sqrt(pow(position1.yPosition-position2.yPosition,2) + pow(position1.xPosition-position2.xPosition,2));
-}
+}*/
 
 rectCoord vectorSummation(rectCoord v1, rectCoord v2){
   rectCoord newVector;

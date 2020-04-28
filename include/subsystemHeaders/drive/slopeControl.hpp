@@ -2,6 +2,8 @@
 
 //GLOBAL INTEGERS TO DEFINE
 #define SLOPE_GEAR_RATIO 21.0
+extern int voltageSlope;
+extern int slopePower;
 extern double slopeMaxAngle;
 extern double slopeAngle;
 extern const double slopeThreshold;

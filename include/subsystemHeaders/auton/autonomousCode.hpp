@@ -1,5 +1,7 @@
 #include "main.h"
-
+#include "driveAuton.hpp"
+#include "intakeArmAuton.hpp"
+#include "slopeAuton.hpp"
 //VARIABLES
 extern bool autonRunning;
 extern int delayTick;

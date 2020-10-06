@@ -228,53 +228,7 @@ void translate(double targetDistance, double targetTheta, double targetOrientati
     voltageR = maxSpeed;
 
   setDrive(voltageY, voltageX, voltageR);
-  /*double directionY;
-  double directionX;
-  int voltageY = 0;
-  int voltageX = 0;
-  int voltageR = 0;
-  int maxErrorX = 0;
 
-  double lastPositionX = 0.0;
-  double lastPositionY = 0.0;
-  double lastPositionA = 0.0;
-  targetReach = false;
-  if(directionY < 0)
-    directionY = -1;
-  if(directionX < 0)
-    directionX = -1;
-  int driveStopTime = 0;
-  while(autonRunning == true && targetReach == false) //MAKE SURE TO CHANGE CONDITION LATER
-
-  {
-    //angleTrack();
-    positionY = (trackingLeft.get_value() + trackingRight.get_value())/2;
-    positionX = trackingX.get_value();
-    positionA = angle;
-    voltageY = PIDloop(0.75, 0.0, 0.5, unitsY, positionY);
-    voltageX = PIDloop(0.5, 0.0, 0.1, unitsX, positionX);
-    voltageR = PIDloop(1.75, 0.0005, 0.0045, 0.00, positionA);
-
-    if(abs(voltageY) > maxSpeed)
-      voltageY = maxSpeed;
-
-    if(fabs(positionX) >= fabs(lastPositionX))
-      maxErrorX = voltageX;
-
-    positionReachCheck(lastPositionX, lastPositionY, positionY, positionX, driveStopTime, unitsY, unitsX);
-
-    //prints PID values and max error value?
-    pros::lcd::print(3, "Y sensor PID 2.0 = %i", voltageY);
-    pros::lcd::print(4, "X sensor PID 2.0 = %i | X maximum error:%i", voltageX  , maxErrorX);
-    setDrive(voltageY, voltageX*directionX, angle); //TODO: convert voltage units into mV
-    lastPositionX = positionX; //"saves" the last recorded position to compare with the next one
-    lastPositionY = positionY;
-    lastPositionA = positionA;
-    pros::delay(10);
-  }*/
-  //reset drive
-  //setDrive(0,0,0);
-  //pros::delay(20);
 }
 
 void rotatePID(double targetAngle, int maxSpeed, double KdAdjust){
